@@ -25,6 +25,11 @@ body {
   min-height: 100%;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 body {
   font-family: var(--font-body);
   color: var(--text);

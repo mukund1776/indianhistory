@@ -11,9 +11,8 @@ tags:
   <img
     src="/assets/media/images/ashoka-sanchi-southern-gateway.jpg"
     alt="Bas-relief of Ashoka visiting the Ramagrama stupa, Southern gateway of Sanchi Stupa 1"
-    width="861"
-    height="822"
     loading="lazy"
+    decoding="async"
   />
   <figcaption>
     Relief depicting Ashoka's visit to the Ramagrama stupa, Southern gateway of Sanchi Stupa 1, Madhya Pradesh, India.

@@ -44,12 +44,17 @@
 .article-body :deep(.article-figure) {
   margin: 0 0 1.5rem;
   padding: 0;
+  max-width: 100%;
+  width: min(100%, 42rem);
 }
 
 .article-body :deep(.article-figure img) {
   display: block;
+  max-width: 100%;
   width: 100%;
   height: auto;
+  aspect-ratio: 861 / 822;
+  object-fit: contain;
   border-radius: 0.5rem;
   border: 1px solid var(--border);
 }
