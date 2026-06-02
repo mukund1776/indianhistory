@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router';
-import { AdminComponent } from './pages/admin/admin.component';
-import { PostEditorComponent } from './pages/admin/post-editor/post-editor.component';
+import { ArticleDetailComponent } from './pages/article-detail/article-detail.component';
 import { HomeComponent } from './pages/home/home.component';
-import { PostDetailComponent } from './pages/post-detail/post-detail.component';
+import { SearchComponent } from './pages/search/search.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'post/:slug', component: PostDetailComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'admin/new', component: PostEditorComponent },
-  { path: 'admin/edit/:id', component: PostEditorComponent },
+  { path: 'search', component: SearchComponent },
+  { path: 'article/:slug', component: ArticleDetailComponent },
+  { path: 'post/:slug', redirectTo: 'article/:slug', pathMatch: 'full' },
   { path: '**', redirectTo: '' },
 ];

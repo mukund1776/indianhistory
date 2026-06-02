@@ -1,0 +1,41 @@
+<section class="hero">
+  <p class="eyebrow">Search</p>
+  <h1>Find a story</h1>
+</section>
+
+<form class="search-form card" (ngSubmit)="submit()">
+  <label for="q">Search articles</label>
+  <div class="search-row">
+    <input
+      id="q"
+      name="q"
+      type="search"
+      [(ngModel)]="query"
+      placeholder="e.g. Ashoka, empire, Indus"
+      autocomplete="off"
+    />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
+
+@if (loading()) {
+  <p class="status">Loading index…</p>
+} @else if (!searched()) {
+  <p class="hint">Enter a term to search titles and article text.</p>
+} @else if (results().length === 0) {
+  <div class="card empty">
+    <p>No results for “{{ query }}”.</p>
+  </div>
+} @else {
+  <p class="result-count">{{ results().length }} result(s)</p>
+  <ul class="result-list">
+    @for (item of results(); track item.slug) {
+      <li class="card result-item">
+        <h2>
+          <a [routerLink]="['/article', item.slug]">{{ item.title }}</a>
+        </h2>
+        <p>{{ item.excerpt }}</p>
+      </li>
+    }
+  </ul>
+}

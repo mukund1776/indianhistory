@@ -26,8 +26,12 @@
   line-height: 1.6;
 }
 
-.lede a {
-  color: var(--accent);
+.lede {
+  margin-bottom: 1.25rem;
+}
+
+.hero .btn {
+  margin-top: 0.25rem;
 }
 
 .status {

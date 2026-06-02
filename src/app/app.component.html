@@ -8,7 +8,7 @@
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         Stories
       </a>
-      <a routerLink="/admin" routerLinkActive="active">Edit</a>
+      <a routerLink="/search" routerLinkActive="active">Search</a>
     </nav>
   </header>
 
@@ -17,6 +17,9 @@
   </main>
 
   <footer class="site-footer">
-    <p>Static site — posts saved in your browser. Export JSON to publish updates.</p>
+    <p>
+      Edit <code>content/articles/*.md</code>, run <code>npm run build-content</code>, then
+      <code>npm run build</code> to publish.
+    </p>
   </footer>
 </div>

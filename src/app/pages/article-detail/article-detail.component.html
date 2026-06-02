@@ -1,0 +1,31 @@
+<p class="back">
+  <a routerLink="/">← All stories</a>
+</p>
+
+@if (loading()) {
+  <p class="status">Loading…</p>
+} @else if (!article()) {
+  <div class="card empty">
+    <h1>Article not found</h1>
+    <p>Check the slug or run <code>npm run build-content</code> after adding markdown.</p>
+    <a routerLink="/" class="btn btn-primary">Back home</a>
+  </div>
+} @else {
+  <article class="card article">
+    <p class="meta">
+      Published {{ article()!.publishedAt | date: 'longDate' }}
+      @if (article()!.updatedAt !== article()!.publishedAt) {
+        · Updated {{ article()!.updatedAt | date: 'longDate' }}
+      }
+    </p>
+    <h1>{{ article()!.title }}</h1>
+    @if (article()!.tags.length) {
+      <ul class="tags">
+        @for (tag of article()!.tags; track tag) {
+          <li>{{ tag }}</li>
+        }
+      </ul>
+    }
+    <div class="article-body" [innerHTML]="html()"></div>
+  </article>
+}
