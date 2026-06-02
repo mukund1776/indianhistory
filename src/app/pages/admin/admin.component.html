@@ -1,0 +1,58 @@
+<header class="admin-header">
+  <div>
+    <p class="eyebrow">Editor</p>
+    <h1>Manage stories</h1>
+    <p class="lede">Create and edit posts here. Changes save in your browser automatically.</p>
+  </div>
+  <a routerLink="/admin/new" class="btn btn-primary">New story</a>
+</header>
+
+@if (message()) {
+  <p class="banner success">{{ message() }}</p>
+}
+@if (error()) {
+  <p class="banner error">{{ error() }}</p>
+}
+
+<section class="card tools">
+  <h2>Publish to static site</h2>
+  <p>
+    Export <code>posts.json</code> and copy it to
+    <code>public/data/posts.json</code>, then run <code>ng build</code> to deploy updated content.
+  </p>
+  <div class="tool-row">
+    <button type="button" class="btn btn-primary" (click)="exportPosts()">Export posts.json</button>
+    <label class="btn btn-secondary file-btn">
+      Import JSON
+      <input type="file" accept="application/json,.json" (change)="onImport($event)" hidden />
+    </label>
+    <button type="button" class="btn btn-ghost" (click)="resetToSeed()">Reset to seed file</button>
+  </div>
+</section>
+
+@if (loading()) {
+  <p class="status">Loading…</p>
+} @else if (posts().length === 0) {
+  <div class="card empty">
+    <p>No posts in the editor.</p>
+    <a routerLink="/admin/new" class="btn btn-primary">Create one</a>
+  </div>
+} @else {
+  <ul class="admin-list">
+    @for (post of posts(); track post.id) {
+      <li class="card admin-item">
+        <div>
+          <h3>{{ post.title }}</h3>
+          <p class="meta">
+            /post/{{ post.slug }} · {{ post.updatedAt | date: 'medium' }}
+          </p>
+        </div>
+        <div class="item-actions">
+          <a [routerLink]="['/admin/edit', post.id]" class="btn btn-secondary">Edit</a>
+          <a [routerLink]="['/post', post.slug]" class="btn btn-ghost">View</a>
+          <button type="button" class="btn btn-danger" (click)="deletePost(post)">Delete</button>
+        </div>
+      </li>
+    }
+  </ul>
+}

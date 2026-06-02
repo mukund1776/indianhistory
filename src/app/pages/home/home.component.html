@@ -1,0 +1,37 @@
+<section class="hero">
+  <p class="eyebrow">A static archive you can edit</p>
+  <h1>Stories from the Indian subcontinent</h1>
+  <p class="lede">
+    Browse historical articles. Use <a routerLink="/admin">Edit</a> to add or change posts —
+    your updates stay in this browser until you export <code>posts.json</code> for deployment.
+  </p>
+</section>
+
+@if (loading()) {
+  <p class="status">Loading stories…</p>
+} @else if (posts().length === 0) {
+  <div class="empty card">
+    <p>No posts yet.</p>
+    <a routerLink="/admin/new" class="btn btn-primary">Write the first story</a>
+  </div>
+} @else {
+  <div class="post-grid">
+    @for (post of posts(); track post.id) {
+      <article class="card post-card">
+        <p class="meta">{{ post.publishedAt | date: 'mediumDate' }}</p>
+        <h2>
+          <a [routerLink]="['/post', post.slug]">{{ post.title }}</a>
+        </h2>
+        <p class="excerpt">{{ post.excerpt }}</p>
+        @if (post.tags.length) {
+          <ul class="tags">
+            @for (tag of post.tags; track tag) {
+              <li>{{ tag }}</li>
+            }
+          </ul>
+        }
+        <a [routerLink]="['/post', post.slug]" class="read-more">Read story →</a>
+      </article>
+    }
+  </div>
+}

@@ -1,0 +1,22 @@
+<div class="site">
+  <header class="site-header">
+    <a routerLink="/" class="brand">
+      <span class="brand-mark">IH</span>
+      <span class="brand-text">Indian History</span>
+    </a>
+    <nav class="site-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Stories
+      </a>
+      <a routerLink="/admin" routerLinkActive="active">Edit</a>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <router-outlet />
+  </main>
+
+  <footer class="site-footer">
+    <p>Static site — posts saved in your browser. Export JSON to publish updates.</p>
+  </footer>
+</div>

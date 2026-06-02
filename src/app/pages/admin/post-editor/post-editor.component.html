@@ -1,0 +1,54 @@
+<p class="back">
+  <a routerLink="/admin">← Back to editor</a>
+</p>
+
+<header class="editor-header">
+  <h1>{{ isNew() ? 'New story' : 'Edit story' }}</h1>
+</header>
+
+@if (error()) {
+  <p class="banner error">{{ error() }}</p>
+}
+
+<form class="card editor-form" [formGroup]="form" (ngSubmit)="save()">
+  <label>
+    Title
+    <input type="text" formControlName="title" placeholder="e.g. The Gupta Empire" />
+    @if (form.controls.title.touched && form.controls.title.invalid) {
+      <span class="field-error">Title is required (min 3 characters).</span>
+    }
+  </label>
+
+  <label>
+    URL slug
+    <input type="text" formControlName="slug" placeholder="gupta-empire" />
+    <span class="hint">Used in the link: /post/your-slug</span>
+  </label>
+
+  <label>
+    Excerpt
+    <textarea formControlName="excerpt" rows="2" placeholder="Short summary for the home page"></textarea>
+  </label>
+
+  <label>
+    Content
+    <textarea formControlName="content" rows="12" placeholder="Write your story. Use blank lines between paragraphs."></textarea>
+  </label>
+
+  <label>
+    Tags
+    <input type="text" formControlName="tags" placeholder="ancient, empire (comma-separated)" />
+  </label>
+
+  <label>
+    Publish date
+    <input type="date" formControlName="publishedAt" />
+  </label>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary" [disabled]="saving()">
+      {{ saving() ? 'Saving…' : 'Save story' }}
+    </button>
+    <a routerLink="/admin" class="btn btn-ghost">Cancel</a>
+  </div>
+</form>

@@ -1,0 +1,38 @@
+<p class="back">
+  <a routerLink="/">← All stories</a>
+</p>
+
+@if (loading()) {
+  <p class="status">Loading…</p>
+} @else if (!post()) {
+  <div class="card empty">
+    <h1>Story not found</h1>
+    <p>This post may have been removed or the link is wrong.</p>
+    <a routerLink="/" class="btn btn-primary">Back home</a>
+  </div>
+} @else {
+  <article class="article card">
+    <p class="meta">
+      Published {{ post()!.publishedAt | date: 'longDate' }}
+      @if (post()!.updatedAt !== post()!.publishedAt) {
+        · Updated {{ post()!.updatedAt | date: 'longDate' }}
+      }
+    </p>
+    <h1>{{ post()!.title }}</h1>
+    @if (post()!.tags.length) {
+      <ul class="tags">
+        @for (tag of post()!.tags; track tag) {
+          <li>{{ tag }}</li>
+        }
+      </ul>
+    }
+    <div class="body">
+      @for (para of paragraphs(post()!.content); track $index) {
+        <p>{{ para }}</p>
+      }
+    </div>
+    <div class="actions">
+      <a [routerLink]="['/admin/edit', post()!.id]" class="btn btn-secondary">Edit this story</a>
+    </div>
+  </article>
+}
