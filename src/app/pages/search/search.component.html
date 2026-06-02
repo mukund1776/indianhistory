@@ -11,6 +11,7 @@
       name="q"
       type="search"
       [(ngModel)]="query"
+      (ngModelChange)="onQueryInput($event)"
       placeholder="e.g. Ashoka, empire, Indus"
       autocomplete="off"
     />
@@ -21,7 +22,7 @@
 @if (loading()) {
   <p class="status">Loading index…</p>
 } @else if (!searched()) {
-  <p class="hint">Enter a term to search titles and article text.</p>
+  <p class="hint">Start typing to search titles and article text.</p>
 } @else if (results().length === 0) {
   <div class="card empty">
     <p>No results for “{{ query }}”.</p>
