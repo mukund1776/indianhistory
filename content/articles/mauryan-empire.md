@@ -4,6 +4,8 @@ excerpt: India's first large empire, unifying much of the subcontinent under Cha
 publishedAt: 2026-06-01T11:00:00.000Z
 period: mauryan
 polity: maurya
+themes:
+  - rise-of-buddhism-jainism
 tags:
   - empire
   - ancient

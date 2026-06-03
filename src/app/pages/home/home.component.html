@@ -1,3 +1,4 @@
+<div class="home-lead">
 @if (loading()) {
   <p class="status">Loading stories…</p>
 } @else if (list().length === 0) {
@@ -5,11 +6,15 @@
     <p>No articles yet. Add a <code>.md</code> file and run <code>npm run build-content</code>.</p>
   </div>
 } @else {
-  <section id="stories" class="stories-section">
-    <h2 class="section-title">Stories</h2>
-    <div class="post-grid">
-      @for (article of list(); track article.slug) {
-        <article class="card post-card">
+  <section id="stories" class="stories-section" [class.has-extra-stories]="list().length > 1">
+    @for (article of list(); track article.slug) {
+      <article class="card post-card" [class.has-thumb]="thumbnail(article)">
+        @if (thumbnail(article); as thumb) {
+          <a class="post-thumb" [routerLink]="['/article', article.slug]" aria-hidden="true" tabindex="-1">
+            <img [src]="thumb.src" [alt]="thumb.alt" loading="lazy" decoding="async" />
+          </a>
+        }
+        <div class="post-copy">
           <p class="meta">{{ article.publishedAt | date: 'mediumDate' }}</p>
           <h2>
             <a [routerLink]="['/article', article.slug]">{{ article.title }}</a>
@@ -23,9 +28,9 @@
             </ul>
           }
           <a [routerLink]="['/article', article.slug]" class="read-more">Read story →</a>
-        </article>
-      }
-    </div>
+        </div>
+      </article>
+    }
   </section>
 }
 
@@ -52,7 +57,30 @@
   </div>
   <p class="timeline-hint">Or start with <a routerLink="/period/prehistory">Prehistory</a>, <a routerLink="/period/early-historic">the Early Historic Period</a>, <a routerLink="/period/medieval">the Medieval Period</a>, or <a routerLink="/period/colonial">the Colonial Period</a>. Counts include articles in sub-periods.</p>
 </section>
+</div>
 
+<section id="themes" class="polities-section">
+  <h2>Themes</h2>
+  <p class="polities-intro">
+    Follow cross-period subjects that run across dynasties, regions, and eras. Articles can belong to a period, a specific empire or kingdom, and multiple themes.
+  </p>
+
+  <div class="polity-grid">
+    @for (theme of themes(); track theme.slug) {
+      <a class="card polity-card" [routerLink]="['/theme', theme.slug]">
+        <div class="polity-head">
+          <h3>{{ theme.name }}</h3>
+          <span class="polity-range">{{ theme.range }}</span>
+        </div>
+        <p class="polity-desc">{{ theme.shortDescription }}</p>
+        <div class="polity-footer">
+          <span class="article-badge">{{ theme.articleCount }} stor{{ theme.articleCount === 1 ? 'y' : 'ies' }}</span>
+          <span class="drill">Explore →</span>
+        </div>
+      </a>
+    }
+  </div>
+</section>
 
 <section id="empires" class="polities-section">
   <h2>Empires</h2>

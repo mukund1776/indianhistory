@@ -149,9 +149,61 @@ code {
   color: var(--muted);
 }
 
+.home-lead {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.post-card {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.has-extra-stories .post-card {
+  display: none;
+}
+
+.has-extra-stories .post-card:first-child {
+  display: grid;
+}
+
+.post-card.has-thumb {
+  grid-template-columns: 10rem minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .home-lead {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+  }
+
+  .home-lead .timeline-section {
+    order: 1;
+  }
+
+  .stories-section {
+    order: 2;
+  }
+
+  .has-extra-stories {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .has-extra-stories .post-card,
+  .post-card.has-thumb {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .post-thumb img {
+    height: 8rem;
+  }
+}
+
 /* Offset for sticky header when scrolling to anchored sections via top nav (Timeline, Empires, Kingdoms).
    Prevents the section title / first content from being hidden behind the fixed header. */
 #timeline,
+#themes,
 #empires,
 #regional-kingdoms {
   scroll-margin-top: calc(var(--header-height) + 0.75rem);

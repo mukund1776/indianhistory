@@ -3,6 +3,8 @@ title: Indus Valley Civilization
 excerpt: One of the world's earliest urban cultures, flourishing along the Indus River around 2500 BCE.
 publishedAt: 2026-06-01T10:00:00.000Z
 period: indus-valley
+themes:
+  - the-vedas
 tags:
   - ancient
   - archaeology

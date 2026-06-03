@@ -4,7 +4,7 @@
 </section>
 
 <form class="search-form card" (ngSubmit)="submit()">
-  <label for="q">Search periods, empires, kingdoms &amp; stories</label>
+  <label for="q">Search periods, themes, empires, kingdoms &amp; stories</label>
   <div class="search-row">
     <input
       id="q"
@@ -12,7 +12,7 @@
       type="search"
       [(ngModel)]="query"
       (ngModelChange)="onQueryInput($event)"
-      placeholder="e.g. Ashoka, Gupta, Pallava, Indus, empire, medieval"
+      placeholder="e.g. Ashoka, Vedas, Buddhism, Gupta, Pallava, Indus"
       autocomplete="off"
     />
     <button type="submit" class="btn btn-primary">Search</button>
@@ -22,7 +22,7 @@
 @if (loading()) {
   <p class="status">Loading index…</p>
 } @else if (!searched()) {
-  <p class="hint">Start typing to search periods, empires, regional kingdoms, and stories.</p>
+  <p class="hint">Start typing to search periods, themes, empires, regional kingdoms, and stories.</p>
 } @else if (results().length === 0) {
   <div class="card empty">
     <p>No results for “{{ query }}”.</p>
@@ -32,7 +32,7 @@
   <ul class="result-list">
     @for (item of results(); track item.kind + ':' + item.slug) {
       <li class="card result-item">
-        <span class="result-kind" [class.kind-article]="item.kind === 'article'" [class.kind-period]="item.kind === 'period'" [class.kind-polity]="item.kind === 'polity'">{{ item.kindLabel }}</span>
+        <span class="result-kind" [class.kind-article]="item.kind === 'article'" [class.kind-period]="item.kind === 'period'" [class.kind-theme]="item.kind === 'theme'" [class.kind-polity]="item.kind === 'polity'">{{ item.kindLabel }}</span>
         <h2>
           <a [routerLink]="item.routerLink" [queryParams]="item.queryParams || {}">{{ item.title }}</a>
         </h2>

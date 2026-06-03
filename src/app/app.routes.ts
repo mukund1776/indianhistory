@@ -11,5 +11,6 @@ export const routes: Routes = [
   { path: 'post/:slug', redirectTo: 'article/:slug', pathMatch: 'full' },
   { path: 'period/:slug', component: PeriodDetailComponent },
   { path: 'polity/:slug', component: PeriodDetailComponent },
+  { path: 'theme/:slug', component: PeriodDetailComponent },
   { path: '**', redirectTo: '' },
 ];

@@ -5,12 +5,14 @@ import {
   Period,
   Polity,
   PolityKind,
+  Theme,
   findParent,
   findPeriod,
   getSubtreeSlugs,
   getTopLevelPeriods,
   periods,
   polities,
+  themes,
 } from '../data/periods';
 
 @Injectable({ providedIn: 'root' })
@@ -99,6 +101,16 @@ export class PeriodsService {
     return polities.find((p) => p.slug === slug);
   }
 
+  /** Cross-period themes such as Vedas, Buddhism/Jainism, and colonization */
+  getThemes(): Theme[] {
+    return themes;
+  }
+
+  /** Find a theme by slug */
+  getThemeBySlug(slug: string): Theme | undefined {
+    return themes.find((t) => t.slug === slug);
+  }
+
   /**
    * Return articles whose `polity` field matches this slug.
    */
@@ -124,6 +136,24 @@ export class PeriodsService {
   /** Count of articles for a specific polity */
   async getArticleCountForPolity(slug: string): Promise<number> {
     const arts = await this.getArticlesForPolity(slug);
+    return arts.length;
+  }
+
+  /**
+   * Return articles whose `themes` array contains this slug.
+   */
+  async getArticlesForTheme(slug: string): Promise<Article[]> {
+    await this.articlesService.whenReady();
+    const all = this.articlesService.allArticles();
+    const theme = this.getThemeBySlug(slug);
+    if (!theme) return [];
+
+    return all.filter((a) => a.themes.includes(slug));
+  }
+
+  /** Count of articles for a specific theme */
+  async getArticleCountForTheme(slug: string): Promise<number> {
+    const arts = await this.getArticlesForTheme(slug);
     return arts.length;
   }
 
@@ -191,6 +221,22 @@ export class PeriodsService {
       }
     }
 
+    // Cross-period themes
+    for (const theme of this.getThemes()) {
+      const haystack = `${theme.name} ${theme.shortDescription} ${theme.description} ${theme.range}`.toLowerCase();
+      if (haystack.includes(q)) {
+        results.push({
+          kind: 'theme',
+          slug: theme.slug,
+          title: theme.name,
+          excerpt: theme.shortDescription || (theme.description ? theme.description.slice(0, 160) : ''),
+          routerLink: ['/theme', theme.slug],
+          queryParams: { fromSearch: true },
+          kindLabel: 'Theme',
+        });
+      }
+    }
+
     // De-duplicate (in case of slug collisions across kinds, though unlikely)
     const seen = new Set<string>();
     const unique: SearchResult[] = [];
@@ -203,7 +249,7 @@ export class PeriodsService {
     }
 
     // Rank: prefer title hits that start with the query, then contain, then by kind (Story first), then name
-    const kindRank: Record<SearchResultKind, number> = { article: 0, period: 1, polity: 2 };
+    const kindRank: Record<SearchResultKind, number> = { article: 0, period: 1, theme: 2, polity: 3 };
     unique.sort((a, b) => {
       const aTitle = a.title.toLowerCase();
       const bTitle = b.title.toLowerCase();

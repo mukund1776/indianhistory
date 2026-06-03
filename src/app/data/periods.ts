@@ -154,6 +154,45 @@ export const periods: Period[] = [
 
 export type PolityKind = 'empire' | 'regional-kingdom';
 
+export interface Theme {
+  slug: string;
+  name: string;
+  range: string;
+  shortDescription: string;
+  description: string;
+}
+
+export const themes: Theme[] = [
+  {
+    slug: 'the-vedas',
+    name: 'The Vedas',
+    range: 'c. 1500 – 500 BCE',
+    shortDescription: 'Vedic hymns, ritual culture, oral transmission, and the religious ideas that shaped early Indian civilization.',
+    description: 'The Vedas preserve a vast body of sacred poetry, ritual practice, philosophy, and social memory transmitted orally across generations. This theme gathers articles on Vedic culture, early Sanskrit traditions, ritual specialists, cosmology, and the long influence of Vedic ideas on later Indian thought.'
+  },
+  {
+    slug: 'rise-of-buddhism-jainism',
+    name: 'Rise of Buddhism & Jainism',
+    range: 'c. 6th century BCE onward',
+    shortDescription: 'The shramana movements, the Buddha and Mahavira, monastic communities, royal patronage, and the spread of new ethical traditions.',
+    description: 'Buddhism and Jainism emerged during a period of urbanization, debate, and social change in the Gangetic plains. This theme follows the lives and teachings of the Buddha and Mahavira, monastic institutions, imperial patronage, pilgrimage sites, and the spread of these traditions across and beyond India.'
+  },
+  {
+    slug: 'islamic-conquest-of-india',
+    name: 'Islamic Conquest of India',
+    range: 'c. 8th – 16th centuries CE',
+    shortDescription: 'Arab, Turkic, Afghan, and Central Asian campaigns, sultanates, resistance, and the formation of Indo-Islamic political cultures.',
+    description: 'This theme covers the long and uneven expansion of Muslim-ruled polities into the subcontinent, from early Arab incursions to the Delhi Sultanate and later powers. It includes campaigns, state formation, regional resistance, cultural exchange, and the political transformations of the medieval period.'
+  },
+  {
+    slug: 'colonization-of-india',
+    name: 'Colonization of India',
+    range: 'c. 1498 – 1947 CE',
+    shortDescription: 'European trading companies, British expansion, Crown rule, economic change, resistance, nationalism, and independence.',
+    description: 'European colonization reshaped the subcontinent through trade, conquest, administration, extraction, and new institutions. This theme traces the Portuguese arrival, the growth of the East India Company, British Crown rule, social and economic consequences, anticolonial movements, and the road to independence.'
+  }
+];
+
 export interface Polity {
   slug: string;
   name: string;

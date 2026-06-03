@@ -35,12 +35,22 @@ export class ArticleDetailComponent implements OnInit {
     // Context-aware back navigation
     const fromPeriodSlug = this.route.snapshot.queryParamMap.get('fromPeriod');
     const fromPolitySlug = this.route.snapshot.queryParamMap.get('fromPolity');
+    const fromThemeSlug = this.route.snapshot.queryParamMap.get('fromTheme');
     const fromSearch = this.route.snapshot.queryParamMap.get('fromSearch');
     if (fromPolitySlug) {
       const pol = this.periodsService.getPolityBySlug(fromPolitySlug);
       if (pol) {
         this.backLink.set(`/polity/${fromPolitySlug}`);
         this.backText.set(`← Back to ${pol.name}`);
+      } else {
+        this.backLink.set('/');
+        this.backText.set('← All stories');
+      }
+    } else if (fromThemeSlug) {
+      const theme = this.periodsService.getThemeBySlug(fromThemeSlug);
+      if (theme) {
+        this.backLink.set(`/theme/${fromThemeSlug}`);
+        this.backText.set(`← Back to ${theme.name}`);
       } else {
         this.backLink.set('/');
         this.backText.set('← All stories');

@@ -52,7 +52,7 @@
   line-height: 1.5;
 }
 
-/* Kind badges in mixed search results (articles, periods, empires, regional kingdoms) */
+/* Kind badges in mixed search results (articles, periods, themes, empires, regional kingdoms) */
 .result-kind {
   display: inline-block;
   font-size: 0.65rem;
@@ -73,6 +73,11 @@
 .result-kind.kind-period {
   background: #e8d9c0;
   color: #5c4630;
+}
+
+.result-kind.kind-theme {
+  background: #d9e6d0;
+  color: #31512d;
 }
 
 .result-kind.kind-polity {

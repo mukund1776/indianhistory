@@ -8,6 +8,7 @@ export interface Article {
   tags: string[];
   period?: string; // slug of the broad period (e.g. 'medieval')
   polity?: string; // slug of the specific empire/kingdom (e.g. 'mughal')
+  themes: string[]; // slugs of cross-period themes (e.g. 'rise-of-buddhism-jainism')
 }
 
 export interface SearchEntry {
@@ -17,7 +18,7 @@ export interface SearchEntry {
   text: string;
 }
 
-export type SearchResultKind = 'article' | 'period' | 'polity';
+export type SearchResultKind = 'article' | 'period' | 'polity' | 'theme';
 
 export interface SearchResult {
   kind: SearchResultKind;

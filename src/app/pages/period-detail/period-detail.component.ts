@@ -5,7 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
-import { Period, Polity } from '../../data/periods';
+import { Period, Polity, Theme } from '../../data/periods';
 
 @Component({
   selector: 'app-period-detail',
@@ -21,6 +21,7 @@ export class PeriodDetailComponent implements OnInit {
 
   readonly period = signal<Period | null>(null);
   readonly polity = signal<Polity | null>(null);
+  readonly theme = signal<Theme | null>(null);
   readonly parent = signal<Period | null>(null);
   readonly children = signal<Period[]>([]);
   readonly articles = signal<Article[]>([]);
@@ -28,6 +29,7 @@ export class PeriodDetailComponent implements OnInit {
   readonly loading = signal(true);
   readonly notFound = signal(false);
   readonly isPolity = signal(false);
+  readonly isTheme = signal(false);
 
   readonly backRoute = signal<any>(['/']);
   readonly backFragment = signal<string | undefined>(undefined);
@@ -46,8 +48,10 @@ export class PeriodDetailComponent implements OnInit {
     this.loading.set(true);
     this.notFound.set(false);
     this.isPolity.set(false);
+    this.isTheme.set(false);
     this.period.set(null);
     this.polity.set(null);
+    this.theme.set(null);
 
     await this.articlesService.whenReady();
 
@@ -86,6 +90,7 @@ export class PeriodDetailComponent implements OnInit {
       if (pol) {
         this.polity.set(pol);
         this.isPolity.set(true);
+        this.isTheme.set(false);
         this.children.set([]); // polities are leaves for now
 
         const arts = await this.periodsService.getArticlesForPolity(slug);
@@ -104,7 +109,23 @@ export class PeriodDetailComponent implements OnInit {
           this.backText.set('← Back to Regional Kingdoms');
         }
       } else {
-        this.notFound.set(true);
+        // Try as a cross-period theme
+        const theme = this.periodsService.getThemeBySlug(slug);
+        if (theme) {
+          this.theme.set(theme);
+          this.isTheme.set(true);
+          this.children.set([]);
+
+          const arts = await this.periodsService.getArticlesForTheme(slug);
+          this.articles.set(arts);
+          this.childCounts.set({});
+
+          this.backRoute.set(['/']);
+          this.backFragment.set('themes');
+          this.backText.set('← Back to Themes');
+        } else {
+          this.notFound.set(true);
+        }
       }
     }
 

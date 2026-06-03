@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
-import { Period, Polity, PolityKind } from '../../data/periods';
+import { Period, Polity, PolityKind, Theme } from '../../data/periods';
 
 interface TimelinePeriod {
   slug: string;
@@ -24,6 +24,15 @@ interface PolityDisplay {
   kind: PolityKind;
 }
 
+interface ThemeDisplay extends Theme {
+  articleCount: number;
+}
+
+interface StoryThumbnail {
+  src: string;
+  alt: string;
+}
+
 @Component({
   selector: 'app-home',
   imports: [RouterLink, DatePipe],
@@ -37,6 +46,7 @@ export class HomeComponent implements OnInit {
   readonly list = signal<Article[]>([]);
   readonly loading = signal(true);
   readonly timelinePeriods = signal<TimelinePeriod[]>([]);
+  readonly themes = signal<ThemeDisplay[]>([]);
   readonly empires = signal<PolityDisplay[]>([]);
   readonly regionalKingdoms = signal<PolityDisplay[]>([]);
 
@@ -63,6 +73,16 @@ export class HomeComponent implements OnInit {
     }
 
     this.timelinePeriods.set(withCounts);
+
+    const themeDisplays: ThemeDisplay[] = [];
+    for (const theme of this.periodsSvc.getThemes()) {
+      const count = await this.periodsSvc.getArticleCountForTheme(theme.slug);
+      themeDisplays.push({
+        ...theme,
+        articleCount: count,
+      });
+    }
+    this.themes.set(themeDisplays);
 
     // Load empires and regional kingdoms separately for two distinct deep-dive sections.
     // Each article can still appear under a broad period (via `period`) *and* under its specific polity (via `polity` frontmatter).
@@ -99,7 +119,38 @@ export class HomeComponent implements OnInit {
     }
     this.regionalKingdoms.set(rkDisplays);
 
-    this.list.set(this.articlesSvc.allArticles());
+    this.list.set(this.pickRandomArticles(this.articlesSvc.allArticles(), 3));
     this.loading.set(false);
+  }
+
+  private pickRandomArticles(articles: Article[], count: number): Article[] {
+    if (articles.length === 0) {
+      return [];
+    }
+
+    return [...articles]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, Math.min(count, articles.length));
+  }
+
+  thumbnail(article: Article): StoryThumbnail | null {
+    const img = article.html.match(/<img\b[^>]*>/i)?.[0];
+    if (!img) {
+      return null;
+    }
+
+    const src = this.getAttribute(img, 'src');
+    if (!src) {
+      return null;
+    }
+
+    return {
+      src,
+      alt: this.getAttribute(img, 'alt') ?? '',
+    };
+  }
+
+  private getAttribute(tag: string, name: string): string | null {
+    return tag.match(new RegExp(`${name}="([^"]*)"`, 'i'))?.[1] ?? null;
   }
 }
