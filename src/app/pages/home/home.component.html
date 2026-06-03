@@ -1,6 +1,71 @@
-<section class="hero">
-  <h1>Stories from the Indian subcontinent</h1>
-  <a routerLink="/search" class="btn btn-primary">Search all articles</a>
+<section id="timeline" class="timeline-section">
+  <p class="eyebrow">Deep Time</p>
+  <h2>The Long Arc</h2>
+
+  <div class="timeline">
+    @for (p of timelinePeriods(); track p.slug) {
+      <a class="timeline-item" [routerLink]="['/period', p.slug]">
+        <div class="timeline-marker">
+          <span class="timeline-dot" aria-hidden="true"></span>
+        </div>
+        <div class="timeline-content">
+          <div class="period-head">
+            <span class="period-range">{{ p.range }}</span>
+            <span class="article-badge">{{ p.articleCount }} stor{{ p.articleCount === 1 ? 'y' : 'ies' }}</span>
+          </div>
+          <h3 class="period-name">{{ p.name }} <span class="drill">→</span></h3>
+          <p class="period-desc">{{ p.description }}</p>
+        </div>
+      </a>
+    }
+  </div>
+  <p class="timeline-hint">Or start with <a routerLink="/period/prehistory">Prehistory</a>, <a routerLink="/period/early-historic">the Early Historic Period</a>, <a routerLink="/period/medieval">the Medieval Period</a>, or <a routerLink="/period/colonial">the Colonial Period</a>. Counts include articles in sub-periods.</p>
+</section>
+
+<section id="empires" class="polities-section">
+  <h2>Empires</h2>
+  <p class="polities-intro">
+    Deep-dive into the major empires of Indian history. These powers at their height unified vast territories, built enduring administrations, and facilitated large-scale cultural and economic exchange. An article can belong to both a broad period above <em>and</em> a specific empire here.
+  </p>
+
+  <div class="polity-grid">
+    @for (polity of empires(); track polity.slug) {
+      <a class="card polity-card" [routerLink]="['/polity', polity.slug]">
+        <div class="polity-head">
+          <h3>{{ polity.name }}</h3>
+          <span class="polity-range">{{ polity.range }}</span>
+        </div>
+        <p class="polity-desc">{{ polity.description }}</p>
+        <div class="polity-footer">
+          <span class="article-badge">{{ polity.articleCount }} stor{{ polity.articleCount === 1 ? 'y' : 'ies' }}</span>
+          <span class="drill">Explore →</span>
+        </div>
+      </a>
+    }
+  </div>
+</section>
+
+<section id="regional-kingdoms" class="polities-section">
+  <h2>Regional Kingdoms</h2>
+  <p class="polities-intro">
+    Deep-dive into important regional kingdoms, sultanates, and powers that shaped specific regions and eras. These polities left lasting legacies in art, architecture, governance, and local cultures. An article can belong to both a broad period above <em>and</em> a specific regional kingdom here.
+  </p>
+
+  <div class="polity-grid">
+    @for (polity of regionalKingdoms(); track polity.slug) {
+      <a class="card polity-card" [routerLink]="['/polity', polity.slug]">
+        <div class="polity-head">
+          <h3>{{ polity.name }}</h3>
+          <span class="polity-range">{{ polity.range }}</span>
+        </div>
+        <p class="polity-desc">{{ polity.description }}</p>
+        <div class="polity-footer">
+          <span class="article-badge">{{ polity.articleCount }} stor{{ polity.articleCount === 1 ? 'y' : 'ies' }}</span>
+          <span class="drill">Explore →</span>
+        </div>
+      </a>
+    }
+  </div>
 </section>
 
 @if (loading()) {
@@ -10,23 +75,26 @@
     <p>No articles yet. Add a <code>.md</code> file and run <code>npm run build-content</code>.</p>
   </div>
 } @else {
-  <div class="post-grid">
-    @for (article of list(); track article.slug) {
-      <article class="card post-card">
-        <p class="meta">{{ article.publishedAt | date: 'mediumDate' }}</p>
-        <h2>
-          <a [routerLink]="['/article', article.slug]">{{ article.title }}</a>
-        </h2>
-        <p class="excerpt">{{ article.excerpt }}</p>
-        @if (article.tags.length) {
-          <ul class="tags">
-            @for (tag of article.tags; track tag) {
-              <li>{{ tag }}</li>
-            }
-          </ul>
-        }
-        <a [routerLink]="['/article', article.slug]" class="read-more">Read story →</a>
-      </article>
-    }
-  </div>
+  <section id="stories" class="stories-section">
+    <h2 class="section-title">Stories</h2>
+    <div class="post-grid">
+      @for (article of list(); track article.slug) {
+        <article class="card post-card">
+          <p class="meta">{{ article.publishedAt | date: 'mediumDate' }}</p>
+          <h2>
+            <a [routerLink]="['/article', article.slug]">{{ article.title }}</a>
+          </h2>
+          <p class="excerpt">{{ article.excerpt }}</p>
+          @if (article.tags.length) {
+            <ul class="tags">
+              @for (tag of article.tags; track tag) {
+                <li>{{ tag }}</li>
+              }
+            </ul>
+          }
+          <a [routerLink]="['/article', article.slug]" class="read-more">Read story →</a>
+        </article>
+      }
+    </div>
+  </section>
 }

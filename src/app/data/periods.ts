@@ -1,0 +1,337 @@
+export interface Period {
+  slug: string;
+  name: string;
+  range: string;
+  shortDescription: string;
+  description: string;
+  children?: Period[];
+}
+
+export const periods: Period[] = [
+  {
+    slug: 'prehistory',
+    name: 'Prehistory & the Stone Age',
+    range: 'c. 2.6 million years ago – 3300 BCE',
+    shortDescription:
+      'From the first stone tools and migrations out of Africa to the beginnings of agriculture and settled life.',
+    description:
+      'The Indian subcontinent preserves evidence of human presence stretching back more than two million years. This immense prehistoric span encompasses the entire Stone Age — from the earliest tool-making hominins who left Africa, through the arrival and expansion of anatomically modern humans, to the development of microlith technologies and the first farming villages that would eventually give rise to urban civilization.',
+    children: [
+      {
+        slug: 'paleolithic',
+        name: 'Paleolithic Age',
+        range: 'c. 2.6 mya – 10,000 BCE',
+        shortDescription:
+          'Earliest tool-making hominins and the arrival of anatomically modern humans from Africa.',
+        description:
+          'Divided into Lower, Middle, and Upper phases. The critical development for later populations was the migration of Homo sapiens out of Africa in one or more waves beginning roughly 70,000–50,000 years ago. Important rock shelter and open-air sites (Bhimbetka, Jwalapuram, etc.) preserve stone tools, art, and evidence of adaptation to diverse environments.',
+        children: [
+          {
+            slug: 'early-hominins',
+            name: 'Early Hominins',
+            range: 'c. 2.6 mya – 300,000 ya',
+            shortDescription: 'First tool-using hominins (Homo erectus and relatives) in the subcontinent.',
+            description:
+              'Acheulean handaxes, cleavers, and other stone tools appear across the Siwalik hills, the Narmada valley, and Rajasthan. These early populations were part of the first dispersals of hominins out of Africa.'
+          },
+          {
+            slug: 'modern-humans',
+            name: 'Arrival of Modern Humans',
+            range: 'c. 70,000 – 30,000 ya',
+            shortDescription: 'Homo sapiens reach South Asia from Africa and rapidly spread.',
+            description:
+              'Anatomically modern humans brought more sophisticated blade and microlithic technologies. They occupied caves, rock shelters, and open landscapes from the coasts to the interior, laying the demographic foundations for all later populations of the subcontinent.'
+          }
+        ]
+      },
+      {
+        slug: 'mesolithic',
+        name: 'Mesolithic',
+        range: 'c. 10,000 – 7000 BCE',
+        shortDescription:
+          'Post-glacial hunter-gatherers equipped with tiny, precisely made microlith tools.',
+        description:
+          'Following the end of the last Ice Age, communities across the subcontinent developed highly efficient microlithic toolkits for hunting, fishing, and plant processing. Seasonal camps and increasing knowledge of local ecologies are visible in sites from the Ganges plains to the Deccan and Sri Lanka.'
+      },
+      {
+        slug: 'neolithic',
+        name: 'Neolithic',
+        range: 'c. 7000 – 3300 BCE',
+        shortDescription:
+          'The Neolithic revolution: farming, animal domestication, and the first permanent villages.',
+        description:
+          'In the northwest, at Mehrgarh and related sites, people began cultivating wheat and barley and herding sheep, goats, and cattle. Mud-brick architecture, pottery, ornaments, and long-distance exchange networks appear — the direct precursors to the Sindhu Saraswati Vedic Civilization.'
+      }
+    ]
+  },
+  {
+    slug: 'indus-valley',
+    name: 'Sindhu Saraswati Vedic Civilization',
+    range: 'c. 3300 – 1300 BCE',
+    shortDescription:
+      'The Bronze Age urban culture of the Indus and Saraswati valleys (Sindhu-Saraswati), representing the material expression of early Vedic civilization.',
+    description:
+      'Also known as the Harappan or Indus Valley Civilization. Centered on the Indus and Ghaggar-Hakra (Saraswati) river systems, it featured remarkably uniform urban planning, baked-brick architecture, advanced drainage and water management, standardized weights and measures, seals, and long-distance trade. The script remains undeciphered. In this view, the Indo-Aryans (Vedic people) were indigenous to the Indian subcontinent. The Vedic period overlaps substantially with the urban Sindhu-Saraswati phase; the Rigveda and early Vedic culture are contemporary with the mature Harappan cities (c. 2500–1900 BCE). There was no Aryan invasion or large-scale migration into India. Instead, the Vedic Aryans developed here, and groups later migrated outward from India. The decline of the urban centers around 1900–1300 BCE was due to environmental factors (climate change, tectonic activity, shifting river courses), not conquest, and the cultural and linguistic tradition continued without break.',
+    children: [
+      {
+        slug: 'mature-harappan',
+        name: 'Mature Phase',
+        range: 'c. 2600 – 1900 BCE',
+        shortDescription: 'The peak urban phase with the great cities of the Indus-Saraswati region.',
+        description:
+          'This is the period of the largest planned cities, sophisticated craft production, granaries, the Great Bath at Mohenjo-daro, citadels, and the most extensive trade networks. Standardized artifacts and urban planning define the Mature phase.'
+      }
+    ]
+  },
+  {
+    slug: 'early-historic',
+    name: 'Early Historic Period',
+    range: 'c. 600 – 185 BCE',
+    shortDescription:
+      'The era beginning with the Buddha and Mahavira, the Mahajanapadas, and the Mauryan Empire (following the late Vedic period).',
+    description:
+      'This period opens with the teachings of the Buddha (c. 563–483 BCE) and Mahavira (c. 599–527 BCE). It follows the late Vedic period and encompasses the second urbanization in the Gangetic plains, the rise of the sixteen Mahajanapadas, the spread of Buddhism and Jainism, and the political unification of much of the subcontinent under the Mauryan dynasty (322–185 BCE).',
+    children: [
+      {
+        slug: 'mauryan',
+        name: 'Mauryan Empire',
+        range: 'c. 322 – 185 BCE',
+        shortDescription:
+          'India’s first great empire, uniting much of the subcontinent under centralized rule.',
+        description:
+          'Founded by Chandragupta Maurya (with Chanakya’s counsel), the empire developed sophisticated administration, espionage, taxation, and road networks. Its most famous ruler, Ashoka (r. c. 268–232 BCE), after the bloody Kalinga War, embraced Buddhism and non-violence. He inscribed moral and administrative edicts on rocks and pillars throughout the realm and sent Buddhist missions abroad. The empire fragmented after Ashoka’s death.'
+      }
+    ]
+  },
+  {
+    slug: 'classical',
+    name: 'Classical Period',
+    range: 'c. 320 – 750 CE',
+    shortDescription:
+      'The Gupta Empire and a golden age of Indian science, literature, and art, followed by powerful regional kingdoms.',
+    description:
+      'The Gupta dynasty (c. 320–550 CE) is celebrated as a golden age, with major advances in mathematics (including the concept of zero), astronomy (Aryabhata), medicine (Sushruta and Charaka traditions), and Sanskrit literature (Kalidasa). Hindu temple architecture flourished, and the Puranas codified religious narratives. After the Guptas, the subcontinent fragmented into regional powers such as Harsha in the north and the Chalukya and Pallava dynasties in the south, which patronized art, trade, and the spread of Indian culture to Southeast Asia.'
+  },
+  {
+    slug: 'medieval',
+    name: 'Medieval Period',
+    range: 'c. 750 – 1750 CE',
+    shortDescription:
+      'Delhi Sultanate, Vijayanagara Empire, and the Mughal Empire, with Indo-Islamic cultural synthesis and monumental architecture.',
+    description:
+      'This era saw the establishment of Muslim sultanates in the north (Delhi Sultanate from 1206 CE) and the powerful Hindu Vijayanagara Empire in the south (1336–1646). The Mughal Empire (1526–1857) unified much of the subcontinent under a sophisticated administration. The period is marked by a rich synthesis of Persian, Central Asian, and Indian traditions in art, architecture (Qutub Minar, Taj Mahal, forts of Delhi and Agra), cuisine, music, and language (Urdu). The Bhakti and Sufi movements promoted devotional religion and social reform across communities.',
+    children: [
+      {
+        slug: 'mughal',
+        name: 'Mughal Empire',
+        range: 'c. 1526 – 1857 CE',
+        shortDescription:
+          'A vast and sophisticated empire known for its administrative system, religious policies, and enduring architectural legacy.',
+        description:
+          'Founded by Babur, the empire was consolidated and expanded by Akbar, who introduced tolerant religious policies (including Din-i-Ilahi) and efficient revenue systems (Zabt). Shah Jahan’s reign saw the construction of the Taj Mahal and other masterpieces. Aurangzeb extended the empire to its greatest territorial extent but also faced prolonged conflicts. The empire gradually weakened in the 18th century due to succession disputes, regional rebellions (including the Marathas and Sikhs), and the growing influence of European trading companies, formally ending after the 1857 revolt.'
+      }
+    ]
+  },
+  {
+    slug: 'colonial',
+    name: 'Colonial Period',
+    range: 'c. 1757 – 1947 CE',
+    shortDescription:
+      'British colonial domination through the East India Company and the Crown, economic transformation, and the Indian independence movement.',
+    description:
+      'British political control began with the Battle of Plassey (1757) and the subsequent expansion of the East India Company. Following the widespread revolt of 1857, India came under direct Crown rule. The colonial era brought modern infrastructure (railways, telegraph, universities) and legal institutions, but also deindustrialization, heavy taxation, and several devastating famines. It witnessed the emergence of modern nationalism through the Indian National Congress (1885), social reform movements, and mass campaigns led by Mahatma Gandhi, Jawaharlal Nehru, Sardar Patel, Subhas Chandra Bose, and many others, culminating in independence on 15 August 1947, accompanied by the Partition of India and Pakistan.'
+  },
+  {
+    slug: 'modern',
+    name: 'Modern India',
+    range: '1947 CE – present',
+    shortDescription:
+      'Independent India as a constitutional democracy, with economic liberalization, technological rise, and an expanding global role.',
+    description:
+      'Since independence, India has maintained the world’s largest democracy, adopting a progressive Constitution in 1950. The early decades focused on nation-building, planned economic development, non-alignment in foreign policy (under Nehru), and social justice measures. The Green Revolution transformed agriculture. The 1991 economic liberalization unleashed rapid growth, particularly in information technology and services. India became a nuclear power, a major space agency (ISRO), and an influential voice in international forums (G20 presidency, BRICS, Quad). Contemporary India grapples with challenges of inclusive development, communal harmony, environmental sustainability, and geopolitical positioning, while celebrating its pluralistic heritage and youthful demographic dividend.'
+  }
+];
+
+export type PolityKind = 'empire' | 'regional-kingdom';
+
+export interface Polity {
+  slug: string;
+  name: string;
+  range: string;
+  shortDescription: string;
+  description: string;
+  kind: PolityKind;
+  period: string; // maps to a broad period slug for cross-referencing
+}
+
+export const polities: Polity[] = [
+  {
+    slug: 'maurya',
+    name: 'Maurya Empire',
+    range: 'c. 322 – 185 BCE',
+    shortDescription: 'India’s first pan-subcontinental empire, founded by Chandragupta and expanded under Ashoka.',
+    description: 'Unified much of the Indian subcontinent with a centralized administration, extensive road networks, and a sophisticated bureaucracy. Ashoka’s embrace of Buddhism after the Kalinga War led to the spread of dharma through edicts and missionaries.',
+    kind: 'empire',
+    period: 'early-historic'
+  },
+  {
+    slug: 'gupta',
+    name: 'Gupta Empire',
+    range: 'c. 320 – 550 CE',
+    shortDescription: 'Often called the Golden Age of India, with major advances in science, art, and literature.',
+    description: 'Under rulers like Chandragupta I, Samudragupta, and Chandragupta II (Vikramaditya), the empire saw the flourishing of Sanskrit literature (Kalidasa), mathematics (Aryabhata and the concept of zero), astronomy, and Hindu temple architecture. The Puranas were compiled and classical Indian culture reached new heights.',
+    kind: 'empire',
+    period: 'classical'
+  },
+  {
+    slug: 'chola',
+    name: 'Chola Empire',
+    range: 'c. 300 BCE – 1279 CE (imperial peak 9th–13th centuries)',
+    shortDescription: 'One of the longest-ruling dynasties in Indian history, renowned for its navy, temple architecture, and trade networks.',
+    description: 'The imperial Cholas (Rajaraja I and Rajendra I) built a powerful maritime empire that controlled large parts of South India, Sri Lanka, and even raided Southeast Asia. They constructed magnificent temples (Brihadeeswarar at Thanjavur), developed sophisticated irrigation, and promoted Tamil literature and Shaivism.',
+    kind: 'empire',
+    period: 'medieval'
+  },
+  {
+    slug: 'delhi-sultanate',
+    name: 'Delhi Sultanate',
+    range: 'c. 1206 – 1526 CE',
+    shortDescription: 'A series of five dynasties that established Muslim rule in northern India from Delhi.',
+    description: 'Including the Mamluk (Slave), Khilji, Tughlaq, Sayyid, and Lodi dynasties. The period saw the introduction of new administrative systems, Persian culture, Indo-Islamic architecture (Qutub Minar, Alai Darwaza), and the beginning of the Bhakti movement in response to social changes.',
+    kind: 'empire',
+    period: 'medieval'
+  },
+  {
+    slug: 'vijayanagara',
+    name: 'Vijayanagara Empire',
+    range: 'c. 1336 – 1646 CE',
+    shortDescription: 'The last great Hindu empire of South India, a bulwark against northern sultanates.',
+    description: 'Founded by Harihara and Bukka, it reached its zenith under Krishnadevaraya. Famous for the magnificent ruins at Hampi (UNESCO site), patronage of Telugu, Kannada and Sanskrit literature, and a highly organized military and administrative system. It promoted a distinct Dravidian architectural style.',
+    kind: 'empire',
+    period: 'medieval'
+  },
+  {
+    slug: 'mughal',
+    name: 'Mughal Empire',
+    range: 'c. 1526 – 1857 CE',
+    shortDescription: 'One of the largest and most powerful empires in Indian history, known for its administration, art, and architecture.',
+    description: 'Founded by Babur after the First Battle of Panipat. Akbar’s reign is noted for religious tolerance, the mansabdari system, and cultural synthesis. Shah Jahan built the Taj Mahal and Red Fort. Aurangzeb expanded the empire to its greatest extent. The empire left a lasting legacy in art, cuisine, language (Urdu), and monumental architecture.',
+    kind: 'empire',
+    period: 'medieval'
+  },
+  {
+    slug: 'maratha',
+    name: 'Maratha Empire / Confederacy',
+    range: 'c. 1674 – 1818 CE',
+    shortDescription: 'A powerful Hindu confederacy that rose against Mughal rule and dominated much of the subcontinent.',
+    description: 'Founded by Shivaji, who established an independent Maratha kingdom with innovative guerrilla warfare (ganimi kava) and a progressive administration. Under the Peshwas, the Marathas expanded across India, challenging both the Mughals and later the British, until their defeat in the Anglo-Maratha Wars.',
+    kind: 'empire',
+    period: 'medieval'
+  },
+  {
+    slug: 'sikh',
+    name: 'Sikh Empire',
+    range: 'c. 1799 – 1849 CE',
+    shortDescription: 'A powerful empire in the Punjab founded by Maharaja Ranjit Singh.',
+    description: 'Unified the Sikh misls and expanded to include parts of present-day Pakistan, Kashmir, and Himachal. Known for its secular administration, modern army (with European officers), and religious tolerance. The empire ended after the Anglo-Sikh Wars, after which Punjab was annexed by the British.',
+    kind: 'empire',
+    period: 'colonial'
+  },
+  {
+    slug: 'east-india-company',
+    name: 'British East India Company',
+    range: 'c. 1757 – 1858 CE',
+    shortDescription: 'The corporate entity that gradually established British political control over India.',
+    description: 'After the Battle of Plassey (1757) and Buxar (1764), the Company acquired the diwani (revenue rights) of Bengal. Through wars, treaties, and the doctrine of lapse, it annexed large territories. The 1857 Revolt led to the end of Company rule and the assumption of direct governance by the British Crown.',
+    kind: 'empire',
+    period: 'colonial'
+  },
+  {
+    slug: 'british-raj',
+    name: 'British Raj (Crown Rule)',
+    range: 'c. 1858 – 1947 CE',
+    shortDescription: 'Direct British colonial rule over the Indian subcontinent under the British Crown.',
+    description: 'Established after the Government of India Act 1858. Characterized by the Indian Civil Service, railways, telegraph, Western education, and a policy of “divide and rule.” It also saw the growth of Indian nationalism, the Indian National Congress, and the Muslim League, leading to the independence movement and eventual Partition.',
+    kind: 'empire',
+    period: 'colonial'
+  },
+  {
+    slug: 'pallava',
+    name: 'Pallava Kingdom',
+    range: 'c. 275 – 897 CE',
+    shortDescription: 'South Indian dynasty renowned for rock-cut temples, Sanskrit scholarship, and the port of Mamallapuram.',
+    description: 'The Pallavas of Kanchipuram were a major power in the Tamil region during the classical period. They pioneered Dravidian rock-cut architecture (the Pancha Rathas and Shore Temple at Mamallapuram are UNESCO sites) and were great patrons of Sanskrit and Tamil literature. Their naval expeditions and rivalry with the Chalukyas and Cholas shaped early medieval South Indian politics.',
+    kind: 'regional-kingdom',
+    period: 'classical'
+  },
+  {
+    slug: 'hoysala',
+    name: 'Hoysala Kingdom',
+    range: 'c. 1026 – 1343 CE',
+    shortDescription: 'Karnataka-based dynasty famous for its ornate soapstone temples at Belur, Halebidu, and Somnathpur.',
+    description: 'Emerging in the Western Ghats, the Hoysalas under Vishnuvardhana and later rulers built a sophisticated kingdom in present-day Karnataka. Their temples represent the pinnacle of Hoysala architecture with intricate carvings. They played a key role in the politics between the declining Chalukyas and the rising Vijayanagara Empire, and patronized Kannada and Sanskrit literature.',
+    kind: 'regional-kingdom',
+    period: 'medieval'
+  },
+  {
+    slug: 'kakatiya',
+    name: 'Kakatiya Kingdom',
+    range: 'c. 1163 – 1323 CE',
+    shortDescription: 'Telugu kingdom centered at Warangal, known for irrigation works, the Ramappa Temple, and resistance to Delhi Sultanate.',
+    description: 'The Kakatiyas ruled much of present-day Telangana and Andhra. They developed extensive tank irrigation systems that transformed agriculture in the Deccan plateau. Queen Rudrama Devi and Prataparudra are notable rulers. Their capital Warangal (with its famous fort and gateways) and the Ramappa Temple (a UNESCO site) showcase their architectural legacy before their defeat by the Delhi Sultanate forces.',
+    kind: 'regional-kingdom',
+    period: 'medieval'
+  },
+  {
+    slug: 'ahom',
+    name: 'Ahom Kingdom',
+    range: 'c. 1228 – 1826 CE',
+    shortDescription: 'Long-lasting kingdom in Assam that successfully resisted Mughal expansion and developed a unique administrative system.',
+    description: 'Founded by Sukaphaa, the Tai-Ahom migrants established a powerful kingdom in the Brahmaputra valley. They adopted local customs while maintaining a distinct identity. The Ahoms are famous for the Battle of Saraighat (1671) where they defeated the Mughals under Lachit Borphukan. Their paik (labor service) system, extensive chronicles (Buranjis), and hydraulic engineering allowed them to rule for nearly 600 years until British annexation after the First Anglo-Burmese War.',
+    kind: 'regional-kingdom',
+    period: 'medieval'
+  }
+];
+
+/** Recursively find a period by slug anywhere in the tree. */
+export function findPeriod(slug: string, list: Period[] = periods): Period | undefined {
+  for (const p of list) {
+    if (p.slug === slug) return p;
+    if (p.children) {
+      const found = findPeriod(slug, p.children);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
+/** Find the direct parent of a given slug in the tree. */
+export function findParent(slug: string, list: Period[] = periods): Period | undefined {
+  for (const p of list) {
+    if (p.children) {
+      const isDirectChild = p.children.some((c) => c.slug === slug);
+      if (isDirectChild) {
+        return p;
+      }
+      const found = findParent(slug, p.children);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
+/** Return this period’s slug plus all descendant slugs (for article filtering). */
+export function getSubtreeSlugs(period: Period): string[] {
+  const slugs: string[] = [period.slug];
+  if (period.children) {
+    for (const child of period.children) {
+      slugs.push(...getSubtreeSlugs(child));
+    }
+  }
+  return slugs;
+}
+
+/** Get top-level (root) periods. */
+export function getTopLevelPeriods(): Period[] {
+  return periods;
+}

@@ -2,6 +2,8 @@
 title: The Mauryan Empire
 excerpt: India's first large empire, unifying much of the subcontinent under Chandragupta and Ashoka.
 publishedAt: 2026-06-01T11:00:00.000Z
+period: mauryan
+polity: maurya
 tags:
   - empire
   - ancient

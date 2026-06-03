@@ -11,6 +11,7 @@
   --surface-muted: #f3ebe0;
   --border: #e4d6c3;
   --shadow: 0 8px 24px rgba(60, 40, 20, 0.08);
+  --header-height: 4.75rem;
 }
 
 *,
@@ -23,6 +24,7 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 img {
@@ -145,4 +147,12 @@ code {
 
 .status {
   color: var(--muted);
+}
+
+/* Offset for sticky header when scrolling to anchored sections via top nav (Timeline, Empires, Kingdoms).
+   Prevents the section title / first content from being hidden behind the fixed header. */
+#timeline,
+#empires,
+#regional-kingdoms {
+  scroll-margin-top: calc(var(--header-height) + 0.75rem);
 }

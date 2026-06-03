@@ -49,6 +49,8 @@ function build() {
       publishedAt,
       updatedAt,
       tags: Array.isArray(data.tags) ? data.tags : [],
+      period: typeof data.period === 'string' ? data.period : undefined,
+      polity: typeof data.polity === 'string' ? data.polity : undefined,
     };
   });
 

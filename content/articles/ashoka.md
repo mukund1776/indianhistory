@@ -2,6 +2,8 @@
 title: Ashoka the Great
 excerpt: Mauryan emperor who spread Buddhism and left edicts across the Indian subcontinent.
 publishedAt: 2026-06-02T09:00:00.000Z
+period: mauryan
+polity: maurya
 tags:
   - empire
   - buddhism

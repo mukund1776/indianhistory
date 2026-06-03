@@ -1,5 +1,5 @@
 <p class="back">
-  <a routerLink="/">← All stories</a>
+  <a [routerLink]="backLink()">{{ backText() }}</a>
 </p>
 
 @if (loading()) {
@@ -8,7 +8,7 @@
   <div class="card empty">
     <h1>Article not found</h1>
     <p>Check the slug or run <code>npm run build-content</code> after adding markdown.</p>
-    <a routerLink="/" class="btn btn-primary">Back home</a>
+    <a [routerLink]="backLink()" class="btn btn-primary">{{ backText() }}</a>
   </div>
 } @else {
   <article class="card article">

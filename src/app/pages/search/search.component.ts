@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { SearchEntry } from '../../models/article.model';
+import { SearchResult } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
+import { PeriodsService } from '../../services/periods.service';
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -17,17 +18,19 @@ const SEARCH_DEBOUNCE_MS = 300;
 })
 export class SearchComponent implements OnInit {
   private readonly articles = inject(ArticleService);
+  private readonly periods = inject(PeriodsService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly searchInput$ = new Subject<string>();
 
   query = '';
-  readonly results = signal<SearchEntry[]>([]);
+  readonly results = signal<SearchResult[]>([]);
   readonly loading = signal(true);
   readonly searched = signal(false);
 
   async ngOnInit(): Promise<void> {
+    // Ensure the article index (and any future async data) is ready before first search
     await this.articles.whenReady();
     this.loading.set(false);
 
@@ -68,7 +71,13 @@ export class SearchComponent implements OnInit {
 
   private applySearch(): void {
     this.searched.set(this.query.trim().length > 0);
-    this.results.set(this.articles.search(this.query));
+    const currentQuery = this.query;
+    // Unified search across articles, periods, empires and regional kingdoms
+    void this.periods.searchAll(currentQuery).then((res) => {
+      if (this.query === currentQuery) {
+        this.results.set(res);
+      }
+    });
   }
 
   private updateUrl(): Promise<boolean> {
