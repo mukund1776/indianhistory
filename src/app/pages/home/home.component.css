@@ -11,6 +11,11 @@
   color: var(--muted);
 }
 
+.home-lead,
+.polities-section {
+  margin: 0 0 2rem;
+}
+
 .post-thumb {
   overflow: hidden;
   border-radius: 0.5rem;
@@ -64,8 +69,7 @@
 }
 
 .timeline-section {
-  margin-top: 1rem;
-  margin-bottom: 2.5rem;
+  margin: 0;
 }
 
 .timeline-section h2 {
@@ -202,12 +206,7 @@
 }
 
 .polities-section {
-  margin-top: 2rem;
-  margin-bottom: 1.25rem;
-}
-
-.polities-section + .polities-section {
-  margin-top: 0.75rem;
+  margin-top: 0;
 }
 
 .polities-section h2 {

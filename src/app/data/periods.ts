@@ -166,7 +166,7 @@ export const themes: Theme[] = [
   {
     slug: 'the-vedas',
     name: 'The Vedas',
-    range: 'c. 1500 – 500 BCE',
+    range: 'c. 3300 – 1900 BCE',
     shortDescription: 'Vedic hymns, ritual culture, oral transmission, and the religious ideas that shaped early Indian civilization.',
     description: 'The Vedas preserve a vast body of sacred poetry, ritual practice, philosophy, and social memory transmitted orally across generations. This theme gathers articles on Vedic culture, early Sanskrit traditions, ritual specialists, cosmology, and the long influence of Vedic ideas on later Indian thought.'
   },
@@ -180,9 +180,9 @@ export const themes: Theme[] = [
   {
     slug: 'islamic-conquest-of-india',
     name: 'Islamic Conquest of India',
-    range: 'c. 8th – 16th centuries CE',
+    range: 'c. 8th century – 1799 CE',
     shortDescription: 'Arab, Turkic, Afghan, and Central Asian campaigns, sultanates, resistance, and the formation of Indo-Islamic political cultures.',
-    description: 'This theme covers the long and uneven expansion of Muslim-ruled polities into the subcontinent, from early Arab incursions to the Delhi Sultanate and later powers. It includes campaigns, state formation, regional resistance, cultural exchange, and the political transformations of the medieval period.'
+    description: 'This theme covers the long and uneven expansion of Muslim-ruled polities into the subcontinent, from early Arab incursions to the Delhi Sultanate, Timurid (Mughal) rule, and later powers, extending through Tipu Sultan’s rule in Mysore. It includes campaigns, state formation, regional resistance, cultural exchange, and the political transformations of the medieval and early modern periods.'
   },
   {
     slug: 'colonization-of-india',
@@ -190,6 +190,13 @@ export const themes: Theme[] = [
     range: 'c. 1498 – 1947 CE',
     shortDescription: 'European trading companies, British expansion, Crown rule, economic change, resistance, nationalism, and independence.',
     description: 'European colonization reshaped the subcontinent through trade, conquest, administration, extraction, and new institutions. This theme traces the Portuguese arrival, the growth of the East India Company, British Crown rule, social and economic consequences, anticolonial movements, and the road to independence.'
+  },
+  {
+    slug: 'partition-of-india',
+    name: 'Partition of India',
+    range: '1947 CE',
+    shortDescription: 'The division of British India into India and Pakistan, mass migration, communal violence, and the reshaping of South Asian politics.',
+    description: 'The Partition of India accompanied independence in 1947, creating the dominions of India and Pakistan and triggering one of the largest forced migrations in modern history. This theme covers the political negotiations, boundary-making, refugee movements, communal violence, princely state questions, and the enduring consequences for India, Pakistan, Bangladesh, and the wider subcontinent.'
   }
 ];
 
