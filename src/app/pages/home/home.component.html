@@ -1,3 +1,34 @@
+@if (loading()) {
+  <p class="status">Loading stories…</p>
+} @else if (list().length === 0) {
+  <div class="card empty">
+    <p>No articles yet. Add a <code>.md</code> file and run <code>npm run build-content</code>.</p>
+  </div>
+} @else {
+  <section id="stories" class="stories-section">
+    <h2 class="section-title">Stories</h2>
+    <div class="post-grid">
+      @for (article of list(); track article.slug) {
+        <article class="card post-card">
+          <p class="meta">{{ article.publishedAt | date: 'mediumDate' }}</p>
+          <h2>
+            <a [routerLink]="['/article', article.slug]">{{ article.title }}</a>
+          </h2>
+          <p class="excerpt">{{ article.excerpt }}</p>
+          @if (article.tags.length) {
+            <ul class="tags">
+              @for (tag of article.tags; track tag) {
+                <li>{{ tag }}</li>
+              }
+            </ul>
+          }
+          <a [routerLink]="['/article', article.slug]" class="read-more">Read story →</a>
+        </article>
+      }
+    </div>
+  </section>
+}
+
 <section id="timeline" class="timeline-section">
   <p class="eyebrow">Deep Time</p>
   <h2>The Long Arc</h2>
@@ -21,6 +52,7 @@
   </div>
   <p class="timeline-hint">Or start with <a routerLink="/period/prehistory">Prehistory</a>, <a routerLink="/period/early-historic">the Early Historic Period</a>, <a routerLink="/period/medieval">the Medieval Period</a>, or <a routerLink="/period/colonial">the Colonial Period</a>. Counts include articles in sub-periods.</p>
 </section>
+
 
 <section id="empires" class="polities-section">
   <h2>Empires</h2>
@@ -67,34 +99,3 @@
     }
   </div>
 </section>
-
-@if (loading()) {
-  <p class="status">Loading stories…</p>
-} @else if (list().length === 0) {
-  <div class="card empty">
-    <p>No articles yet. Add a <code>.md</code> file and run <code>npm run build-content</code>.</p>
-  </div>
-} @else {
-  <section id="stories" class="stories-section">
-    <h2 class="section-title">Stories</h2>
-    <div class="post-grid">
-      @for (article of list(); track article.slug) {
-        <article class="card post-card">
-          <p class="meta">{{ article.publishedAt | date: 'mediumDate' }}</p>
-          <h2>
-            <a [routerLink]="['/article', article.slug]">{{ article.title }}</a>
-          </h2>
-          <p class="excerpt">{{ article.excerpt }}</p>
-          @if (article.tags.length) {
-            <ul class="tags">
-              @for (tag of article.tags; track tag) {
-                <li>{{ tag }}</li>
-              }
-            </ul>
-          }
-          <a [routerLink]="['/article', article.slug]" class="read-more">Read story →</a>
-        </article>
-      }
-    </div>
-  </section>
-}
