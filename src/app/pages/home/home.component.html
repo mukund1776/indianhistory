@@ -7,6 +7,21 @@
   </div>
 } @else {
   <section id="stories" class="stories-section" [class.has-extra-stories]="list().length > 1">
+    @if (featuredBook(); as book) {
+      <article class="card feature-book-card">
+        <a class="feature-book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
+          <img [src]="book.imageUrl" [alt]="book.imageAlt" loading="lazy" decoding="async" />
+        </a>
+        <div class="feature-book-copy">
+          <p class="meta">Must read</p>
+          <h2>
+            <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
+          </h2>
+          <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" class="read-more">View book →</a>
+        </div>
+      </article>
+    }
+
     @for (article of list(); track article.slug) {
       <article class="card post-card" [class.has-thumb]="thumbnail(article)">
         @if (thumbnail(article); as thumb) {
@@ -82,26 +97,6 @@
   </div>
 </section>
 
-<section id="personalities" class="polities-section">
-  <h2>Personalities</h2>
-  <p class="polities-intro">
-    Deep-dive into influential historical figures, their eras, actions, ideas, and legacies. Articles can connect to multiple personalities.
-  </p>
-
-  <div class="personality-list">
-    @for (personality of personalities(); track personality.slug) {
-      <a class="personality-item" [routerLink]="['/personality', personality.slug]">
-        <div class="personality-head">
-          <h3>{{ personality.name }}</h3>
-          <span class="personality-meta">{{ personality.range }}</span>
-          <span class="article-badge">{{ personality.articleCount }} stor{{ personality.articleCount === 1 ? 'y' : 'ies' }}</span>
-        </div>
-        <p>{{ personality.shortDescription }}</p>
-      </a>
-    }
-  </div>
-</section>
-
 <section id="empires" class="polities-section">
   <h2>Empires</h2>
   <p class="polities-intro">
@@ -143,6 +138,26 @@
           <span class="article-badge">{{ polity.articleCount }} stor{{ polity.articleCount === 1 ? 'y' : 'ies' }}</span>
           <span class="drill">Explore →</span>
         </div>
+      </a>
+    }
+  </div>
+</section>
+
+<section id="personalities" class="polities-section">
+  <h2>Personalities</h2>
+  <p class="polities-intro">
+    Deep-dive into influential historical figures, their eras, actions, ideas, and legacies. Articles can connect to multiple personalities.
+  </p>
+
+  <div class="personality-list">
+    @for (personality of personalities(); track personality.slug) {
+      <a class="personality-item" [routerLink]="['/personality', personality.slug]">
+        <div class="personality-head">
+          <h3>{{ personality.name }}</h3>
+          <span class="personality-meta">{{ personality.range }}</span>
+          <span class="article-badge">{{ personality.articleCount }} stor{{ personality.articleCount === 1 ? 'y' : 'ies' }}</span>
+        </div>
+        <p>{{ personality.shortDescription }}</p>
       </a>
     }
   </div>

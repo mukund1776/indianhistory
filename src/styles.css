@@ -159,6 +159,45 @@ code {
   gap: 1.25rem;
 }
 
+.feature-book-card {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.feature-book-cover img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4.4;
+  border-radius: 0.5rem;
+  object-fit: contain;
+}
+
+.feature-book-copy {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.feature-book-card h2 {
+  font-size: 1rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feature-book-card .meta {
+  flex: 0 0 auto;
+}
+
+.feature-book-card .read-more {
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+}
+
 .has-extra-stories .post-card {
   display: none;
 }
@@ -237,12 +276,40 @@ code {
   }
 
   .has-extra-stories .post-card,
+  .has-extra-stories .feature-book-card,
   .post-card.has-thumb {
     grid-template-columns: minmax(0, 1fr);
+    align-items: start;
   }
 
-  .post-thumb img {
+  .post-thumb img,
+  .has-extra-stories .feature-book-cover img {
     height: 8rem;
+  }
+
+  .has-extra-stories .feature-book-copy {
+    display: block;
+  }
+
+  .has-extra-stories .feature-book-card h2 {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 520px) {
+  .feature-book-card {
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+  }
+
+  .feature-book-copy {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .feature-book-card h2 {
+    margin: 0;
   }
 }
 

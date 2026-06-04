@@ -1,10 +1,11 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, AfterViewInit, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { MustReadComponent } from './components/must-read/must-read.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MustReadComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

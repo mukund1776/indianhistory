@@ -10,6 +10,7 @@
       <a [routerLink]="['/']" fragment="empires" (click)="closeMenu()">Empires</a>
       <a [routerLink]="['/']" fragment="regional-kingdoms" (click)="closeMenu()">Kingdoms</a>
       <a [routerLink]="['/']" fragment="personalities" (click)="closeMenu()">Personalities</a>
+      <a href="#must-read" (click)="closeMenu()">Must Read</a>
       <a routerLink="/search" routerLinkActive="active" class="search-text" (click)="closeMenu()">Search</a>
     </nav>
     <div class="header-actions">
@@ -34,5 +35,6 @@
 
   <main class="site-main">
     <router-outlet />
+    <app-must-read />
   </main>
 </div>
