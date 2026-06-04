@@ -138,7 +138,7 @@ export class HomeComponent implements OnInit {
     }
     this.regionalKingdoms.set(rkDisplays);
 
-    this.list.set(this.pickRandomArticles(this.articlesSvc.allArticles(), 3));
+    this.list.set(this.pickRandomArticles(this.articlesSvc.allArticles(), 1));
     this.featuredBook.set(this.pickRandomBook());
     this.loading.set(false);
   }

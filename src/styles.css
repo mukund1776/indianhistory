@@ -198,14 +198,6 @@ code {
   font-size: 0.9rem;
 }
 
-.has-extra-stories .post-card {
-  display: none;
-}
-
-.has-extra-stories .post-card:first-child {
-  display: grid;
-}
-
 .post-card.has-thumb {
   grid-template-columns: 10rem minmax(0, 1fr);
 }
@@ -262,36 +254,38 @@ code {
     grid-template-columns: minmax(0, 1fr) 18rem;
   }
 
-  .home-lead .timeline-section {
+  .story-section {
+    grid-column: 1;
     order: 1;
   }
 
-  .stories-section {
+  .home-lead .timeline-section {
+    grid-column: 1;
     order: 2;
   }
 
-  .has-extra-stories {
-    display: grid;
-    gap: 1rem;
+  .book-section {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    order: 3;
   }
 
-  .has-extra-stories .post-card,
-  .has-extra-stories .feature-book-card,
+  .book-section .feature-book-card,
   .post-card.has-thumb {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
   }
 
   .post-thumb img,
-  .has-extra-stories .feature-book-cover img {
+  .book-section .feature-book-cover img {
     height: 8rem;
   }
 
-  .has-extra-stories .feature-book-copy {
+  .book-section .feature-book-copy {
     display: block;
   }
 
-  .has-extra-stories .feature-book-card h2 {
+  .book-section .feature-book-card h2 {
     overflow: visible;
     text-overflow: clip;
     white-space: normal;

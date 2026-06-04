@@ -6,8 +6,8 @@
     <p>No articles yet. Add a <code>.md</code> file and run <code>npm run build-content</code>.</p>
   </div>
 } @else {
-  <section id="stories" class="stories-section" [class.has-extra-stories]="list().length > 1">
-    @if (featuredBook(); as book) {
+  @if (featuredBook(); as book) {
+    <section class="book-section">
       <article class="card feature-book-card">
         <a class="feature-book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
           <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
@@ -20,9 +20,11 @@
           <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" class="read-more">View book →</a>
         </div>
       </article>
-    }
+    </section>
+  }
 
-    @for (article of list(); track article.slug) {
+  @if (list()[0]; as article) {
+    <section id="stories" class="story-section">
       <article class="card post-card" [class.has-thumb]="thumbnail(article)">
         @if (thumbnail(article); as thumb) {
           <a class="post-thumb" [routerLink]="['/article', article.slug]" aria-hidden="true" tabindex="-1">
@@ -45,8 +47,8 @@
           <a [routerLink]="['/article', article.slug]" class="read-more">Read story →</a>
         </div>
       </article>
-    }
-  </section>
+    </section>
+  }
 }
 
 <section id="timeline" class="timeline-section">
