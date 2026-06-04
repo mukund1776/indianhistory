@@ -17,20 +17,33 @@
     />
     <button type="submit" class="btn btn-primary">Search</button>
   </div>
+  <div class="filter-row" role="group" aria-label="Filter search results">
+    @for (filter of filters; track filter.value) {
+      <button
+        type="button"
+        class="filter-chip"
+        [class.active]="activeFilter() === filter.value"
+        [attr.aria-pressed]="activeFilter() === filter.value"
+        (click)="setFilter(filter.value)"
+      >
+        {{ filter.label }}
+      </button>
+    }
+  </div>
 </form>
 
 @if (loading()) {
   <p class="status">Loading index…</p>
 } @else if (!searched()) {
   <p class="hint">Start typing to search periods, themes, personalities, empires, regional kingdoms, books, and stories.</p>
-} @else if (results().length === 0) {
+} @else if (filteredResults().length === 0) {
   <div class="card empty">
     <p>No results for “{{ query }}”.</p>
   </div>
 } @else {
-  <p class="result-count">{{ results().length }} result(s)</p>
+  <p class="result-count">{{ filteredResults().length }} result(s)</p>
   <ul class="result-list">
-    @for (item of results(); track item.kind + ':' + item.slug) {
+    @for (item of filteredResults(); track item.kind + ':' + item.slug) {
       <li class="card result-item">
         <span class="result-kind" [class.kind-article]="item.kind === 'article'" [class.kind-book]="item.kind === 'book'" [class.kind-period]="item.kind === 'period'" [class.kind-theme]="item.kind === 'theme'" [class.kind-personality]="item.kind === 'personality'" [class.kind-polity]="item.kind === 'polity'">{{ item.kindLabel }}</span>
         <h2>

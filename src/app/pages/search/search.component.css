@@ -18,6 +18,32 @@
   border-radius: 0.5rem;
 }
 
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.filter-chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+}
+
+.filter-chip:hover,
+.filter-chip.active {
+  background: var(--surface-muted);
+  color: var(--text);
+  border-color: #d4c3a8;
+}
+
 .hint,
 .result-count {
   color: var(--muted);
