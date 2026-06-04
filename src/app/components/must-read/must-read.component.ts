@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { recommendedBooks } from '../../data/recommended-books';
+import { LazyImageDirective } from '../../directives/lazy-image.directive';
 
 @Component({
   selector: 'app-must-read',
-  imports: [],
+  imports: [LazyImageDirective],
   templateUrl: './must-read.component.html',
   styleUrl: './must-read.component.css',
 })

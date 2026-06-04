@@ -1,6 +1,7 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, AfterViewInit, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { MustReadComponent } from './components/must-read/must-read.component';
 
 @Component({
@@ -11,7 +12,18 @@ import { MustReadComponent } from './components/must-read/must-read.component';
 })
 export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
+  private readonly router = inject(Router);
   readonly menuOpen = signal(false);
+  readonly isSearchPage = signal(false);
+
+  constructor() {
+    this.isSearchPage.set(this.router.url.split('?')[0] === '/search');
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.isSearchPage.set(event.urlAfterRedirects.split('?')[0] === '/search');
+      });
+  }
 
   ngAfterViewInit(): void {
     // Set exact pixel height of the sticky header so that fragment navigation

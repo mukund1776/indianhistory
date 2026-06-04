@@ -70,6 +70,11 @@
   color: var(--accent);
 }
 
+.result-kind.kind-book {
+  background: #efe0c8;
+  color: #6d351d;
+}
+
 .result-kind.kind-period {
   background: #e8d9c0;
   color: #5c4630;

@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Article, SearchResult, SearchResultKind } from '../models/article.model';
+import { recommendedBooks } from '../data/recommended-books';
 import { ArticleService } from './article.service';
 import {
   Period,
@@ -281,6 +282,21 @@ export class PeriodsService {
       }
     }
 
+    // Recommended books
+    for (const book of recommendedBooks) {
+      const haystack = `${book.title} ${book.author} ${book.description} ${book.publisher} ${book.format} ${book.publicationDate} ${book.isbn10} ${book.isbn13}`.toLowerCase();
+      if (haystack.includes(q)) {
+        results.push({
+          kind: 'book',
+          slug: book.isbn10,
+          title: book.title,
+          excerpt: `Book by ${book.author}. ${book.description}`,
+          externalUrl: book.affiliateUrl,
+          kindLabel: 'Book',
+        });
+      }
+    }
+
     // De-duplicate (in case of slug collisions across kinds, though unlikely)
     const seen = new Set<string>();
     const unique: SearchResult[] = [];
@@ -293,7 +309,7 @@ export class PeriodsService {
     }
 
     // Rank: prefer title hits that start with the query, then contain, then by kind (Story first), then name
-    const kindRank: Record<SearchResultKind, number> = { article: 0, period: 1, personality: 2, theme: 3, polity: 4 };
+    const kindRank: Record<SearchResultKind, number> = { article: 0, book: 1, period: 2, personality: 3, theme: 4, polity: 5 };
     unique.sort((a, b) => {
       const aTitle = a.title.toLowerCase();
       const bTitle = b.title.toLowerCase();

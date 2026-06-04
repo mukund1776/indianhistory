@@ -6,6 +6,7 @@ import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, PolityKind, Theme } from '../../data/periods';
 import { recommendedBooks } from '../../data/recommended-books';
+import { LazyImageDirective } from '../../directives/lazy-image.directive';
 import { RecommendedBook } from '../../models/book.model';
 
 interface TimelinePeriod {
@@ -41,7 +42,7 @@ interface StoryThumbnail {
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, LazyImageDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

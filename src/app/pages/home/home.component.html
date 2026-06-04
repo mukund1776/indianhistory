@@ -10,7 +10,7 @@
     @if (featuredBook(); as book) {
       <article class="card feature-book-card">
         <a class="feature-book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
-          <img [src]="book.imageUrl" [alt]="book.imageAlt" loading="lazy" decoding="async" />
+          <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
         </a>
         <div class="feature-book-copy">
           <p class="meta">Must read</p>

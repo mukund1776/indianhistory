@@ -19,15 +19,17 @@ export interface SearchEntry {
   text: string;
 }
 
-export type SearchResultKind = 'article' | 'period' | 'polity' | 'theme' | 'personality';
+export type SearchResultKind = 'article' | 'period' | 'polity' | 'theme' | 'personality' | 'book';
 
 export interface SearchResult {
   kind: SearchResultKind;
   slug: string;
   title: string;
   excerpt: string;
-  // Used for routerLink
-  routerLink: any[];
+  // Used for routerLink when the result points to an internal page.
+  routerLink?: any[];
+  // Used when the result points to an external destination.
+  externalUrl?: string;
   // Optional query params (e.g. fromSearch for articles)
   queryParams?: Record<string, any>;
   // For display: e.g. "Empire", "Regional Kingdom", "Period", "Story"
