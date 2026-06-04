@@ -4,13 +4,32 @@
       <span class="brand-mark">IH</span>
       <span class="brand-text">India History</span>
     </a>
-    <nav class="site-nav">
-      <a [routerLink]="['/']" fragment="timeline">Timeline</a>
-      <a [routerLink]="['/']" fragment="themes">Themes</a>
-      <a [routerLink]="['/']" fragment="empires">Empires</a>
-      <a [routerLink]="['/']" fragment="regional-kingdoms">Kingdoms</a>
-      <a routerLink="/search" routerLinkActive="active">Search</a>
+    <nav id="primary-navigation" class="site-nav" [class.open]="menuOpen()">
+      <a [routerLink]="['/']" fragment="timeline" (click)="closeMenu()">Timeline</a>
+      <a [routerLink]="['/']" fragment="themes" (click)="closeMenu()">Themes</a>
+      <a [routerLink]="['/']" fragment="empires" (click)="closeMenu()">Empires</a>
+      <a [routerLink]="['/']" fragment="regional-kingdoms" (click)="closeMenu()">Kingdoms</a>
+      <a [routerLink]="['/']" fragment="personalities" (click)="closeMenu()">Personalities</a>
+      <a routerLink="/search" routerLinkActive="active" class="search-text" (click)="closeMenu()">Search</a>
     </nav>
+    <div class="header-actions">
+      <button
+        type="button"
+        class="menu-toggle"
+        [class.open]="menuOpen()"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="primary-navigation"
+        aria-label="Toggle navigation"
+        (click)="toggleMenu()"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <a routerLink="/search" routerLinkActive="active" class="search-button" aria-label="Search" (click)="closeMenu()">
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
   </header>
 
   <main class="site-main">

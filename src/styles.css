@@ -171,6 +171,52 @@ code {
   grid-template-columns: 10rem minmax(0, 1fr);
 }
 
+.personality-list {
+  display: grid;
+  gap: 0 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.personality-item {
+  display: block;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+  color: inherit;
+  text-decoration: none;
+}
+
+.personality-item:hover h3 {
+  color: var(--accent);
+}
+
+.personality-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  margin-bottom: 0.2rem;
+}
+
+.personality-head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.personality-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.personality-meta {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 @media (min-width: 900px) {
   .home-lead {
     align-items: start;
@@ -204,6 +250,7 @@ code {
    Prevents the section title / first content from being hidden behind the fixed header. */
 #timeline,
 #themes,
+#personalities,
 #empires,
 #regional-kingdoms {
   scroll-margin-top: calc(var(--header-height) + 0.75rem);

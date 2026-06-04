@@ -12,5 +12,6 @@ export const routes: Routes = [
   { path: 'period/:slug', component: PeriodDetailComponent },
   { path: 'polity/:slug', component: PeriodDetailComponent },
   { path: 'theme/:slug', component: PeriodDetailComponent },
+  { path: 'personality/:slug', component: PeriodDetailComponent },
   { path: '**', redirectTo: '' },
 ];

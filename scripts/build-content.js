@@ -52,6 +52,7 @@ function build() {
       period: typeof data.period === 'string' ? data.period : undefined,
       polity: typeof data.polity === 'string' ? data.polity : undefined,
       themes: Array.isArray(data.themes) ? data.themes : [],
+      personalities: Array.isArray(data.personalities) ? data.personalities : [],
     };
   });
 

@@ -36,6 +36,7 @@ export class ArticleDetailComponent implements OnInit {
     const fromPeriodSlug = this.route.snapshot.queryParamMap.get('fromPeriod');
     const fromPolitySlug = this.route.snapshot.queryParamMap.get('fromPolity');
     const fromThemeSlug = this.route.snapshot.queryParamMap.get('fromTheme');
+    const fromPersonalitySlug = this.route.snapshot.queryParamMap.get('fromPersonality');
     const fromSearch = this.route.snapshot.queryParamMap.get('fromSearch');
     if (fromPolitySlug) {
       const pol = this.periodsService.getPolityBySlug(fromPolitySlug);
@@ -51,6 +52,15 @@ export class ArticleDetailComponent implements OnInit {
       if (theme) {
         this.backLink.set(`/theme/${fromThemeSlug}`);
         this.backText.set(`← Back to ${theme.name}`);
+      } else {
+        this.backLink.set('/');
+        this.backText.set('← All stories');
+      }
+    } else if (fromPersonalitySlug) {
+      const personality = this.periodsService.getPersonalityBySlug(fromPersonalitySlug);
+      if (personality) {
+        this.backLink.set(`/personality/${fromPersonalitySlug}`);
+        this.backText.set(`← Back to ${personality.name}`);
       } else {
         this.backLink.set('/');
         this.backText.set('← All stories');

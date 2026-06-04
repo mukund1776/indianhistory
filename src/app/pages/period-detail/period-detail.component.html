@@ -7,30 +7,31 @@
 } @else if (notFound()) {
   <div class="card empty">
     <h1>Period not found</h1>
-    <p>The period, polity, or theme you’re looking for doesn’t exist (yet). Try the overview on the home page.</p>
+    <p>The period, polity, theme, or personality you’re looking for doesn’t exist (yet). Try the overview on the home page.</p>
     <a [routerLink]="backRoute()" [fragment]="backFragment() || undefined" class="btn btn-primary">{{ backText() }}</a>
   </div>
-} @else if (period() || polity() || theme()) {
+} @else if (period() || polity() || theme() || personality()) {
   @let isPol = isPolity();
   @let isTh = isTheme();
-  @let ent = isPol ? polity()! : isTh ? theme()! : period()!;
+  @let isPerson = isPersonality();
+  @let ent = isPol ? polity()! : isTh ? theme()! : isPerson ? personality()! : period()!;
 
   <header class="period-header card">
     <p class="eyebrow">
-      {{ isPol ? (polity()!.kind === 'empire' ? 'Empire' : 'Regional Kingdom') : isTh ? 'Theme' : 'Historical Period' }}
+      {{ isPol ? (polity()!.kind === 'empire' ? 'Empire' : 'Regional Kingdom') : isTh ? 'Theme' : isPerson ? 'Personality' : 'Historical Period' }}
     </p>
     <h1>{{ ent.name }}</h1>
     <p class="period-range">{{ ent.range }}</p>
     <p class="period-count">
       {{ articles().length }} article{{ articles().length === 1 ? '' : 's' }} across this
-      {{ isPol ? (polity()!.kind === 'empire' ? 'empire' : 'regional kingdom') : isTh ? 'theme' : 'period' }}
-      {{ !isPol && !isTh && children().length ? ' and its sub-periods' : '' }}
+      {{ isPol ? (polity()!.kind === 'empire' ? 'empire' : 'regional kingdom') : isTh ? 'theme' : isPerson ? 'personality' : 'period' }}
+      {{ !isPol && !isTh && !isPerson && children().length ? ' and its sub-periods' : '' }}
     </p>
 
     <p class="period-lede">{{ ent.description }}</p>
   </header>
 
-  @if (!isPol && !isTh && children().length) {
+  @if (!isPol && !isTh && !isPerson && children().length) {
     <section class="sub-periods">
       <h2>Explore sub-periods &amp; topics</h2>
       <div class="sub-grid">
@@ -58,7 +59,7 @@
 
     @if (articles().length === 0) {
       <div class="card empty">
-        <p>No articles yet for this {{ isPol ? (polity()!.kind === 'empire' ? 'empire' : 'regional kingdom') : isTh ? 'theme' : 'period' }}. More stories are being added.</p>
+        <p>No articles yet for this {{ isPol ? (polity()!.kind === 'empire' ? 'empire' : 'regional kingdom') : isTh ? 'theme' : isPerson ? 'personality' : 'period' }}. More stories are being added.</p>
         <a routerLink="/search" class="btn btn-secondary">Search all stories</a>
       </div>
     } @else {
@@ -67,7 +68,7 @@
           <article class="card article-item">
             <p class="meta">{{ article.publishedAt | date: 'mediumDate' }}</p>
             <h3>
-              <a [routerLink]="['/article', article.slug]" [queryParams]="isPol ? { fromPolity: ent.slug } : isTh ? { fromTheme: ent.slug } : { fromPeriod: ent.slug }">{{ article.title }}</a>
+              <a [routerLink]="['/article', article.slug]" [queryParams]="isPol ? { fromPolity: ent.slug } : isTh ? { fromTheme: ent.slug } : isPerson ? { fromPersonality: ent.slug } : { fromPeriod: ent.slug }">{{ article.title }}</a>
             </h3>
             <p class="excerpt">{{ article.excerpt }}</p>
             @if (article.tags.length) {
@@ -77,7 +78,7 @@
                 }
               </ul>
             }
-            <a [routerLink]="['/article', article.slug]" [queryParams]="isPol ? { fromPolity: ent.slug } : isTh ? { fromTheme: ent.slug } : { fromPeriod: ent.slug }" class="read-more">Read full story →</a>
+            <a [routerLink]="['/article', article.slug]" [queryParams]="isPol ? { fromPolity: ent.slug } : isTh ? { fromTheme: ent.slug } : isPerson ? { fromPersonality: ent.slug } : { fromPeriod: ent.slug }" class="read-more">Read full story →</a>
           </article>
         }
       </div>

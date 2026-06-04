@@ -3,6 +3,7 @@ import { Article, SearchResult, SearchResultKind } from '../models/article.model
 import { ArticleService } from './article.service';
 import {
   Period,
+  Personality,
   Polity,
   PolityKind,
   Theme,
@@ -10,6 +11,7 @@ import {
   findPeriod,
   getSubtreeSlugs,
   getTopLevelPeriods,
+  personalities,
   periods,
   polities,
   themes,
@@ -111,6 +113,16 @@ export class PeriodsService {
     return themes.find((t) => t.slug === slug);
   }
 
+  /** Historical personalities available for deep dives */
+  getPersonalities(): Personality[] {
+    return personalities;
+  }
+
+  /** Find a personality by slug */
+  getPersonalityBySlug(slug: string): Personality | undefined {
+    return personalities.find((p) => p.slug === slug);
+  }
+
   /**
    * Return articles whose `polity` field matches this slug.
    */
@@ -154,6 +166,22 @@ export class PeriodsService {
   /** Count of articles for a specific theme */
   async getArticleCountForTheme(slug: string): Promise<number> {
     const arts = await this.getArticlesForTheme(slug);
+    return arts.length;
+  }
+
+  /** Return articles whose `personalities` array contains this slug. */
+  async getArticlesForPersonality(slug: string): Promise<Article[]> {
+    await this.articlesService.whenReady();
+    const all = this.articlesService.allArticles();
+    const personality = this.getPersonalityBySlug(slug);
+    if (!personality) return [];
+
+    return all.filter((a) => a.personalities.includes(slug));
+  }
+
+  /** Count of articles for a specific personality */
+  async getArticleCountForPersonality(slug: string): Promise<number> {
+    const arts = await this.getArticlesForPersonality(slug);
     return arts.length;
   }
 
@@ -237,6 +265,22 @@ export class PeriodsService {
       }
     }
 
+    // Historical personalities
+    for (const personality of this.getPersonalities()) {
+      const haystack = `${personality.name} ${personality.shortDescription} ${personality.description} ${personality.range}`.toLowerCase();
+      if (haystack.includes(q)) {
+        results.push({
+          kind: 'personality',
+          slug: personality.slug,
+          title: personality.name,
+          excerpt: personality.shortDescription || (personality.description ? personality.description.slice(0, 160) : ''),
+          routerLink: ['/personality', personality.slug],
+          queryParams: { fromSearch: true },
+          kindLabel: 'Personality',
+        });
+      }
+    }
+
     // De-duplicate (in case of slug collisions across kinds, though unlikely)
     const seen = new Set<string>();
     const unique: SearchResult[] = [];
@@ -249,7 +293,7 @@ export class PeriodsService {
     }
 
     // Rank: prefer title hits that start with the query, then contain, then by kind (Story first), then name
-    const kindRank: Record<SearchResultKind, number> = { article: 0, period: 1, theme: 2, polity: 3 };
+    const kindRank: Record<SearchResultKind, number> = { article: 0, period: 1, personality: 2, theme: 3, polity: 4 };
     unique.sort((a, b) => {
       const aTitle = a.title.toLowerCase();
       const bTitle = b.title.toLowerCase();

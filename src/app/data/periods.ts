@@ -162,6 +162,14 @@ export interface Theme {
   description: string;
 }
 
+export interface Personality {
+  slug: string;
+  name: string;
+  range: string;
+  shortDescription: string;
+  description: string;
+}
+
 export const themes: Theme[] = [
   {
     slug: 'the-vedas',
@@ -197,6 +205,65 @@ export const themes: Theme[] = [
     range: '1947 CE',
     shortDescription: 'The division of British India into India and Pakistan, mass migration, communal violence, and the reshaping of South Asian politics.',
     description: 'The Partition of India accompanied independence in 1947, creating the dominions of India and Pakistan and triggering one of the largest forced migrations in modern history. This theme covers the political negotiations, boundary-making, refugee movements, communal violence, princely state questions, and the enduring consequences for India, Pakistan, Bangladesh, and the wider subcontinent.'
+  }
+];
+
+export const personalities: Personality[] = [
+  {
+    slug: 'gautama-buddha',
+    name: 'Gautama Buddha',
+    range: 'c. 6th – 5th century BCE',
+    shortDescription: 'Founder of Buddhism, whose teachings on suffering, ethics, and liberation reshaped Indian and Asian religious history.',
+    description: 'Gautama Buddha taught in the Gangetic plains during the age of the mahajanapadas. His teachings on the Four Noble Truths, the Middle Way, monastic discipline, and liberation gave rise to Buddhist communities that later spread across Asia.'
+  },
+  {
+    slug: 'mahavira',
+    name: 'Mahavira',
+    range: 'c. 6th century BCE',
+    shortDescription: 'The twenty-fourth Jain tirthankara, associated with ahimsa, ascetic discipline, and the consolidation of Jain teaching.',
+    description: 'Mahavira taught a rigorous path of non-violence, self-discipline, and liberation from karmic bondage. His life and teachings helped shape Jain monastic and lay communities across ancient India.'
+  },
+  {
+    slug: 'chandragupta-maurya',
+    name: 'Chandragupta Maurya',
+    range: 'c. 340 – 297 BCE',
+    shortDescription: 'Founder of the Maurya Empire, remembered for unifying large parts of northern India with Chanakya’s counsel.',
+    description: 'Chandragupta Maurya overthrew earlier powers in the Gangetic region and founded India’s first major imperial state. His reign is associated with centralized administration, military expansion, and the political foundations inherited by Bindusara and Ashoka.'
+  },
+  {
+    slug: 'ashoka',
+    name: 'Ashoka the Great',
+    range: 'r. c. 268 – 232 BCE',
+    shortDescription: 'Mauryan emperor whose edicts, Buddhist patronage, and moral statecraft shaped the subcontinent and beyond.',
+    description: 'Ashoka ruled much of the Indian subcontinent after the Mauryan expansion. Following the Kalinga War, he promoted dhamma, welfare, religious tolerance, and Buddhist missions through inscriptions, monuments, and imperial patronage.'
+  },
+  {
+    slug: 'akbar',
+    name: 'Akbar',
+    range: 'r. 1556 – 1605 CE',
+    shortDescription: 'Mughal emperor known for imperial consolidation, administrative reform, and experiments in religious accommodation.',
+    description: 'Akbar expanded and stabilized Mughal rule through military campaigns, the mansabdari system, revenue reforms, and alliances with regional elites. His court became known for translation projects, debate, and policies of religious accommodation.'
+  },
+  {
+    slug: 'shivaji',
+    name: 'Shivaji',
+    range: 'c. 1630 – 1680 CE',
+    shortDescription: 'Founder of the Maratha state, known for fort warfare, naval policy, and resistance to larger imperial powers.',
+    description: 'Shivaji built a resilient Maratha kingdom in western India through mobile warfare, fort networks, administrative innovation, and symbolic kingship. His career became central to later Maratha expansion and political memory.'
+  },
+  {
+    slug: 'tipu-sultan',
+    name: 'Tipu Sultan',
+    range: 'r. 1782 – 1799 CE',
+    shortDescription: 'Ruler of Mysore who resisted British expansion and pursued military, diplomatic, and administrative modernization.',
+    description: 'Tipu Sultan ruled Mysore during intense conflict with the British East India Company and its allies. His reign is associated with military innovation, diplomacy with foreign powers, state-led economic measures, and the Anglo-Mysore Wars.'
+  },
+  {
+    slug: 'mahatma-gandhi',
+    name: 'Mahatma Gandhi',
+    range: '1869 – 1948 CE',
+    shortDescription: 'Leader of mass anticolonial movements who made satyagraha and non-violent resistance central to Indian nationalism.',
+    description: 'Mahatma Gandhi transformed Indian nationalism through satyagraha, non-cooperation, civil disobedience, and mass mobilization. His political methods, social campaigns, and moral language shaped the independence movement and global traditions of non-violent protest.'
   }
 ];
 

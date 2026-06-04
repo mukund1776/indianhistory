@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 1.5rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border);
@@ -64,6 +65,65 @@
   background: var(--surface-muted);
 }
 
+.header-actions {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  color: var(--muted);
+}
+
+.search-button span {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.search-button span::after {
+  content: '';
+  position: absolute;
+  width: 0.5rem;
+  height: 2px;
+  right: -0.4rem;
+  bottom: -0.2rem;
+  background: currentColor;
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+.search-button:hover,
+.search-button.active {
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
+.menu-toggle {
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  padding: 0.55rem;
+}
+
+.menu-toggle span {
+  display: block;
+  height: 2px;
+  margin: 0.26rem 0;
+  border-radius: 999px;
+  background: var(--text);
+}
+
 .site-main {
   flex: 1;
   width: min(1100px, 100%);
@@ -81,4 +141,54 @@
 
 .site-footer p {
   margin: 0;
+}
+
+@media (max-width: 920px) {
+  .site-header {
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .brand-text {
+    font-size: 1.1rem;
+  }
+
+  .brand {
+    order: 1;
+  }
+
+  .header-actions {
+    display: flex;
+    order: 2;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .site-nav {
+    order: 3;
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.5rem;
+  }
+
+  .site-nav.open {
+    display: flex;
+  }
+
+  .site-nav a {
+    border-radius: 0.45rem;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .site-nav .search-text {
+    display: none;
+  }
+
+  .site-main {
+    padding: 1.25rem 1rem max(3rem, 32vh);
+  }
 }

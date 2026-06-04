@@ -5,7 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
-import { Period, Polity, Theme } from '../../data/periods';
+import { Period, Personality, Polity, Theme } from '../../data/periods';
 
 @Component({
   selector: 'app-period-detail',
@@ -22,6 +22,7 @@ export class PeriodDetailComponent implements OnInit {
   readonly period = signal<Period | null>(null);
   readonly polity = signal<Polity | null>(null);
   readonly theme = signal<Theme | null>(null);
+  readonly personality = signal<Personality | null>(null);
   readonly parent = signal<Period | null>(null);
   readonly children = signal<Period[]>([]);
   readonly articles = signal<Article[]>([]);
@@ -30,6 +31,7 @@ export class PeriodDetailComponent implements OnInit {
   readonly notFound = signal(false);
   readonly isPolity = signal(false);
   readonly isTheme = signal(false);
+  readonly isPersonality = signal(false);
 
   readonly backRoute = signal<any>(['/']);
   readonly backFragment = signal<string | undefined>(undefined);
@@ -49,9 +51,11 @@ export class PeriodDetailComponent implements OnInit {
     this.notFound.set(false);
     this.isPolity.set(false);
     this.isTheme.set(false);
+    this.isPersonality.set(false);
     this.period.set(null);
     this.polity.set(null);
     this.theme.set(null);
+    this.personality.set(null);
 
     await this.articlesService.whenReady();
 
@@ -124,7 +128,23 @@ export class PeriodDetailComponent implements OnInit {
           this.backFragment.set('themes');
           this.backText.set('← Back to Themes');
         } else {
-          this.notFound.set(true);
+          // Try as a historical personality
+          const personality = this.periodsService.getPersonalityBySlug(slug);
+          if (personality) {
+            this.personality.set(personality);
+            this.isPersonality.set(true);
+            this.children.set([]);
+
+            const arts = await this.periodsService.getArticlesForPersonality(slug);
+            this.articles.set(arts);
+            this.childCounts.set({});
+
+            this.backRoute.set(['/']);
+            this.backFragment.set('personalities');
+            this.backText.set('← Back to Personalities');
+          } else {
+            this.notFound.set(true);
+          }
         }
       }
     }

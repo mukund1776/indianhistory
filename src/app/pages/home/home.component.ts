@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
-import { Period, Polity, PolityKind, Theme } from '../../data/periods';
+import { Period, Personality, Polity, PolityKind, Theme } from '../../data/periods';
 
 interface TimelinePeriod {
   slug: string;
@@ -28,6 +28,10 @@ interface ThemeDisplay extends Theme {
   articleCount: number;
 }
 
+interface PersonalityDisplay extends Personality {
+  articleCount: number;
+}
+
 interface StoryThumbnail {
   src: string;
   alt: string;
@@ -47,6 +51,7 @@ export class HomeComponent implements OnInit {
   readonly loading = signal(true);
   readonly timelinePeriods = signal<TimelinePeriod[]>([]);
   readonly themes = signal<ThemeDisplay[]>([]);
+  readonly personalities = signal<PersonalityDisplay[]>([]);
   readonly empires = signal<PolityDisplay[]>([]);
   readonly regionalKingdoms = signal<PolityDisplay[]>([]);
 
@@ -83,6 +88,16 @@ export class HomeComponent implements OnInit {
       });
     }
     this.themes.set(themeDisplays);
+
+    const personalityDisplays: PersonalityDisplay[] = [];
+    for (const personality of this.periodsSvc.getPersonalities()) {
+      const count = await this.periodsSvc.getArticleCountForPersonality(personality.slug);
+      personalityDisplays.push({
+        ...personality,
+        articleCount: count,
+      });
+    }
+    this.personalities.set(personalityDisplays);
 
     // Load empires and regional kingdoms separately for two distinct deep-dive sections.
     // Each article can still appear under a broad period (via `period`) *and* under its specific polity (via `polity` frontmatter).

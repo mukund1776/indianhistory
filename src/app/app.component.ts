@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, AfterViewInit, inject } from '@angular/core';
+import { Component, AfterViewInit, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -10,6 +10,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 })
 export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
+  readonly menuOpen = signal(false);
 
   ngAfterViewInit(): void {
     // Set exact pixel height of the sticky header so that fragment navigation
@@ -22,5 +23,13 @@ export class AppComponent implements AfterViewInit {
   private headerOffset(): number {
     const header = document.querySelector('.site-header') as HTMLElement | null;
     return header ? header.offsetHeight + 12 : 0;
+  }
+
+  toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
   }
 }

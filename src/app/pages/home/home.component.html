@@ -82,6 +82,26 @@
   </div>
 </section>
 
+<section id="personalities" class="polities-section">
+  <h2>Personalities</h2>
+  <p class="polities-intro">
+    Deep-dive into influential historical figures, their eras, actions, ideas, and legacies. Articles can connect to multiple personalities.
+  </p>
+
+  <div class="personality-list">
+    @for (personality of personalities(); track personality.slug) {
+      <a class="personality-item" [routerLink]="['/personality', personality.slug]">
+        <div class="personality-head">
+          <h3>{{ personality.name }}</h3>
+          <span class="personality-meta">{{ personality.range }}</span>
+          <span class="article-badge">{{ personality.articleCount }} stor{{ personality.articleCount === 1 ? 'y' : 'ies' }}</span>
+        </div>
+        <p>{{ personality.shortDescription }}</p>
+      </a>
+    }
+  </div>
+</section>
+
 <section id="empires" class="polities-section">
   <h2>Empires</h2>
   <p class="polities-intro">
