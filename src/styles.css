@@ -202,6 +202,14 @@ code {
   grid-template-columns: 10rem minmax(0, 1fr);
 }
 
+.story-section .post-copy {
+  order: 2;
+}
+
+.story-section .post-thumb {
+  order: 1;
+}
+
 .personality-list {
   display: grid;
   gap: 0 2rem;
@@ -270,15 +278,25 @@ code {
     order: 3;
   }
 
-  .book-section .feature-book-card,
-  .post-card.has-thumb {
+  .book-section .feature-book-card {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
   }
 
-  .post-thumb img,
   .book-section .feature-book-cover img {
     height: 8rem;
+  }
+
+  .story-section .post-card.has-thumb {
+    grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .story-section .post-thumb img {
+    height: 100%;
+    min-height: 11rem;
+    max-height: 15rem;
+    object-position: center;
   }
 
   .book-section .feature-book-copy {
@@ -289,6 +307,17 @@ code {
     overflow: visible;
     text-overflow: clip;
     white-space: normal;
+  }
+}
+
+@media (max-width: 640px) {
+  .story-section .post-card.has-thumb {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .story-section .post-thumb,
+  .story-section .post-copy {
+    order: initial;
   }
 }
 
