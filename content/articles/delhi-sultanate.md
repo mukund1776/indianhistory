@@ -1,6 +1,9 @@
 ---
 title: The Delhi Sultanate
 excerpt: The Delhi Sultanate introduced new ruling houses, military systems, Persianate court culture, and Indo-Islamic architecture.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:30:00.000Z
 period: medieval
 polity: delhi-sultanate

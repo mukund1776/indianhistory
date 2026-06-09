@@ -1,6 +1,9 @@
 ---
 title: The Mughal Empire
 excerpt: Timurid-Mughal rule shaped early modern India through imperial administration, court culture, architecture, and regional alliances.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:40:00.000Z
 period: mughal
 polity: mughal

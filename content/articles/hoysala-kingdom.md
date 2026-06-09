@@ -1,6 +1,9 @@
 ---
 title: The Hoysala Kingdom
 excerpt: The Hoysalas shaped Karnataka through ornate temple architecture, regional politics, and literary patronage.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T10:10:00.000Z
 period: medieval
 polity: hoysala

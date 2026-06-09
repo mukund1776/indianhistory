@@ -1,6 +1,9 @@
 ---
 title: Indus Valley Civilization
 excerpt: One of the world's earliest urban cultures, flourishing around the Saraswati and Sindhu rivers around 2500 BCE.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-01T10:00:00.000Z
 period: indus-valley
 themes:

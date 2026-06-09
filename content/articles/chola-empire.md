@@ -1,6 +1,9 @@
 ---
 title: The Chola Empire
 excerpt: The Cholas built a powerful South Indian empire known for temples, irrigation, administration, and maritime reach.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:25:00.000Z
 period: medieval
 polity: chola

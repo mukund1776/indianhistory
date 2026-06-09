@@ -35,7 +35,7 @@
 
   <main class="site-main">
     <router-outlet />
-    @if (!isSearchPage()) {
+    @if (showMustRead()) {
       <app-must-read />
     }
   </main>

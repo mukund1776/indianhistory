@@ -1,6 +1,9 @@
 ---
 title: The Ahom Kingdom
 excerpt: The Ahoms ruled Assam for nearly six centuries and successfully resisted Mughal expansion in the Brahmaputra valley.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T10:20:00.000Z
 period: medieval
 polity: ahom

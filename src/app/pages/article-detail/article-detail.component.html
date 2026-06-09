@@ -27,5 +27,29 @@
       </ul>
     }
     <div class="article-body" [innerHTML]="html()"></div>
+
+    @if (relatedBooks().length) {
+      <section class="article-books" aria-labelledby="article-books-title">
+        <p class="eyebrow">Must Read</p>
+        <h2 id="article-books-title">Books for this story</h2>
+        <div class="article-book-list">
+          @for (book of relatedBooks(); track book.isbn10) {
+            <article class="article-book-card">
+              <a class="article-book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
+                <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
+              </a>
+              <div class="article-book-copy">
+                <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
+                <h3>
+                  <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
+                </h3>
+                <p class="book-author">by {{ book.author }}</p>
+                <a class="read-more" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">View book →</a>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+    }
   </article>
 }

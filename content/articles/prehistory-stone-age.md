@@ -1,6 +1,9 @@
 ---
 title: Prehistory and the Stone Age
 excerpt: How early humans, stone tools, microliths, and farming villages shaped the deep foundations of Indian history.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:00:00.000Z
 period: prehistory
 tags:

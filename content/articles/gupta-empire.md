@@ -1,6 +1,9 @@
 ---
 title: The Gupta Empire
 excerpt: The Gupta period is associated with Sanskrit literature, mathematics, astronomy, temple culture, and classical courtly life.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:15:00.000Z
 period: classical
 polity: gupta

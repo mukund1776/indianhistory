@@ -1,6 +1,9 @@
 ---
 title: The Vijayanagara Empire
 excerpt: Vijayanagara became a major South Indian empire known for Hampi, military organization, temple patronage, and regional trade.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:35:00.000Z
 period: medieval
 polity: vijayanagara

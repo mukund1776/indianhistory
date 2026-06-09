@@ -12,7 +12,7 @@
   display: block;
   width: 100%;
   height: 10rem;
-  background: var(--surface-muted);
+  background: var(--surface);
   object-fit: contain;
 }
 

@@ -1,6 +1,9 @@
 ---
 title: The British East India Company
 excerpt: A trading company became a territorial power through war, revenue rights, diplomacy, and annexation.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:55:00.000Z
 period: colonial
 polity: east-india-company

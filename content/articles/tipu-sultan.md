@@ -1,6 +1,9 @@
 ---
 title: Tipu Sultan and Mysore
 excerpt: Tipu Sultan resisted British expansion while pursuing military, diplomatic, and administrative reforms in Mysore.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T10:25:00.000Z
 period: colonial
 themes:

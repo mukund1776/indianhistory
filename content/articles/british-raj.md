@@ -1,6 +1,9 @@
 ---
 title: The British Raj
 excerpt: Crown rule reshaped India's institutions, economy, infrastructure, politics, and anticolonial movements.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T10:00:00.000Z
 period: colonial
 polity: british-raj

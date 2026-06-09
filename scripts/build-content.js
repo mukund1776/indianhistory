@@ -53,6 +53,7 @@ function build() {
       polity: typeof data.polity === 'string' ? data.polity : undefined,
       themes: Array.isArray(data.themes) ? data.themes : [],
       personalities: Array.isArray(data.personalities) ? data.personalities : [],
+      books: Array.isArray(data.books) ? data.books.map(String) : [],
     };
   });
 

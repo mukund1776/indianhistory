@@ -1,6 +1,9 @@
 ---
 title: Mahavira and the Jain Path
 excerpt: Mahavira's teaching of ahimsa, discipline, and liberation helped consolidate the Jain tradition.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:10:00.000Z
 period: early-historic
 themes:

@@ -1,6 +1,9 @@
 ---
 title: The Pallava Kingdom
 excerpt: The Pallavas shaped early South Indian politics, temple architecture, Sanskrit learning, and the port culture of Mamallapuram.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:20:00.000Z
 period: classical
 polity: pallava

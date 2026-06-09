@@ -1,6 +1,9 @@
 ---
 title: The Sikh Empire
 excerpt: Ranjit Singh unified Sikh misls into a powerful Punjab state with a modern army and a broad regional base.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:50:00.000Z
 period: colonial
 polity: sikh

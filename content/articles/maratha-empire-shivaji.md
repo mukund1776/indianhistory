@@ -1,6 +1,9 @@
 ---
 title: Shivaji and the Maratha State
 excerpt: Shivaji's leadership laid the foundations of Maratha power through forts, mobile warfare, administration, and kingship.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:45:00.000Z
 period: medieval
 polity: maratha

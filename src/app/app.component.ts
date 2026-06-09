@@ -14,14 +14,14 @@ export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
   private readonly router = inject(Router);
   readonly menuOpen = signal(false);
-  readonly isSearchPage = signal(false);
+  readonly showMustRead = signal(true);
 
   constructor() {
-    this.isSearchPage.set(this.router.url.split('?')[0] === '/search');
+    this.showMustRead.set(this.shouldShowMustRead(this.router.url));
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event) => {
-        this.isSearchPage.set(event.urlAfterRedirects.split('?')[0] === '/search');
+        this.showMustRead.set(this.shouldShowMustRead(event.urlAfterRedirects));
       });
   }
 
@@ -36,6 +36,11 @@ export class AppComponent implements AfterViewInit {
   private headerOffset(): number {
     const header = document.querySelector('.site-header') as HTMLElement | null;
     return header ? header.offsetHeight + 12 : 0;
+  }
+
+  private shouldShowMustRead(url: string): boolean {
+    const path = url.split('?')[0].split('#')[0];
+    return path === '/';
   }
 
   toggleMenu(): void {

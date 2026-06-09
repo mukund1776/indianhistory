@@ -1,6 +1,9 @@
 ---
 title: The Partition of India
 excerpt: Partition created India and Pakistan in 1947, triggering mass migration, violence, and long-lasting political consequences.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T10:05:00.000Z
 period: modern
 themes:

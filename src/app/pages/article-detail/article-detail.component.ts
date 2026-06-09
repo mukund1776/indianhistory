@@ -2,13 +2,16 @@ import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { recommendedBooks } from '../../data/recommended-books';
+import { LazyImageDirective } from '../../directives/lazy-image.directive';
 import { Article } from '../../models/article.model';
+import { RecommendedBook } from '../../models/book.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 
 @Component({
   selector: 'app-article-detail',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, LazyImageDirective],
   templateUrl: './article-detail.component.html',
   styleUrl: './article-detail.component.css',
 })
@@ -19,6 +22,7 @@ export class ArticleDetailComponent implements OnInit {
   private readonly sanitizer = inject(DomSanitizer);
   readonly article = signal<Article | null>(null);
   readonly html = signal<SafeHtml | null>(null);
+  readonly relatedBooks = signal<RecommendedBook[]>([]);
   readonly loading = signal(true);
   readonly backLink = signal<string>('/');
   readonly backText = signal<string>('← All stories');
@@ -28,6 +32,7 @@ export class ArticleDetailComponent implements OnInit {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     const found = this.articles.getBySlug(slug) ?? null;
     this.article.set(found);
+    this.relatedBooks.set(found ? this.booksForArticle(found) : []);
     this.html.set(
       found ? this.sanitizer.bypassSecurityTrustHtml(found.html) : null
     );
@@ -83,5 +88,14 @@ export class ArticleDetailComponent implements OnInit {
     }
 
     this.loading.set(false);
+  }
+
+  private booksForArticle(article: Article): RecommendedBook[] {
+    if (!article.books.length) {
+      return [];
+    }
+
+    const requested = new Set(article.books);
+    return recommendedBooks.filter((book) => requested.has(book.isbn10));
   }
 }

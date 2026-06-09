@@ -1,6 +1,9 @@
 ---
 title: Gautama Buddha and the Sangha
 excerpt: The Buddha's teachings and monastic community reshaped religious life in the Gangetic plains and beyond.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T09:05:00.000Z
 period: early-historic
 themes:

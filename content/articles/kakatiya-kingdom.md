@@ -1,6 +1,9 @@
 ---
 title: The Kakatiya Kingdom
 excerpt: The Kakatiyas ruled from Warangal and are remembered for fortifications, irrigation, regional power, and temple patronage.
+books:
+  - 8177421492
+  - 8173056811
 publishedAt: 2026-06-04T10:15:00.000Z
 period: medieval
 polity: kakatiya

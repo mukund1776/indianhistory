@@ -10,6 +10,7 @@ export interface Article {
   polity?: string; // slug of the specific empire/kingdom (e.g. 'mughal')
   themes: string[]; // slugs of cross-period themes (e.g. 'rise-of-buddhism-jainism')
   personalities: string[]; // slugs of historical people (e.g. 'ashoka')
+  books: string[]; // ISBN-10 values for related recommended books
 }
 
 export interface SearchEntry {
