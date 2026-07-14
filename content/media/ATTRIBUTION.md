@@ -15,3 +15,15 @@ Each image should have a matching `*.license.json` file with source, author, and
 | **Date** | 19 August 2017 |
 
 **Required attribution (CC BY 2.0):** Credit the author, link to the license, and note if changes were made. See `ashoka-sanchi-southern-gateway.license.json` for full metadata.
+
+## oit-map.jpg
+
+| Field | Value |
+| --- | --- |
+| **Title** | OIT map |
+| **Author** | [Nobleeagle](https://commons.wikimedia.org/wiki/User:Nobleeagle) |
+| **Source** | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:OIT_map.jpg) |
+| **License** | Public domain |
+| **Date** | 21 September 2006 |
+
+The copyright holder released this image into the public domain. See `oit-map.license.json` for metadata.

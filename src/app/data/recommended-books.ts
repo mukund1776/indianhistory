@@ -18,6 +18,38 @@ export const recommendedBooks: RecommendedBook[] = [
     isbn13: '978-8177421491',
   },
   {
+    title: 'The Rigvedic People: Invaders? Immigrants? or Indigenous?',
+    author: 'B.B. Lal',
+    description:
+      'An archaeological and literary argument about the Rigvedic people, Harappan culture, and debates over invasion, migration, and indigenous continuity.',
+    affiliateUrl:
+      'https://www.amazon.in/Rigvedic-People-Invaders-Immigrants-Indigenous/dp/8173055351?crid=KMXFUCM43AX5&dib=eyJ2IjoiMSJ9.9FSoCgtYk5hhwlpMt_fO71np9rOsVi9yEbRuq02KAaud6S52doAPFIEouCYzM_YpzLIDKGzhDOlcF4ENEGLHD2Rkrn4cTY5pw8NSKAPwOfIOiIu1PYN2tB-9DKMnlkLa2ezRKAFKsMu38X4a71jNVkqHK6nDRK9kutXzy7_0wZrSdkkagQvUo0t4GgeiSM4uOZsX6dn3DmxtxDzz4CtsFutUnXj5COwIZ_rcUd4tVqc.8rP4hq4obbjgOf92AulBeOpvXLCEllGWgsjVnZ17hC8&dib_tag=se&keywords=bb+lal&qid=1781019184&s=books&sprefix=rig+veda+bb+lal%2Cstripbooks%2C729&sr=1-1&linkCode=ll2&tag=indiahistor01-21&linkId=98ca34df5be2c3f10ce5d1491fc8f851&ref_=as_li_ss_tl',
+    imageUrl: 'assets/media/books/rigvedic-people.jpg',
+    imageAlt: 'Cover of The Rigvedic People by B.B. Lal',
+    format: 'Hardcover',
+    publisher: 'Aryan Books International',
+    publicationDate: '2 February 2015',
+    pages: 186,
+    isbn10: '8173055351',
+    isbn13: '978-8173055355',
+  },
+  {
+    title: 'Rivers of Rgveda: A Geographic Exploration',
+    author: 'Jijith Nadumuri Ravi',
+    description:
+      'A geographic exploration of Rigvedic rivers and landscapes, used by Out of India Theory proponents to locate Rigvedic memory within the Indian subcontinent.',
+    affiliateUrl:
+      'https://www.amazon.in/Rivers-Rgveda-Jijith-Nadumuri-Ravi/dp/B09QM23FZY?dib=eyJ2IjoiMSJ9.7TJjSU0jMr6YwlYA_XF9ArMbe-GdaVGpZ4feW5cK2Hk.1IHW7VHaIXvMms_NMudJDDkG4l1o3Y7E6Wd2R1SwzxQ&dib_tag=se&keywords=Rivers+of+Rgveda+Jijith+Nadumuri+Ravi&qid=1781028252&sr=8-1&linkCode=ll2&tag=indiahistor01-21&linkId=f1fde4460eb35b170822c46b0170ed39&ref_=as_li_ss_tl',
+    imageUrl: 'assets/media/books/rivers-of-rgveda.png',
+    imageAlt: 'Cover of Rivers of Rgveda by Jijith Nadumuri Ravi',
+    format: 'Paperback',
+    publisher: 'Notion Press',
+    publicationDate: '2022',
+    pages: 362,
+    isbn10: 'B09QM23FZY',
+    isbn13: 'ASIN B09QM23FZY',
+  },
+  {
     title: 'The Hindus of Hindustan: A Civilizational Journey',
     author: 'Meenakshi Jain',
     description:

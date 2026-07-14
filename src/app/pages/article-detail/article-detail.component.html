@@ -11,45 +11,64 @@
     <a [routerLink]="backLink()" class="btn btn-primary">{{ backText() }}</a>
   </div>
 } @else {
-  <article class="card article">
-    <p class="meta">
-      Published {{ article()!.publishedAt | date: 'longDate' }}
-      @if (article()!.updatedAt !== article()!.publishedAt) {
-        · Updated {{ article()!.updatedAt | date: 'longDate' }}
-      }
-    </p>
-    <h1>{{ article()!.title }}</h1>
-    @if (article()!.tags.length) {
-      <ul class="tags">
-        @for (tag of article()!.tags; track tag) {
-          <li>{{ tag }}</li>
+  <div class="article-layout">
+    <article class="card article">
+      <p class="meta">
+        Published {{ article()!.publishedAt | date: 'longDate' }}
+        @if (article()!.updatedAt !== article()!.publishedAt) {
+          · Updated {{ article()!.updatedAt | date: 'longDate' }}
         }
-      </ul>
-    }
-    <div class="article-body" [innerHTML]="html()"></div>
-
-    @if (relatedBooks().length) {
-      <section class="article-books" aria-labelledby="article-books-title">
-        <p class="eyebrow">Must Read</p>
-        <h2 id="article-books-title">Books for this story</h2>
-        <div class="article-book-list">
-          @for (book of relatedBooks(); track book.isbn10) {
-            <article class="article-book-card">
-              <a class="article-book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
-                <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
-              </a>
-              <div class="article-book-copy">
-                <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
-                <h3>
-                  <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
-                </h3>
-                <p class="book-author">by {{ book.author }}</p>
-                <a class="read-more" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">View book →</a>
-              </div>
-            </article>
+      </p>
+      <h1>{{ article()!.title }}</h1>
+      @if (article()!.tags.length) {
+        <ul class="tags">
+          @for (tag of article()!.tags; track tag) {
+            <li>{{ tag }}</li>
           }
+        </ul>
+      }
+      <div class="article-body" [innerHTML]="html()"></div>
+
+      @if (bottomBooks().length) {
+        <section class="article-books" aria-labelledby="article-books-title">
+          <p class="eyebrow">More books</p>
+          <h2 id="article-books-title">Books for further reading</h2>
+          <div class="article-book-list">
+            @for (book of bottomBooks(); track book.isbn10) {
+              <article class="article-book-card">
+                <a class="article-book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
+                  <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
+                </a>
+                <div class="article-book-copy">
+                  <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
+                  <h3>
+                    <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
+                  </h3>
+                  <p class="book-author">by {{ book.author }}</p>
+                  <a class="read-more" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">View book →</a>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+      }
+    </article>
+
+    @if (suggestedBook(); as book) {
+      <aside class="book-suggestion card" aria-labelledby="book-suggestion-title">
+        <p class="eyebrow">Book suggestion</p>
+        <a class="suggestion-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
+          <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
+        </a>
+        <div class="suggestion-copy">
+          <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
+          <h2 id="book-suggestion-title">
+            <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
+          </h2>
+          <p class="book-author">by {{ book.author }}</p>
+          <a class="read-more" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">View book →</a>
         </div>
-      </section>
+      </aside>
     }
-  </article>
+  </div>
 }

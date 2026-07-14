@@ -179,6 +179,13 @@ export const themes: Theme[] = [
     description: 'The Vedas preserve a vast body of sacred poetry, ritual practice, philosophy, and social memory transmitted orally across generations. This theme gathers articles on Vedic culture, early Sanskrit traditions, ritual specialists, cosmology, and the long influence of Vedic ideas on later Indian thought.'
   },
   {
+    slug: 'indigenous-aryanism-out-of-india-theory',
+    name: 'Indigenous Aryanism - Out of India Theory',
+    range: 'c. 3300 – 1900 BCE',
+    shortDescription: 'Arguments that Vedic Aryans were indigenous to India and that Indo-European dispersals moved outward from the subcontinent.',
+    description: 'This theme gathers articles on Indigenous Aryanism and the Out of India Theory, including debates over the Rigveda, the Sindhu-Saraswati or Harappan world, archaeology, river systems, linguistic dispersal, and competing models for Indo-European origins.'
+  },
+  {
     slug: 'rise-of-buddhism-jainism',
     name: 'Rise of Buddhism & Jainism',
     range: 'c. 6th century BCE onward',

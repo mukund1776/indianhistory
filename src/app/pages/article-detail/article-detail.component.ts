@@ -23,6 +23,8 @@ export class ArticleDetailComponent implements OnInit {
   readonly article = signal<Article | null>(null);
   readonly html = signal<SafeHtml | null>(null);
   readonly relatedBooks = signal<RecommendedBook[]>([]);
+  readonly suggestedBook = signal<RecommendedBook | null>(null);
+  readonly bottomBooks = signal<RecommendedBook[]>([]);
   readonly loading = signal(true);
   readonly backLink = signal<string>('/');
   readonly backText = signal<string>('← All stories');
@@ -31,8 +33,11 @@ export class ArticleDetailComponent implements OnInit {
     await this.articles.whenReady();
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     const found = this.articles.getBySlug(slug) ?? null;
+    const books = found ? this.booksForArticle(found) : [];
     this.article.set(found);
-    this.relatedBooks.set(found ? this.booksForArticle(found) : []);
+    this.relatedBooks.set(books);
+    this.suggestedBook.set(books[0] ?? recommendedBooks[0] ?? null);
+    this.bottomBooks.set(this.booksForBottom(books, this.suggestedBook()));
     this.html.set(
       found ? this.sanitizer.bypassSecurityTrustHtml(found.html) : null
     );
@@ -97,5 +102,20 @@ export class ArticleDetailComponent implements OnInit {
 
     const requested = new Set(article.books);
     return recommendedBooks.filter((book) => requested.has(book.isbn10));
+  }
+
+  private booksForBottom(articleBooks: RecommendedBook[], suggested: RecommendedBook | null): RecommendedBook[] {
+    const source = articleBooks.length ? articleBooks : recommendedBooks;
+    const different = source.filter((book) => book.isbn10 !== suggested?.isbn10);
+    const fallbackDifferent = recommendedBooks.filter(
+      (book) => book.isbn10 !== suggested?.isbn10 && !different.some((item) => item.isbn10 === book.isbn10)
+    );
+    const books = [...different, ...fallbackDifferent].slice(0, 2);
+
+    if (books.length < 2 && suggested) {
+      books.push(suggested);
+    }
+
+    return books;
   }
 }
