@@ -20,8 +20,7 @@ function stripHtml(html) {
 
 function build() {
   if (!fs.existsSync(CONTENT_DIR)) {
-    console.error(`Missing content directory: ${CONTENT_DIR}`);
-    process.exit(1);
+    fs.mkdirSync(CONTENT_DIR, { recursive: true });
   }
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
