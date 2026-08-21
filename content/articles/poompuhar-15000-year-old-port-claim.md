@@ -4,7 +4,7 @@ slug: poompuhar-15000-year-old-port-claim
 excerpt: Sonar surveys have revealed harbour-like forms beneath the Bay of Bengal, but the claim that they are a 15,000-year-old port remains unproven.
 publishedAt: 2026-08-21T13:30:00.000Z
 updatedAt: 2026-08-21T13:30:00.000Z
-period: paleolithic
+period: upper-paleolithic
 tags:
   - archaeology
   - underwater archaeology

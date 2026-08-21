@@ -4,7 +4,7 @@ slug: attirampakkam-acheulean-stone-tools
 excerpt: Acheulean handaxes buried near Chennai show that tool-making hominins lived in southern India at least 1.07 million years ago—and probably much earlier.
 publishedAt: 2026-08-21T06:00:00.000Z
 updatedAt: 2026-08-21T06:00:00.000Z
-period: early-hominins
+period: lower-paleolithic
 tags:
   - archaeology
   - paleolithic

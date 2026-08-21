@@ -27,20 +27,28 @@ export const periods: Period[] = [
           'Divided into Lower, Middle, and Upper phases. The critical development for later populations was the migration of Homo sapiens out of Africa in one or more waves beginning roughly 70,000–50,000 years ago. Important rock shelter and open-air sites (Bhimbetka, Jwalapuram, etc.) preserve stone tools, art, and evidence of adaptation to diverse environments.',
         children: [
           {
-            slug: 'early-hominins',
-            name: 'Early Hominins',
+            slug: 'lower-paleolithic',
+            name: 'Lower Paleolithic',
             range: 'c. 2.6 mya – 300,000 ya',
-            shortDescription: 'First tool-using hominins (Homo erectus and relatives) in the subcontinent.',
+            shortDescription: 'The earliest stone-tool traditions, including Acheulean handaxes and cleavers.',
             description:
-              'Acheulean handaxes, cleavers, and other stone tools appear across the Siwalik hills, the Narmada valley, and Rajasthan. These early populations were part of the first dispersals of hominins out of Africa.'
+              'The Lower Paleolithic preserves the subcontinent’s earliest stone-tool traditions. Acheulean handaxes, cleavers, flakes, and manufacturing debris occur at sites including Attirampakkam and across the Siwalik hills, Narmada valley, Rajasthan, and the Deccan. The identity of the hominins who made many of these tools remains uncertain.'
           },
           {
-            slug: 'modern-humans',
-            name: 'Arrival of Modern Humans',
-            range: 'c. 70,000 – 30,000 ya',
-            shortDescription: 'Homo sapiens reach South Asia from Africa and rapidly spread.',
+            slug: 'middle-paleolithic',
+            name: 'Middle Paleolithic',
+            range: 'c. 300,000 – 50,000 ya',
+            shortDescription: 'Prepared-core methods and increasingly varied flake-based toolkits.',
             description:
-              'Anatomically modern humans brought more sophisticated blade and microlithic technologies. They occupied caves, rock shelters, and open landscapes from the coasts to the interior, laying the demographic foundations for all later populations of the subcontinent.'
+              'Middle Paleolithic toolmakers increasingly relied on prepared cores, points, scrapers, and deliberately shaped flakes. At Attirampakkam, processes marking this transition began around 385,000 years ago, earlier than the conventional boundary suggests. The makers cannot be identified securely because the relevant layers have not yielded hominin fossils.'
+          },
+          {
+            slug: 'upper-paleolithic',
+            name: 'Upper Paleolithic',
+            range: 'c. 50,000 – 10,000 BCE',
+            shortDescription: 'Blade technologies, expanding Homo sapiens populations, and late Ice Age adaptations.',
+            description:
+              'The Upper Paleolithic spans the expansion of Homo sapiens across diverse South Asian environments and the increasing use of blades and other specialised tools. Its final millennia overlap the dramatic shoreline changes that followed the last Ice Age, when rising seas submerged large areas of the continental shelf.'
           }
         ]
       },
