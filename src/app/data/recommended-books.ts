@@ -87,7 +87,7 @@ export const recommendedBooks: RecommendedBook[] = [
     description:
       'The second volume follows Asian and European maritime networks from 700 to 1700 and examines the long shift in commercial power toward northern Europe.',
     affiliateUrl:
-      'https://www.amazon.in/Millennium-Maritime-Trade-Revolution-700-1700/dp/9347691100/ref=sr_1_2?crid=1XC60B7LF695&dib=eyJ2IjoiMSJ9.JMSKvJ00v73O5jmeHcaTZnjkYemGlz4JU_3CJaWaz4ZG4VBZ0QBV2wzzIb2wBL45VCdtZlfHwl2_w9dwbdWue7giGbPh9TEih17cR9TuuQw.t3NBNOWnyjJeKfOdMBdUaWrY-a0ZKDVP4-2IPXzm2gs&dib_tag=se&keywords=nick+collins+maritime+trade&qid=1787319524&sprefix=nick+maritime%2Caps%2C768&sr=8-2',
+      'https://www.amazon.in/Millennium-Maritime-Trade-Revolution-700-1700/dp/9347691100?crid=K0RUGLX4I9TV&dib=eyJ2IjoiMSJ9.waAsxHbQ459NVeOY5Citlwqk4HBYmVZnH4kbmhJQpN4.s7QBvyKl9lJOTr_wHPIvAcKHMdgEeYT78YeeeZ9_u-E&dib_tag=se&keywords=The+Millennium+Maritime+Trade+Revolution&qid=1787324106&sprefix=%2Caps%2C845&sr=8-1&linkCode=ll2&tag=indiahistor01-21&linkId=4fd40f881d3b4838926c574c2b8a8d67&ref_=as_li_ss_tl',
     imageUrl: 'assets/media/books/millennium-maritime-trade-revolution.jpg',
     imageAlt: 'Cover of The Millennium Maritime Trade Revolution, 700–1700 by Nick Collins',
     format: 'Paperback',
