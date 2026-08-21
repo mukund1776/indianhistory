@@ -4,6 +4,30 @@ Images in `content/media/images/` are copied to `public/assets/media/images/` wh
 
 Each image should have a matching `*.license.json` file with source, author, and license details.
 
+## acheulean-handaxes-comparative.jpg
+
+| Field | Value |
+| --- | --- |
+| **Title** | Acheulean handaxes |
+| **Author** | Victoria County History of Kent |
+| **Source** | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Acheuleanhandaxes.jpg) |
+| **License** | Public domain |
+| **Date** | 1912 |
+
+This comparative plate depicts tools from Kent, not Attirampakkam, and is identified as such in the article caption. See `acheulean-handaxes-comparative.license.json` for metadata.
+
+## attirampakkam-stone-tools.jpg
+
+| Field | Value |
+| --- | --- |
+| **Title** | Attirampakkam stone tools |
+| **Author** | [Ophelia S](https://commons.wikimedia.org/wiki/User:Ophelia_S) |
+| **Source** | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Attirampakkam_stone_tools.jpg) |
+| **License** | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| **Date** | 28 May 2018 |
+
+**Required attribution (CC BY-SA 4.0):** Credit the author, link to the license, and indicate whether changes were made. See `attirampakkam-stone-tools.license.json` for full metadata.
+
 ## ashoka-sanchi-southern-gateway.jpg
 
 | Field | Value |
