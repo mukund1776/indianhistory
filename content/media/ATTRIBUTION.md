@@ -28,6 +28,18 @@ This comparative plate depicts tools from Kent, not Attirampakkam, and is identi
 
 **Required attribution (CC BY-SA 4.0):** Credit the author, link to the license, and indicate whether changes were made. See `attirampakkam-stone-tools.license.json` for full metadata.
 
+## poompuhar-beach.jpg
+
+| Field | Value |
+| --- | --- |
+| **Title** | Poompuhar Beach |
+| **Author** | [MARIKANNAN G](https://commons.wikimedia.org/wiki/User:MARIKANNAN_G) |
+| **Source** | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Poompuhar_Beach.jpg) |
+| **License** | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| **Date** | 18 September 2021 |
+
+**Required attribution (CC BY-SA 4.0):** Credit the author, link to the license, and indicate whether changes were made. This copy is a Wikimedia Commons-generated 1280-pixel derivative. See `poompuhar-beach.license.json` for full metadata.
+
 ## ashoka-sanchi-southern-gateway.jpg
 
 | Field | Value |

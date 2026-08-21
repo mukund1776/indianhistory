@@ -65,4 +65,52 @@ export const recommendedBooks: RecommendedBook[] = [
     isbn10: '8173056811',
     isbn13: '978-8173056819',
   },
+  {
+    title: 'How Maritime Trade and the Indian Subcontinent Shaped the World: Ice Age to Mid-Eighth Century',
+    author: 'Nick Collins',
+    description:
+      'A wide-ranging history of early maritime exchange that places the Indian subcontinent and Indian Ocean networks at the centre of long-distance trade and cultural contact.',
+    affiliateUrl:
+      'https://www.amazon.in/Maritime-Trade-Indian-Subcontinent-Shaped/dp/9347691194?crid=1XC60B7LF695&dib=eyJ2IjoiMSJ9.JMSKvJ00v73O5jmeHcaTZnjkYemGlz4JU_3CJaWaz4ZG4VBZ0QBV2wzzIb2wBL45VCdtZlfHwl2_w9dwbdWue7giGbPh9TEih17cR9TuuQw.t3NBNOWnyjJeKfOdMBdUaWrY-a0ZKDVP4-2IPXzm2gs&dib_tag=se&keywords=nick+collins+maritime+trade&qid=1787319524&sprefix=nick+maritime%2Caps%2C768&sr=8-1&linkCode=ll2&tag=indiahistor01-21&linkId=e53f6b2c56ebdaa65128598cc098aa7d&ref_=as_li_ss_tl',
+    imageUrl: 'assets/media/books/how-maritime-trade-shaped-world.jpg',
+    imageAlt: 'Cover of How Maritime Trade and the Indian Subcontinent Shaped the World by Nick Collins',
+    format: 'Paperback',
+    publisher: 'Garuda Prakashan',
+    publicationDate: '2025',
+    pages: 396,
+    isbn10: '9347691194',
+    isbn13: '9789347691195',
+  },
+  {
+    title: 'The Millennium Maritime Trade Revolution, 700–1700: How Asia Lost Maritime Supremacy',
+    author: 'Nick Collins',
+    description:
+      'The second volume follows Asian and European maritime networks from 700 to 1700 and examines the long shift in commercial power toward northern Europe.',
+    affiliateUrl:
+      'https://www.amazon.in/Millennium-Maritime-Trade-Revolution-700-1700/dp/9347691100/ref=sr_1_2?crid=1XC60B7LF695&dib=eyJ2IjoiMSJ9.JMSKvJ00v73O5jmeHcaTZnjkYemGlz4JU_3CJaWaz4ZG4VBZ0QBV2wzzIb2wBL45VCdtZlfHwl2_w9dwbdWue7giGbPh9TEih17cR9TuuQw.t3NBNOWnyjJeKfOdMBdUaWrY-a0ZKDVP4-2IPXzm2gs&dib_tag=se&keywords=nick+collins+maritime+trade&qid=1787319524&sprefix=nick+maritime%2Caps%2C768&sr=8-2',
+    imageUrl: 'assets/media/books/millennium-maritime-trade-revolution.jpg',
+    imageAlt: 'Cover of The Millennium Maritime Trade Revolution, 700–1700 by Nick Collins',
+    format: 'Paperback',
+    publisher: 'Garuda Prakashan',
+    publicationDate: '2024',
+    pages: 362,
+    isbn10: '9347691100',
+    isbn13: '9789347691102',
+  },
+  {
+    title: 'The Ascent of Maritime Trade: 1700–2025—Enlightening the World',
+    author: 'Nick Collins',
+    description:
+      'The concluding volume traces maritime commerce from 1700 to the present, connecting shipping, industrial growth, geopolitics and modern globalisation.',
+    affiliateUrl:
+      'https://www.amazon.in/Ascent-Maritime-Trade-Enlightening-World/dp/9347691240?crid=1XC60B7LF695&dib=eyJ2IjoiMSJ9.JMSKvJ00v73O5jmeHcaTZnjkYemGlz4JU_3CJaWaz4ZG4VBZ0QBV2wzzIb2wBL45VCdtZlfHwl2_w9dwbdWue7giGbPh9TEih17cR9TuuQw.t3NBNOWnyjJeKfOdMBdUaWrY-a0ZKDVP4-2IPXzm2gs&dib_tag=se&keywords=nick+collins+maritime+trade&qid=1787319524&sprefix=nick+maritime%2Caps%2C768&sr=8-3&linkCode=ll2&tag=indiahistor01-21&linkId=deb97339338849417e03b0439a8498d1&ref_=as_li_ss_tl',
+    imageUrl: 'assets/media/books/ascent-maritime-trade.jpg',
+    imageAlt: 'Cover of The Ascent of Maritime Trade: 1700–2025 by Nick Collins',
+    format: 'Paperback',
+    publisher: 'Garuda Prakashan',
+    publicationDate: '2026',
+    pages: 368,
+    isbn10: '9347691240',
+    isbn13: '9789347691249',
+  },
 ];
