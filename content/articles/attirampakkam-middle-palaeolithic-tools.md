@@ -4,7 +4,7 @@ slug: attirampakkam-middle-palaeolithic-tools
 excerpt: A younger layer at Attirampakkam records the decline of Acheulean handaxes and an early Middle Palaeolithic toolkit beginning around 385,000 years ago.
 publishedAt: 2026-08-21T05:00:00.000Z
 updatedAt: 2026-08-21T05:00:00.000Z
-period: prehistory
+period: early-hominins
 tags:
   - archaeology
   - middle paleolithic
