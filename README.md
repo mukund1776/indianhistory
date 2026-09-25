@@ -85,3 +85,12 @@ Give another book a lower rank to move it up; equal and missing ranks retain the
 array order. The Books page initially renders 24 matching books and appends 24
 more when the reader approaches the bottom; its Load 24 more button also works
 without scroll observers.
+
+### Blogs and historical stories
+
+Historical stories live in `content/articles/` and appear in the timeline,
+period, polity, theme, and personality sections. Blog posts live separately in
+`content/blogs/` and appear only at `/blogs` and `/blogs/:slug`; they are not
+included in story counts or the story search index. See
+`content/blogs/README.txt` for the Markdown frontmatter format. Run
+`npm run build` after adding a post to regenerate the JSON and deployable `dist/`.

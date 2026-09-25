@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Article } from '../../models/article.model';
-import { ArticleService } from '../../services/article.service';
+import { BlogPost } from '../../models/blog.model';
+import { BlogService } from '../../services/blog.service';
 
 @Component({
   selector: 'app-blogs',
@@ -11,17 +11,13 @@ import { ArticleService } from '../../services/article.service';
   styleUrl: './blogs.component.css',
 })
 export class BlogsComponent implements OnInit {
-  private readonly articlesService = inject(ArticleService);
-  readonly articles = signal<Article[]>([]);
+  private readonly blogsService = inject(BlogService);
+  readonly posts = signal<BlogPost[]>([]);
   readonly loading = signal(true);
 
   async ngOnInit(): Promise<void> {
-    await this.articlesService.whenReady();
-    this.articles.set(
-      [...this.articlesService.allArticles()].sort(
-        (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)
-      )
-    );
+    await this.blogsService.whenReady();
+    this.posts.set(this.blogsService.allPosts());
     this.loading.set(false);
   }
 }

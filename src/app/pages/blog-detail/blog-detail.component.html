@@ -1,0 +1,25 @@
+<p class="back"><a routerLink="/blogs">← Back to blogs</a></p>
+
+@if (loading()) {
+  <p class="status">Loading blog…</p>
+} @else if (!post()) {
+  <div class="card empty">
+    <h1>Blog post not found</h1>
+    <p>This post may have been moved or removed.</p>
+    <a routerLink="/blogs" class="btn btn-primary">Browse blogs</a>
+  </div>
+} @else {
+  <article class="card blog-post">
+    <p class="meta">
+      {{ post()!.publishedAt | date: 'longDate' }}
+      @if (post()!.author) { · {{ post()!.author }} }
+    </p>
+    <h1>{{ post()!.title }}</h1>
+    @if (post()!.tags.length) {
+      <ul class="tags">
+        @for (tag of post()!.tags; track tag) { <li>{{ tag }}</li> }
+      </ul>
+    }
+    <div class="blog-body" [innerHTML]="html()"></div>
+  </article>
+}

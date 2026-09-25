@@ -5,6 +5,7 @@ const { marked } = require('marked');
 
 const ROOT = path.join(__dirname, '..');
 const CONTENT_DIR = path.join(ROOT, 'content', 'articles');
+const BLOGS_DIR = path.join(ROOT, 'content', 'blogs');
 const MEDIA_DIR = path.join(ROOT, 'content', 'media', 'images');
 const OUT_DIR = path.join(ROOT, 'src', 'assets', 'generated');
 const PUBLIC_MEDIA_DIR = path.join(ROOT, 'public', 'assets', 'media', 'images');
@@ -77,9 +78,45 @@ function build() {
     JSON.stringify(searchIndex, null, 2)
   );
 
+  const blogs = buildBlogs();
+  fs.writeFileSync(
+    path.join(OUT_DIR, 'blogs.json'),
+    JSON.stringify(blogs, null, 2)
+  );
+
   copyMedia();
 
   console.log(`Built ${articles.length} article(s) → src/assets/generated/`);
+  console.log(`Built ${blogs.length} blog post(s) → src/assets/generated/`);
+}
+
+function buildBlogs() {
+  fs.mkdirSync(BLOGS_DIR, { recursive: true });
+
+  const blogs = fs.readdirSync(BLOGS_DIR)
+    .filter((name) => name.endsWith('.md'))
+    .sort()
+    .map((file) => {
+      const { data, content } = matter(fs.readFileSync(path.join(BLOGS_DIR, file), 'utf8'));
+      const slug = data.slug || path.basename(file, '.md');
+      if (!data.title || !data.publishedAt) {
+        throw new Error(`Blog post ${file} needs title and publishedAt frontmatter`);
+      }
+      const html = marked.parse(content.trim());
+      return {
+        slug,
+        title: String(data.title),
+        excerpt: data.excerpt || stripHtml(html).slice(0, 220),
+        html,
+        publishedAt: data.publishedAt,
+        updatedAt: data.updatedAt || data.publishedAt,
+        author: data.author || '',
+        tags: Array.isArray(data.tags) ? data.tags : [],
+      };
+    });
+
+  blogs.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  return blogs;
 }
 
 function copyMedia() {

@@ -2,26 +2,26 @@
   <header class="blogs-header">
     <p class="eyebrow">India History</p>
     <h1 id="blogs-title">Blogs</h1>
-    <p>Stories and essays from across Indian history.</p>
+    <p>Notes and essays from the India History blog.</p>
   </header>
 
   @if (loading()) {
     <p class="status">Loading blogs…</p>
-  } @else if (articles().length === 0) {
-    <div class="card empty">No blogs have been published yet.</div>
+  } @else if (posts().length === 0) {
+    <div class="card empty">No blog posts have been published yet.</div>
   } @else {
     <div class="blog-list">
-      @for (article of articles(); track article.slug) {
+      @for (post of posts(); track post.slug) {
         <article class="card blog-card">
-          <p class="blog-date">{{ article.publishedAt | date: 'mediumDate' }}</p>
-          <h2><a [routerLink]="['/article', article.slug]">{{ article.title }}</a></h2>
-          <p class="blog-excerpt">{{ article.excerpt }}</p>
-          @if (article.tags.length) {
+          <p class="blog-date">{{ post.publishedAt | date: 'mediumDate' }}@if (post.author) { · {{ post.author }} }</p>
+          <h2><a [routerLink]="['/blogs', post.slug]">{{ post.title }}</a></h2>
+          <p class="blog-excerpt">{{ post.excerpt }}</p>
+          @if (post.tags.length) {
             <ul class="tags">
-              @for (tag of article.tags; track tag) { <li>{{ tag }}</li> }
+              @for (tag of post.tags; track tag) { <li>{{ tag }}</li> }
             </ul>
           }
-          <a class="read-more" [routerLink]="['/article', article.slug]">Read blog →</a>
+          <a class="read-more" [routerLink]="['/blogs', post.slug]">Read blog →</a>
         </article>
       }
     </div>

@@ -1,0 +1,44 @@
+.back {
+  margin: 0 0 1.25rem;
+}
+
+.back a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.back a:hover {
+  color: var(--accent);
+}
+
+.blog-post h1 {
+  margin: 0.4rem 0 1rem;
+  font: 600 clamp(2rem, 4vw, 2.75rem)/1.1 var(--font-display);
+}
+
+.meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.blog-body {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+:host ::ng-deep .blog-body :is(h2, h3) {
+  margin: 1.5rem 0 0.7rem;
+  font-family: var(--font-display);
+}
+
+:host ::ng-deep .blog-body :is(p, ul, ol, blockquote) {
+  margin: 0 0 1rem;
+}
+
+:host ::ng-deep .blog-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
