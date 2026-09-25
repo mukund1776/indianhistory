@@ -31,6 +31,7 @@ export interface SearchResult {
   routerLink?: any[];
   // Used when the result points to an external destination.
   externalUrl?: string;
+  affiliatePending?: boolean;
   // Optional query params (e.g. fromSearch for articles)
   queryParams?: Record<string, any>;
   // For display: e.g. "Empire", "Regional Kingdom", "Period", "Story"

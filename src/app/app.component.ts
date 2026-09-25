@@ -3,25 +3,33 @@ import { Component, AfterViewInit, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MustReadComponent } from './components/must-read/must-read.component';
+import { BookSidebarComponent } from './components/book-sidebar/book-sidebar.component';
+import { ArticleService } from './services/article.service';
+import { RecommendedBook } from './models/book.model';
+import { getPageBookRecommendations } from './utils/book-recommendations';
+import { recommendedBooks } from './data/recommended-books';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MustReadComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MustReadComponent, BookSidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
   private readonly router = inject(Router);
+  private readonly articles = inject(ArticleService);
   readonly menuOpen = signal(false);
-  readonly showMustRead = signal(true);
+  readonly highlightedBook = signal<RecommendedBook | null>(recommendedBooks[0] ?? null);
+  readonly excludedBookIsbns = signal<string[]>(this.highlightedBook() ? [this.highlightedBook()!.isbn10] : []);
+  readonly isBookLibrary = signal(false);
 
   constructor() {
-    this.showMustRead.set(this.shouldShowMustRead(this.router.url));
+    void this.updateBookPlacement(this.router.url);
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event) => {
-        this.showMustRead.set(this.shouldShowMustRead(event.urlAfterRedirects));
+        void this.updateBookPlacement(event.urlAfterRedirects);
       });
   }
 
@@ -38,9 +46,24 @@ export class AppComponent implements AfterViewInit {
     return header ? header.offsetHeight + 12 : 0;
   }
 
-  private shouldShowMustRead(url: string): boolean {
+  private async updateBookPlacement(url: string): Promise<void> {
     const path = url.split('?')[0].split('#')[0];
-    return path === '/';
+    this.isBookLibrary.set(path === '/books');
+    const defaultBook = recommendedBooks[0] ?? null;
+    this.highlightedBook.set(defaultBook);
+    this.excludedBookIsbns.set(defaultBook ? [defaultBook.isbn10] : []);
+
+    const articleMatch = path.match(/^\/article\/([^/]+)$/);
+    if (!articleMatch) return;
+
+    await this.articles.whenReady();
+    if (this.router.url.split('?')[0].split('#')[0] !== path) return;
+    const article = this.articles.getBySlug(decodeURIComponent(articleMatch[1])) ?? null;
+    const picks = getPageBookRecommendations(article);
+    this.highlightedBook.set(picks.highlighted);
+    this.excludedBookIsbns.set(
+      [...new Set([picks.highlighted?.isbn10, ...picks.below.map(book => book.isbn10)].filter((isbn): isbn is string => !!isbn))]
+    );
   }
 
   toggleMenu(): void {

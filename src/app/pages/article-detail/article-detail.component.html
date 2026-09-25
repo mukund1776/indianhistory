@@ -35,17 +35,18 @@
           <h2 id="article-books-title">Books for further reading</h2>
           <div class="article-book-list">
             @for (book of bottomBooks(); track book.isbn10) {
-              <article class="article-book-card">
-                <a class="article-book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
+              <article class="article-book-card" [class.affiliate-pending]="!book.affiliateUrl">
+                <a class="article-book-cover" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'" aria-hidden="true" tabindex="-1">
                   <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
                 </a>
                 <div class="article-book-copy">
+          @if (!book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
                   <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
                   <h3>
-                    <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
+                    <a [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">{{ book.title }}</a>
                   </h3>
                   <p class="book-author">by {{ book.author }}</p>
-                  <a class="read-more" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">View book →</a>
+                  <a class="read-more" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">View book →</a>
                 </div>
               </article>
             }
@@ -54,21 +55,5 @@
       }
     </article>
 
-    @if (suggestedBook(); as book) {
-      <aside class="book-suggestion card" aria-labelledby="book-suggestion-title">
-        <p class="eyebrow">Book suggestion</p>
-        <a class="suggestion-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener" aria-hidden="true" tabindex="-1">
-          <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
-        </a>
-        <div class="suggestion-copy">
-          <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
-          <h2 id="book-suggestion-title">
-            <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
-          </h2>
-          <p class="book-author">by {{ book.author }}</p>
-          <a class="read-more" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">View book →</a>
-        </div>
-      </aside>
-    }
   </div>
 }

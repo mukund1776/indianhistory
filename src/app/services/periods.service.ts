@@ -284,14 +284,15 @@ export class PeriodsService {
 
     // Recommended books
     for (const book of recommendedBooks) {
-      const haystack = `${book.title} ${book.author} ${book.description} ${book.publisher} ${book.format} ${book.publicationDate} ${book.isbn10} ${book.isbn13}`.toLowerCase();
+      const haystack = `${book.title} ${book.author} ${book.description} ${book.category ?? ''} ${book.publisher} ${book.format} ${book.publicationDate} ${book.isbn10} ${book.isbn13}`.toLowerCase();
       if (haystack.includes(q)) {
         results.push({
           kind: 'book',
           slug: book.isbn10,
           title: book.title,
           excerpt: `Book by ${book.author}. ${book.description}`,
-          externalUrl: book.affiliateUrl,
+          externalUrl: book.affiliateUrl || book.amazonUrl,
+          affiliatePending: !book.affiliateUrl,
           kindLabel: 'Book',
         });
       }

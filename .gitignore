@@ -3,8 +3,7 @@
 # Generated from content/articles at build time
 /src/assets/generated
 
-# Compiled output
-/dist
+# Compiled output (dist is committed for deployment)
 /tmp
 /out-tsc
 /bazel-out

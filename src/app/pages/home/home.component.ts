@@ -5,9 +5,6 @@ import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, PolityKind, Theme } from '../../data/periods';
-import { recommendedBooks } from '../../data/recommended-books';
-import { LazyImageDirective } from '../../directives/lazy-image.directive';
-import { RecommendedBook } from '../../models/book.model';
 
 interface TimelinePeriod {
   slug: string;
@@ -44,7 +41,7 @@ let featuredArticleSlug: string | null = null;
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, DatePipe, LazyImageDirective],
+  imports: [RouterLink, DatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -59,7 +56,6 @@ export class HomeComponent implements OnInit {
   readonly personalities = signal<PersonalityDisplay[]>([]);
   readonly empires = signal<PolityDisplay[]>([]);
   readonly regionalKingdoms = signal<PolityDisplay[]>([]);
-  readonly featuredBook = signal<RecommendedBook | null>(null);
 
   async ngOnInit(): Promise<void> {
     await this.articlesSvc.whenReady();
@@ -141,7 +137,6 @@ export class HomeComponent implements OnInit {
     this.regionalKingdoms.set(rkDisplays);
 
     this.list.set(this.pickFeaturedArticle(this.articlesSvc.allArticles()));
-    this.featuredBook.set(this.pickRandomBook());
     this.loading.set(false);
   }
 
@@ -160,13 +155,6 @@ export class HomeComponent implements OnInit {
     return [article];
   }
 
-  private pickRandomBook(): RecommendedBook | null {
-    if (recommendedBooks.length === 0) {
-      return null;
-    }
-
-    return recommendedBooks[Math.floor(Math.random() * recommendedBooks.length)];
-  }
 
   thumbnail(article: Article): StoryThumbnail | null {
     const img = article.html.match(/<img\b[^>]*>/i)?.[0];

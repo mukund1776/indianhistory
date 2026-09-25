@@ -10,7 +10,7 @@
       <a [routerLink]="['/']" fragment="empires" (click)="closeMenu()">Empires</a>
       <a [routerLink]="['/']" fragment="regional-kingdoms" (click)="closeMenu()">Kingdoms</a>
       <a [routerLink]="['/']" fragment="personalities" (click)="closeMenu()">Personalities</a>
-      <a href="#must-read" (click)="closeMenu()">Must Read</a>
+      <a routerLink="/books" routerLinkActive="active" (click)="closeMenu()">Books</a>
       <a routerLink="/search" routerLinkActive="active" class="search-text" (click)="closeMenu()">Search</a>
     </nav>
     <div class="header-actions">
@@ -34,9 +34,12 @@
   </header>
 
   <main class="site-main">
-    <router-outlet />
-    @if (showMustRead()) {
-      <app-must-read />
+    <div class="page-layout">
+      <router-outlet />
+      <app-book-sidebar [book]="highlightedBook()" />
+    </div>
+    @if (!isBookLibrary()) {
+      <app-must-read presentation="bottom" [excludeIsbns]="excludedBookIsbns()" />
     }
   </main>
 </div>

@@ -150,8 +150,11 @@ code {
 }
 
 .home-lead {
-  display: grid;
-  gap: 1.5rem;
+  display: block;
+}
+
+.home-lead .story-section {
+  margin-bottom: 1.5rem;
 }
 
 .post-card {
@@ -257,36 +260,6 @@ code {
 }
 
 @media (min-width: 900px) {
-  .home-lead {
-    align-items: start;
-    grid-template-columns: minmax(0, 1fr) 18rem;
-  }
-
-  .story-section {
-    grid-column: 1;
-    order: 1;
-  }
-
-  .home-lead .timeline-section {
-    grid-column: 1;
-    order: 2;
-  }
-
-  .book-section {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    order: 3;
-  }
-
-  .book-section .feature-book-card {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-  }
-
-  .book-section .feature-book-cover img {
-    height: 8rem;
-  }
-
   .story-section .post-card.has-thumb {
     grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
     align-items: stretch;
@@ -299,15 +272,6 @@ code {
     object-position: center;
   }
 
-  .book-section .feature-book-copy {
-    display: block;
-  }
-
-  .book-section .feature-book-card h2 {
-    overflow: visible;
-    text-overflow: clip;
-    white-space: normal;
-  }
 }
 
 @media (max-width: 640px) {
@@ -344,4 +308,16 @@ code {
 #empires,
 #regional-kingdoms {
   scroll-margin-top: calc(var(--header-height) + 0.75rem);
+}
+
+/* A text label accompanies the colour so status is accessible. */
+.affiliate-pending {
+  border: 2px solid #b42318 !important;
+  background: #fff5f4 !important;
+}
+.affiliate-status {
+  color: #912018;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
 }

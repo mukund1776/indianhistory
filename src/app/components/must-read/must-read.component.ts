@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, computed, input, signal } from '@angular/core';
 import { recommendedBooks } from '../../data/recommended-books';
 import { LazyImageDirective } from '../../directives/lazy-image.directive';
+import { filterBooks } from '../../utils/book-catalogue';
 
 @Component({
   selector: 'app-must-read',
@@ -8,6 +9,54 @@ import { LazyImageDirective } from '../../directives/lazy-image.directive';
   templateUrl: './must-read.component.html',
   styleUrl: './must-read.component.css',
 })
-export class MustReadComponent {
+export class MustReadComponent implements AfterViewInit, OnDestroy {
+  readonly presentation = input<'full' | 'bottom'>('full');
+  readonly excludeIsbns = input<string[]>(recommendedBooks[0] ? [recommendedBooks[0].isbn10] : []);
   readonly books = recommendedBooks;
+  readonly query = signal('');
+  readonly linkFilter = signal('all');
+  readonly category = signal('all');
+  readonly visibleCount = signal(24);
+  readonly catalogueBooks = computed(() => {
+    const excluded = this.presentation() === 'bottom' ? new Set(this.excludeIsbns()) : new Set<string>();
+    return this.books.filter(book => !excluded.has(book.isbn10));
+  });
+  readonly pendingCount = computed(() => this.catalogueBooks().filter(book => !book.affiliateUrl).length);
+  readonly categories = [...new Set(this.books.map(book => book.category).filter((category): category is string => !!category))].sort();
+  readonly filteredBooks = computed(() => filterBooks(this.catalogueBooks(), {
+    query: this.query(), category: this.category(), linkStatus: this.linkFilter(),
+  }));
+  readonly visibleBooks = computed(() => this.filteredBooks().slice(0, this.visibleCount()));
+  readonly hasMore = computed(() => this.visibleBooks().length < this.filteredBooks().length);
+
+  @ViewChild('loadMoreSentinel') private loadMoreSentinel?: ElementRef<HTMLElement>;
+  private observer?: IntersectionObserver;
+
+  ngAfterViewInit(): void {
+    if (typeof IntersectionObserver === 'undefined' || !this.loadMoreSentinel) return;
+    this.observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) this.loadMore();
+    }, { rootMargin: '700px 0px' });
+    this.observer.observe(this.loadMoreSentinel.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+  }
+
+  updateFilter(field: 'query' | 'linkFilter' | 'category', value: string): void {
+    this[field].set(value);
+    this.visibleCount.set(24);
+  }
+
+  resetFilters(): void {
+    this.query.set('');
+    this.linkFilter.set('all');
+    this.category.set('all');
+    this.visibleCount.set(24);
+  }
+
+  loadMore(): void {
+    this.visibleCount.update(count => Math.min(count + 24, this.filteredBooks().length));
+  }
 }

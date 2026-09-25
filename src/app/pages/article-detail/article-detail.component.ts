@@ -2,12 +2,12 @@ import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { recommendedBooks } from '../../data/recommended-books';
 import { LazyImageDirective } from '../../directives/lazy-image.directive';
 import { Article } from '../../models/article.model';
 import { RecommendedBook } from '../../models/book.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
+import { getPageBookRecommendations } from '../../utils/book-recommendations';
 
 @Component({
   selector: 'app-article-detail',
@@ -33,11 +33,11 @@ export class ArticleDetailComponent implements OnInit {
     await this.articles.whenReady();
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     const found = this.articles.getBySlug(slug) ?? null;
-    const books = found ? this.booksForArticle(found) : [];
+    const picks = getPageBookRecommendations(found);
     this.article.set(found);
-    this.relatedBooks.set(books);
-    this.suggestedBook.set(books[0] ?? recommendedBooks[0] ?? null);
-    this.bottomBooks.set(this.booksForBottom(books, this.suggestedBook()));
+    this.relatedBooks.set(picks.related);
+    this.suggestedBook.set(picks.highlighted);
+    this.bottomBooks.set(picks.below);
     this.html.set(
       found ? this.sanitizer.bypassSecurityTrustHtml(found.html) : null
     );
@@ -95,27 +95,4 @@ export class ArticleDetailComponent implements OnInit {
     this.loading.set(false);
   }
 
-  private booksForArticle(article: Article): RecommendedBook[] {
-    if (!article.books.length) {
-      return [];
-    }
-
-    const requested = new Set(article.books);
-    return recommendedBooks.filter((book) => requested.has(book.isbn10));
-  }
-
-  private booksForBottom(articleBooks: RecommendedBook[], suggested: RecommendedBook | null): RecommendedBook[] {
-    const source = articleBooks.length ? articleBooks : recommendedBooks;
-    const different = source.filter((book) => book.isbn10 !== suggested?.isbn10);
-    const fallbackDifferent = recommendedBooks.filter(
-      (book) => book.isbn10 !== suggested?.isbn10 && !different.some((item) => item.isbn10 === book.isbn10)
-    );
-    const books = [...different, ...fallbackDifferent].slice(0, 2);
-
-    if (books.length < 2 && suggested) {
-      books.push(suggested);
-    }
-
-    return books;
-  }
 }

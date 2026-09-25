@@ -44,11 +44,12 @@
   <p class="result-count">{{ filteredResults().length }} result(s)</p>
   <ul class="result-list">
     @for (item of filteredResults(); track item.kind + ':' + item.slug) {
-      <li class="card result-item">
+      <li class="card result-item" [class.affiliate-pending]="item.affiliatePending">
         <span class="result-kind" [class.kind-article]="item.kind === 'article'" [class.kind-book]="item.kind === 'book'" [class.kind-period]="item.kind === 'period'" [class.kind-theme]="item.kind === 'theme'" [class.kind-personality]="item.kind === 'personality'" [class.kind-polity]="item.kind === 'polity'">{{ item.kindLabel }}</span>
+        @if (item.affiliatePending) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
         <h2>
           @if (item.externalUrl) {
-            <a [href]="item.externalUrl" target="_blank" rel="sponsored noopener">{{ item.title }}</a>
+            <a [href]="item.externalUrl" target="_blank" [attr.rel]="item.affiliatePending ? 'noopener' : 'sponsored noopener'">{{ item.title }}</a>
           } @else {
             <a [routerLink]="item.routerLink" [queryParams]="item.queryParams || {}">{{ item.title }}</a>
           }

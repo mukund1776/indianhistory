@@ -57,3 +57,31 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+### Book links
+
+Edit `src/app/data/recommended-books.ts` for the original picks, or
+`src/app/data/amazon-history-books.ts` for the larger collection. Every book has
+a regular Amazon.in product URL. The additional links were supplied on publisher
+book pages; their source details are recorded in
+`content/books/amazon-history-sources.json`. `affiliateUrl` is optional;
+when absent, cards display a red border and an “Affiliate link pending” label.
+Adding it automatically switches all book links and removes the pending styling.
+The Books/Must Read list supports title/author/ISBN search and link-status filtering.
+
+The added Romila Thapar *A History of India* listing (ASIN 0140138358) was
+checked against https://www.amazon.in/dp/0140138358 on 2026-09-25, including
+author, cover, publisher, format, date, page count and ISBN. Stock and price
+are not asserted for any listing.
+
+
+### Custom book order
+
+Edit `customRank` in `src/app/data/recommended-books.ts` or
+`src/app/data/amazon-history-books.ts`. Lower numbers appear first. The eight
+original recommendations have ranks 1–8 and appear before the unranked additions.
+Give another book a lower rank to move it up; equal and missing ranks retain the
+array order. The Books page initially renders 24 matching books and appends 24
+more when the reader approaches the bottom; its Load 24 more button also works
+without scroll observers.

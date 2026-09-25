@@ -1,19 +1,49 @@
-<section id="must-read" class="must-read" aria-labelledby="must-read-title">
+<section [id]="presentation() === 'full' ? 'must-read' : 'all-books-catalogue'" class="must-read" [class.bottom-catalogue]="presentation() === 'bottom'" aria-labelledby="must-read-title">
   <div class="section-head">
-    <p class="eyebrow">Must Read</p>
-    <h2 id="must-read-title">Books for deeper study</h2>
+    <p class="eyebrow">{{ presentation() === 'full' ? 'Indian history library' : 'More to explore' }}</p>
+    <h2 id="must-read-title">{{ presentation() === 'full' ? 'Explore the book collection' : 'More history books' }}</h2>
   </div>
 
+  <p>{{ catalogueBooks().length }} books · {{ pendingCount() }} awaiting affiliate links. Red cards use regular Amazon.in links.</p>
+  @if (presentation() === 'full') {
+  <div class="book-controls">
+    <label>Search books
+      <input type="search" placeholder="Title, author, topic or ISBN" [value]="query()" (input)="updateFilter('query', $any($event.target).value)" />
+    </label>
+    <label>Topic
+      <select [value]="category()" (change)="updateFilter('category', $any($event.target).value)">
+        <option value="all">All topics</option>
+        @for (topic of categories; track topic) { <option [value]="topic">{{ topic }}</option> }
+      </select>
+    </label>
+    <label>Link status
+      <select [value]="linkFilter()" (change)="updateFilter('linkFilter', $any($event.target).value)">
+        <option value="all">All books</option>
+        <option value="pending">Affiliate link pending</option>
+        <option value="affiliate">Affiliate link added</option>
+      </select>
+    </label>
+  </div>
+  }
+  @if (presentation() === 'full') {
+  <div class="book-results-head">
+    <p id="book-results" tabindex="-1" role="status">Showing {{ visibleBooks().length }} of {{ filteredBooks().length }} books</p>
+    <button type="button" class="book-control-button" (click)="resetFilters()">Reset filters</button>
+  </div>
+  } @else {
+    <p class="catalogue-count" role="status">Showing {{ visibleBooks().length }} of {{ filteredBooks().length }} books after the recommendations above</p>
+  }
   <div class="book-list">
-    @for (book of books; track book.isbn10) {
-      <article class="book-card">
-        <a class="book-cover" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">
+    @for (book of visibleBooks(); track book.isbn10) {
+      <article class="book-card" [class.affiliate-pending]="!book.affiliateUrl">
+        <a class="book-cover" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">
           <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
         </a>
         <div class="book-copy">
-          <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
+          @if (!book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
+          <p class="book-meta">{{ book.category }} · {{ book.format }} · {{ book.publicationDate }}</p>
           <h3>
-            <a [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">{{ book.title }}</a>
+            <a [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">{{ book.title }}</a>
           </h3>
           <p class="book-author">by {{ book.author }}</p>
           <p class="book-desc">{{ book.description }}</p>
@@ -31,9 +61,20 @@
               <dd>{{ book.isbn10 }}</dd>
             </div>
           </dl>
-          <a class="btn btn-primary" [href]="book.affiliateUrl" target="_blank" rel="sponsored noopener">View on Amazon</a>
+          @if (book.sourceUrl) {
+            <p class="book-source"><a [href]="book.sourceUrl" target="_blank" rel="noopener">Publisher edition details</a> · Amazon.in link listed by publisher</p>
+          }
+          <a class="btn btn-primary" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">View on Amazon.in</a>
         </div>
       </article>
+    } @empty {
+      <p>No books match these filters.</p>
     }
   </div>
+  @if (hasMore()) {
+    <button type="button" class="book-control-button book-load-more" (click)="loadMore()">Load 24 more books</button>
+  } @else if (filteredBooks().length > 24) {
+    <p class="book-end">You’ve reached the end of the collection.</p>
+  }
+  <div #loadMoreSentinel class="book-load-sentinel" aria-hidden="true"></div>
 </section>

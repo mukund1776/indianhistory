@@ -131,6 +131,18 @@
   padding: 2rem 1.5rem max(3rem, 32vh);
 }
 
+.page-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 14rem);
+  grid-template-areas: "page sidebar";
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.page-layout > router-outlet { display: none; }
+.page-layout > app-book-sidebar { grid-area: sidebar; min-width: 0; }
+app-must-read { display: block; }
+
 .site-footer {
   padding: 1.25rem 1.5rem;
   border-top: 1px solid var(--border);
@@ -191,4 +203,14 @@
   .site-main {
     padding: 1.25rem 1rem max(3rem, 32vh);
   }
+}
+
+@media (max-width: 760px) {
+  .page-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "sidebar" "page";
+    gap: 1rem;
+  }
+  .page-layout > app-book-sidebar { grid-row: 1; }
+  .page-layout > :not(router-outlet):not(app-book-sidebar) { grid-row: 2; min-width: 0; }
 }
