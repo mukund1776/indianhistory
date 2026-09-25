@@ -19,9 +19,11 @@ export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
   private readonly router = inject(Router);
   private readonly articles = inject(ArticleService);
+  private lastPlacementUrl: string | null = null;
+  private placementVersion = 0;
   readonly menuOpen = signal(false);
-  readonly highlightedBook = signal<RecommendedBook | null>(recommendedBooks[0] ?? null);
-  readonly excludedBookIsbns = signal<string[]>(this.highlightedBook() ? [this.highlightedBook()!.isbn10] : []);
+  readonly highlightedBook = signal<RecommendedBook | null>(null);
+  readonly excludedBookIsbns = signal<string[]>([]);
   readonly isBookLibrary = signal(false);
 
   constructor() {
@@ -47,23 +49,33 @@ export class AppComponent implements AfterViewInit {
   }
 
   private async updateBookPlacement(url: string): Promise<void> {
+    if (this.lastPlacementUrl === url) return;
+    this.lastPlacementUrl = url;
+    const version = ++this.placementVersion;
     const path = url.split('?')[0].split('#')[0];
     this.isBookLibrary.set(path === '/books');
-    const defaultBook = recommendedBooks[0] ?? null;
-    this.highlightedBook.set(defaultBook);
-    this.excludedBookIsbns.set(defaultBook ? [defaultBook.isbn10] : []);
-
+    let storyRecommendations: string[] = [];
     const articleMatch = path.match(/^\/article\/([^/]+)$/);
-    if (!articleMatch) return;
+    if (articleMatch) {
+      await this.articles.whenReady();
+      if (version !== this.placementVersion) return;
+      const article = this.articles.getBySlug(decodeURIComponent(articleMatch[1])) ?? null;
+      storyRecommendations = getPageBookRecommendations(article).below.map(book => book.isbn10);
+    }
 
-    await this.articles.whenReady();
-    if (this.router.url.split('?')[0].split('#')[0] !== path) return;
-    const article = this.articles.getBySlug(decodeURIComponent(articleMatch[1])) ?? null;
-    const picks = getPageBookRecommendations(article);
-    this.highlightedBook.set(picks.highlighted);
+    const nextBook = this.pickRandomBook(storyRecommendations);
+    this.highlightedBook.set(nextBook);
     this.excludedBookIsbns.set(
-      [...new Set([picks.highlighted?.isbn10, ...picks.below.map(book => book.isbn10)].filter((isbn): isbn is string => !!isbn))]
+      [...new Set([...storyRecommendations, ...(nextBook ? [nextBook.isbn10] : [])])]
     );
+  }
+
+  private pickRandomBook(excludedIsbns: string[]): RecommendedBook | null {
+    const previousIsbn = this.highlightedBook()?.isbn10;
+    const excluded = new Set([...excludedIsbns, ...(previousIsbn ? [previousIsbn] : [])]);
+    const choices = recommendedBooks.filter(book => !excluded.has(book.isbn10));
+    if (choices.length) return choices[Math.floor(Math.random() * choices.length)];
+    return recommendedBooks.find(book => !excludedIsbns.includes(book.isbn10)) ?? null;
   }
 
   toggleMenu(): void {
