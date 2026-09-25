@@ -26,8 +26,8 @@ export class ArticleDetailComponent implements OnInit {
   readonly suggestedBook = signal<RecommendedBook | null>(null);
   readonly bottomBooks = signal<RecommendedBook[]>([]);
   readonly loading = signal(true);
-  readonly backLink = signal<string>('/');
-  readonly backText = signal<string>('← All stories');
+  readonly backLink = signal<string>('/blogs');
+  readonly backText = signal<string>('← Back to blogs');
 
   async ngOnInit(): Promise<void> {
     await this.articles.whenReady();
@@ -54,8 +54,8 @@ export class ArticleDetailComponent implements OnInit {
         this.backLink.set(`/polity/${fromPolitySlug}`);
         this.backText.set(`← Back to ${pol.name}`);
       } else {
-        this.backLink.set('/');
-        this.backText.set('← All stories');
+        this.backLink.set('/blogs');
+        this.backText.set('← Back to blogs');
       }
     } else if (fromThemeSlug) {
       const theme = this.periodsService.getThemeBySlug(fromThemeSlug);
@@ -63,8 +63,8 @@ export class ArticleDetailComponent implements OnInit {
         this.backLink.set(`/theme/${fromThemeSlug}`);
         this.backText.set(`← Back to ${theme.name}`);
       } else {
-        this.backLink.set('/');
-        this.backText.set('← All stories');
+        this.backLink.set('/blogs');
+        this.backText.set('← Back to blogs');
       }
     } else if (fromPersonalitySlug) {
       const personality = this.periodsService.getPersonalityBySlug(fromPersonalitySlug);
@@ -72,8 +72,8 @@ export class ArticleDetailComponent implements OnInit {
         this.backLink.set(`/personality/${fromPersonalitySlug}`);
         this.backText.set(`← Back to ${personality.name}`);
       } else {
-        this.backLink.set('/');
-        this.backText.set('← All stories');
+        this.backLink.set('/blogs');
+        this.backText.set('← Back to blogs');
       }
     } else if (fromPeriodSlug) {
       const parentPeriod = this.periodsService.getBySlug(fromPeriodSlug);
@@ -81,15 +81,15 @@ export class ArticleDetailComponent implements OnInit {
         this.backLink.set(`/period/${fromPeriodSlug}`);
         this.backText.set(`← Back to ${parentPeriod.name}`);
       } else {
-        this.backLink.set('/');
-        this.backText.set('← All stories');
+        this.backLink.set('/blogs');
+        this.backText.set('← Back to blogs');
       }
     } else if (fromSearch) {
       this.backLink.set('/search');
       this.backText.set('← Back to search');
     } else {
-      this.backLink.set('/');
-      this.backText.set('← All stories');
+      this.backLink.set('/blogs');
+      this.backText.set('← Back to blogs');
     }
 
     this.loading.set(false);

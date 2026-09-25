@@ -1,0 +1,29 @@
+<section class="blogs-page" aria-labelledby="blogs-title">
+  <header class="blogs-header">
+    <p class="eyebrow">India History</p>
+    <h1 id="blogs-title">Blogs</h1>
+    <p>Stories and essays from across Indian history.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="status">Loading blogs…</p>
+  } @else if (articles().length === 0) {
+    <div class="card empty">No blogs have been published yet.</div>
+  } @else {
+    <div class="blog-list">
+      @for (article of articles(); track article.slug) {
+        <article class="card blog-card">
+          <p class="blog-date">{{ article.publishedAt | date: 'mediumDate' }}</p>
+          <h2><a [routerLink]="['/article', article.slug]">{{ article.title }}</a></h2>
+          <p class="blog-excerpt">{{ article.excerpt }}</p>
+          @if (article.tags.length) {
+            <ul class="tags">
+              @for (tag of article.tags; track tag) { <li>{{ tag }}</li> }
+            </ul>
+          }
+          <a class="read-more" [routerLink]="['/article', article.slug]">Read blog →</a>
+        </article>
+      }
+    </div>
+  }
+</section>
