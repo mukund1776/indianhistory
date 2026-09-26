@@ -62,13 +62,18 @@ For more information on using the Angular CLI, including detailed command refere
 ### Book links
 
 Edit `src/app/data/recommended-books.ts` for the original picks, or
-`src/app/data/amazon-history-books.ts` for the larger collection. Every book has
-a regular Amazon.in product URL. The additional links were supplied on publisher
-book pages; their source details are recorded in
-`content/books/amazon-history-sources.json`. `affiliateUrl` is optional;
+`src/app/data/amazon-history-books.ts` or `src/app/data/world-history-books.ts`
+for the larger collections. Every book has a regular Amazon.in product URL.
+Indian-history source details are recorded in
+`content/books/amazon-history-sources.json`; world-history sources are in
+`content/books/world-history-sources.json`. The 200 world-history additions use
+direct product links listed by Penguin Random House India and Oxford University
+Press India, plus ASINs captured in a February 2024 Amazon.in book dataset and
+an archived Amazon.in history-category index. The archived records establish
+past product listings; current stock and price have not been checked. `affiliateUrl` is optional;
 when absent, cards display a red border and an “Affiliate link pending” label.
 Adding it automatically switches all book links and removes the pending styling.
-The Books/Must Read list supports title/author/ISBN search and link-status filtering.
+The Books/Must Read list supports title/author/ISBN/ASIN search and link-status filtering.
 
 The added Romila Thapar *A History of India* listing (ASIN 0140138358) was
 checked against https://www.amazon.in/dp/0140138358 on 2026-09-25, including
@@ -79,7 +84,8 @@ are not asserted for any listing.
 ### Custom book order
 
 Edit `customRank` in `src/app/data/recommended-books.ts` or
-`src/app/data/amazon-history-books.ts`. Lower numbers appear first. The eight
+`src/app/data/amazon-history-books.ts` or `src/app/data/world-history-books.ts`.
+Lower numbers appear first. The eight
 original recommendations have ranks 1–8 and appear before the unranked additions.
 Give another book a lower rank to move it up; equal and missing ranks retain the
 array order. The Books page initially renders 24 matching books and appends 24
@@ -94,3 +100,9 @@ period, polity, theme, and personality sections. Blog posts live separately in
 included in story counts or the story search index. See
 `content/blogs/README.txt` for the Markdown frontmatter format. Run
 `npm run build` after adding a post to regenerate the JSON and deployable `dist/`.
+
+### World history timeline
+
+The World History link in the header opens the homepage section. Edit
+`src/app/data/world-history.ts` to add, change, or reorder its major events.
+These overview cards are separate from Indian history stories and counts.

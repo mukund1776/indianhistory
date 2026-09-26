@@ -1,0 +1,17 @@
+<section id="world-history" class="world-history-section" aria-labelledby="world-history-title">
+  <p class="eyebrow">Beyond the subcontinent</p>
+  <h2 id="world-history-title">World History</h2>
+  <p class="world-history-intro">
+    A selective timeline of major turning points across the world. These events provide context for Indian history and will grow as the site expands.
+  </p>
+
+  <ol class="world-history-list">
+    @for (event of events; track event.title) {
+      <li class="card world-history-event">
+        <p class="world-history-date">{{ event.date }}</p>
+        <h3>{{ event.title }}</h3>
+        <p>{{ event.summary }}</p>
+      </li>
+    }
+  </ol>
+</section>

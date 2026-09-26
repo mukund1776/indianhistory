@@ -1,7 +1,6 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, AfterViewInit, inject, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { NavigationEnd, NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MustReadComponent } from './components/must-read/must-read.component';
 import { BookSidebarComponent } from './components/book-sidebar/book-sidebar.component';
 import { ArticleService } from './services/article.service';
@@ -19,6 +18,7 @@ export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
   private readonly router = inject(Router);
   private readonly articles = inject(ArticleService);
+  private readonly homeSections = new Set(['timeline', 'themes', 'empires', 'regional-kingdoms', 'personalities', 'world-history']);
   private lastPlacementUrl: string | null = null;
   private placementVersion = 0;
   readonly menuOpen = signal(false);
@@ -28,11 +28,25 @@ export class AppComponent implements AfterViewInit {
 
   constructor() {
     void this.updateBookPlacement(this.router.url);
-    this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event) => {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.setSectionScrollBehavior(event);
+      } else if (event instanceof NavigationEnd) {
         void this.updateBookPlacement(event.urlAfterRedirects);
-      });
+      }
+    });
+  }
+
+  private setSectionScrollBehavior(event: NavigationStart): void {
+    const currentPath = this.router.url.split(/[?#]/)[0];
+    const nextPath = event.url.split(/[?#]/)[0];
+    const fragment = event.url.split('#')[1] ?? '';
+    const sameHomeSection = this.router.navigated
+      && event.navigationTrigger === 'imperative'
+      && currentPath === '/'
+      && nextPath === '/'
+      && this.homeSections.has(fragment);
+    document.documentElement.classList.toggle('smooth-section-navigation', sameHomeSection);
   }
 
   ngAfterViewInit(): void {

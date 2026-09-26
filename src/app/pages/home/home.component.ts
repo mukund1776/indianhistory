@@ -1,10 +1,11 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, PolityKind, Theme } from '../../data/periods';
+import { WorldHistoryComponent } from '../../components/world-history/world-history.component';
 
 interface TimelinePeriod {
   slug: string;
@@ -41,13 +42,15 @@ let featuredArticleSlug: string | null = null;
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, WorldHistoryComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
   private readonly articlesSvc = inject(ArticleService);
   private readonly periodsSvc = inject(PeriodsService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly viewportScroller = inject(ViewportScroller);
 
   readonly list = signal<Article[]>([]);
   readonly loading = signal(true);
@@ -138,6 +141,12 @@ export class HomeComponent implements OnInit {
 
     this.list.set(this.pickFeaturedArticle(this.articlesSvc.allArticles()));
     this.loading.set(false);
+
+    // The sections above World History grow after article counts load. Re-align
+    // the header anchor once that content has rendered.
+    if (this.route.snapshot.fragment === 'world-history') {
+      requestAnimationFrame(() => this.viewportScroller.scrollToAnchor('world-history'));
+    }
   }
 
   private pickFeaturedArticle(articles: Article[]): Article[] {

@@ -155,7 +155,7 @@ app-must-read { display: block; }
   margin: 0;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 1150px) {
   .site-header {
     gap: 0.75rem;
     padding: 0.75rem 1rem;

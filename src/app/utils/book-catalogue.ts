@@ -9,7 +9,7 @@ export interface BookFilters {
 export function filterBooks(books: readonly RecommendedBook[], filters: BookFilters): RecommendedBook[] {
   const terms = filters.query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
   return books.filter(book => {
-    const text = `${book.title} ${book.author} ${book.description} ${book.category ?? ''} ${book.publisher} ${book.isbn10} ${book.isbn13}`.toLocaleLowerCase();
+    const text = `${book.title} ${book.author} ${book.description} ${book.category ?? ''} ${book.publisher ?? ''} ${book.isbn10} ${book.isbn13 ?? ''}`.toLocaleLowerCase();
     return terms.every(term => text.includes(term))
       && (filters.category === 'all' || book.category === filters.category)
       && (filters.linkStatus === 'all' || (filters.linkStatus === 'pending' ? !book.affiliateUrl : !!book.affiliateUrl));

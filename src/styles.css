@@ -26,6 +26,12 @@ body {
   min-height: 100%;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html.smooth-section-navigation {
+    scroll-behavior: smooth;
+  }
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -304,6 +310,7 @@ code {
 #timeline,
 #themes,
 #personalities,
+#world-history,
 #empires,
 #regional-kingdoms {
   scroll-margin-top: calc(var(--header-height) + 0.75rem);

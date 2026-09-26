@@ -1,4 +1,5 @@
 import { amazonHistoryBooks } from './amazon-history-books';
+import { worldHistoryBooks } from './world-history-books';
 import { RecommendedBook } from '../models/book.model';
 
 export const recommendedBooks: RecommendedBook[] = [
@@ -153,4 +154,5 @@ export const recommendedBooks: RecommendedBook[] = [
     isbn13: '978-0140138351',
   },
   ...amazonHistoryBooks,
+  ...worldHistoryBooks,
 ];

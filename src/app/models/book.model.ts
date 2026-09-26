@@ -13,9 +13,10 @@ export interface RecommendedBook {
   imageUrl: string;
   imageAlt: string;
   format: string;
-  publisher: string;
-  publicationDate: string;
-  pages: number;
+  publisher?: string;
+  publicationDate?: string;
+  pages?: number;
+  /** ISBN-10 for print editions, or the Amazon ASIN for Kindle editions. */
   isbn10: string;
-  isbn13: string;
+  isbn13?: string;
 }

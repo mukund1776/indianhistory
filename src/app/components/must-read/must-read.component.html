@@ -8,7 +8,7 @@
   @if (presentation() === 'full') {
   <div class="book-controls">
     <label>Search books
-      <input type="search" placeholder="Title, author, topic or ISBN" [value]="query()" (input)="updateFilter('query', $any($event.target).value)" />
+      <input type="search" placeholder="Title, author, topic, ISBN or ASIN" [value]="query()" (input)="updateFilter('query', $any($event.target).value)" />
     </label>
     <label>Topic
       <select [value]="category()" (change)="updateFilter('category', $any($event.target).value)">
@@ -41,28 +41,32 @@
         </a>
         <div class="book-copy">
           @if (!book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
-          <p class="book-meta">{{ book.category }} · {{ book.format }} · {{ book.publicationDate }}</p>
+          <p class="book-meta">{{ book.category }} · {{ book.format }}@if (book.publicationDate) { · {{ book.publicationDate }} }</p>
           <h3>
             <a [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">{{ book.title }}</a>
           </h3>
           <p class="book-author">by {{ book.author }}</p>
           <p class="book-desc">{{ book.description }}</p>
           <dl class="book-details" aria-label="Book details">
-            <div>
+            @if (book.publisher) { <div>
               <dt>Publisher</dt>
               <dd>{{ book.publisher }}</dd>
-            </div>
-            <div>
+            </div> }
+            @if (book.pages) { <div>
               <dt>Length</dt>
               <dd>{{ book.pages }} pages</dd>
-            </div>
+            </div> }
             <div>
-              <dt>ISBN-10</dt>
+              <dt>{{ book.isbn10.startsWith('B') ? 'ASIN' : 'ISBN-10' }}</dt>
               <dd>{{ book.isbn10 }}</dd>
             </div>
           </dl>
           @if (book.sourceUrl) {
-            <p class="book-source"><a [href]="book.sourceUrl" target="_blank" rel="noopener">Publisher edition details</a> · Amazon.in link listed by publisher</p>
+            @if (book.linkVerification === 'publisher') {
+              <p class="book-source"><a [href]="book.sourceUrl" target="_blank" rel="noopener">Publisher edition details</a> · Amazon.in link listed by publisher</p>
+            } @else {
+              <p class="book-source"><a [href]="book.sourceUrl" target="_blank" rel="noopener">Archived Amazon.in listing source</a> · Current availability not checked</p>
+            }
           }
           <a class="btn btn-primary" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">View on Amazon.in</a>
         </div>

@@ -41,7 +41,7 @@
                 </a>
                 <div class="article-book-copy">
           @if (!book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
-                  <p class="book-meta">{{ book.format }} · {{ book.publicationDate }}</p>
+                  <p class="book-meta">{{ book.format }}@if (book.publicationDate) { · {{ book.publicationDate }} }</p>
                   <h3>
                     <a [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">{{ book.title }}</a>
                   </h3>
