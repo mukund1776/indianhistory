@@ -5,6 +5,7 @@ import { ArticleDetailComponent } from './article-detail.component';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { LocaleService } from '../../i18n/locale.service';
+import { DevModeService } from '../../services/dev-mode.service';
 
 describe('ArticleDetailComponent', () => {
   let component: ArticleDetailComponent;
@@ -44,6 +45,7 @@ describe('ArticleDetailComponent', () => {
         { provide: PeriodsService, useValue: mockPeriodsService },
         { provide: DomSanitizer, useValue: mockSanitizer },
         { provide: LocaleService, useValue: mockLocale },
+        { provide: DevModeService, useValue: { isDevMode: () => false } },
       ],
     });
 

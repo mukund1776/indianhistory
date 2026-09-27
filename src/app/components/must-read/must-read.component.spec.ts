@@ -1,11 +1,14 @@
-import { Injector, runInInjectionContext } from '@angular/core';
+import { Injector, runInInjectionContext, signal } from '@angular/core';
 import { MustReadComponent } from './must-read.component';
 import { LocaleService } from '../../i18n/locale.service';
+import { DevModeService } from '../../services/dev-mode.service';
 
 describe('MustReadComponent', () => {
   let component: MustReadComponent;
+  let isDevMode: ReturnType<typeof signal<boolean>>;
 
   beforeEach(() => {
+    isDevMode = signal(false);
     const mockLocale = {
       language: 'en',
       translate: (s: string) => s,
@@ -15,6 +18,7 @@ describe('MustReadComponent', () => {
     const injector = Injector.create({
       providers: [
         { provide: LocaleService, useValue: mockLocale },
+        { provide: DevModeService, useValue: { isDevMode } },
       ],
     });
 
@@ -71,5 +75,13 @@ describe('MustReadComponent', () => {
     if (component.filteredBooks().length > 24) {
       expect(component.hasMore()).toBeTruthy();
     }
+  });
+
+  it('does not filter regular book results by affiliate status', () => {
+    const allBooks = component.filteredBooks().length;
+    component.linkFilter.set('pending');
+    expect(component.filteredBooks().length).toBe(allBooks);
+    isDevMode.set(true);
+    expect(component.filteredBooks().length).toBeLessThan(allBooks);
   });
 });

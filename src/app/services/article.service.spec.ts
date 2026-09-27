@@ -54,6 +54,7 @@ describe('ArticleService', () => {
 
     const mockLocale = {
       language: 'en',
+      navigation: { worldHistory: 'World History' },
       translationAvailable: { set: () => {} },
     };
 
@@ -97,5 +98,11 @@ describe('ArticleService', () => {
   it('should return empty array for empty search queries', () => {
     expect(service.search('').length).toBe(0);
     expect(service.search('   ').length).toBe(0);
+  });
+
+  it('reveals world history when a story is assigned to it', () => {
+    expect(service.hasWorldHistoryStories()).toBeFalsy();
+    (service as any).articles.set([{ ...mockArticles[0], themes: ['world-history'] }]);
+    expect(service.hasWorldHistoryStories()).toBeTruthy();
   });
 });

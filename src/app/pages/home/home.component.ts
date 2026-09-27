@@ -1,5 +1,5 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
@@ -7,6 +7,7 @@ import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, PolityKind, Theme } from '../../data/periods';
 import { WorldHistoryComponent } from '../../components/world-history/world-history.component';
 import { LocaleService } from '../../i18n/locale.service';
+import { DevModeService } from '../../services/dev-mode.service';
 
 interface TimelinePeriod {
   slug: string;
@@ -53,6 +54,8 @@ export class HomeComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly viewportScroller = inject(ViewportScroller);
   readonly locale = inject(LocaleService);
+  readonly devMode = inject(DevModeService);
+  readonly showWorldHistory = computed(() => this.devMode.isDevMode() || this.articlesSvc.hasWorldHistoryStories());
 
   readonly list = signal<Article[]>([]);
   readonly loading = signal(true);
@@ -61,6 +64,15 @@ export class HomeComponent implements OnInit {
   readonly personalities = signal<PersonalityDisplay[]>([]);
   readonly empires = signal<PolityDisplay[]>([]);
   readonly regionalKingdoms = signal<PolityDisplay[]>([]);
+  readonly visibleTimelinePeriods = computed(() => this.visible(this.timelinePeriods()));
+  readonly visibleThemes = computed(() => this.visible(this.themes()));
+  readonly visiblePersonalities = computed(() => this.visible(this.personalities()));
+  readonly visibleEmpires = computed(() => this.visible(this.empires()));
+  readonly visibleRegionalKingdoms = computed(() => this.visible(this.regionalKingdoms()));
+
+  private visible<T extends { articleCount: number }>(items: T[]): T[] {
+    return this.devMode.isDevMode() ? items : items.filter(item => item.articleCount > 0);
+  }
 
   async ngOnInit(): Promise<void> {
     await this.articlesSvc.whenReady();

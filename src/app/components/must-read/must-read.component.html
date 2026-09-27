@@ -4,7 +4,9 @@
     <h2 id="must-read-title">{{ locale.translate(presentation() === 'full' ? 'Explore the book collection' : 'More history books') }}</h2>
   </div>
 
-  <p>{{ locale.format('{count} books · {pending} awaiting affiliate links. Red cards use regular Amazon.in links.', { count: catalogueBooks().length, pending: pendingCount() }) }}</p>
+  @if (devMode.isDevMode()) {
+    <p>{{ locale.format('{count} books · {pending} awaiting affiliate links. Red cards use regular Amazon.in links.', { count: catalogueBooks().length, pending: pendingCount() }) }}</p>
+  }
   @if (presentation() === 'full') {
   <div class="book-controls">
     <label>Search books
@@ -16,13 +18,15 @@
         @for (topic of categories; track topic) { <option [value]="topic">{{ locale.translate(topic) }}</option> }
       </select>
     </label>
-    <label>Link status
-      <select [value]="linkFilter()" (change)="updateFilter('linkFilter', $any($event.target).value)">
-        <option value="all">All books</option>
-        <option value="pending">Affiliate link pending</option>
-        <option value="affiliate">Affiliate link added</option>
-      </select>
-    </label>
+    @if (devMode.isDevMode()) {
+      <label>Link status
+        <select [value]="linkFilter()" (change)="updateFilter('linkFilter', $any($event.target).value)">
+          <option value="all">All books</option>
+          <option value="pending">Affiliate link pending</option>
+          <option value="affiliate">Affiliate link added</option>
+        </select>
+      </label>
+    }
   </div>
   }
   @if (presentation() === 'full') {
@@ -35,12 +39,12 @@
   }
   <div class="book-list">
     @for (book of visibleBooks(); track book.isbn10) {
-      <article class="book-card" [class.affiliate-pending]="!book.affiliateUrl">
+      <article class="book-card" [class.affiliate-pending]="devMode.isDevMode() && !book.affiliateUrl">
         <a class="book-cover" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">
           <img [appLazyImage]="book.imageUrl" [alt]="locale.bookCoverAlt(book.title, book.imageAlt)" decoding="async" translate="no" />
         </a>
         <div class="book-copy">
-          @if (!book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
+          @if (devMode.isDevMode() && !book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
           <p class="book-meta">{{ locale.translate(book.category) }} · {{ locale.translate(book.format) }}@if (book.publicationDate) { · {{ locale.formatBookDate(book.publicationDate) }} }</p>
           <h3 translate="no" class="notranslate">
             <a [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">{{ book.title }}</a>
@@ -61,7 +65,7 @@
               <dd>{{ book.isbn10 }}</dd>
             </div>
           </dl>
-          @if (book.sourceUrl) {
+          @if (devMode.isDevMode() && book.sourceUrl) {
             @if (book.linkVerification === 'publisher') {
               <p class="book-source"><a [href]="book.sourceUrl" target="_blank" rel="noopener">Publisher edition details</a> · Amazon.in link listed by publisher</p>
             } @else {

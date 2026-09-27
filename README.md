@@ -101,8 +101,20 @@ included in story counts or the story search index. See
 `content/blogs/README.txt` for the Markdown frontmatter format. Run
 `npm run build` after adding a post to regenerate the JSON and deployable `dist/`.
 
+Readers see only periods, sub-periods, polities, themes, and personalities that
+have at least one linked story. Parent periods stay visible when a descendant
+has a story. Empty homepage sections, search categories, and the Blogs header
+link stay hidden. Visit `/dev` or add `?dev=true` to any page to see the full
+catalogue while editing; `?dev=false` returns to the reader view. Dev mode is
+remembered for the current browser session. New stories reveal their linked
+sections automatically after the content build.
+Dev mode also shows affiliate-link status, the link-status filter, and source
+verification notes on books; readers see a uniform book-card design.
+
 ### World history timeline
 
-The World History link in the header opens the homepage section. Edit
+The World History link in the header opens the homepage section when it has a
+story, or in dev mode. Mark a story with the `World History` tag, the
+`world-history` period, or the `world-history` theme to reveal it. Edit
 `src/app/data/world-history.ts` to add, change, or reorder its major events.
-These overview cards are separate from Indian history stories and counts.
+These overview cards are separate from Indian history story counts.

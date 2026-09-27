@@ -1,6 +1,7 @@
 import { Injector, runInInjectionContext } from '@angular/core';
 import { BookSidebarComponent } from './book-sidebar.component';
 import { LocaleService } from '../../i18n/locale.service';
+import { DevModeService } from '../../services/dev-mode.service';
 import { RecommendedBook } from '../../models/book.model';
 
 describe('BookSidebarComponent', () => {
@@ -15,6 +16,7 @@ describe('BookSidebarComponent', () => {
     const injector = Injector.create({
       providers: [
         { provide: LocaleService, useValue: mockLocale },
+        { provide: DevModeService, useValue: { isDevMode: () => false } },
       ],
     });
 

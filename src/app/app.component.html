@@ -5,19 +5,19 @@
       <span class="brand-text">India History</span>
     </a>
     <nav id="primary-navigation" class="site-nav" [class.open]="menuOpen()">
-      <a [routerLink]="['/']" fragment="timeline" (click)="closeMenu()">{{ locale.navigation.timeline }}</a>
-      <a [routerLink]="['/']" fragment="themes" (click)="closeMenu()">{{ locale.navigation.themes }}</a>
-      <a [routerLink]="['/']" fragment="empires" (click)="closeMenu()">{{ locale.navigation.empires }}</a>
-      <a [routerLink]="['/']" fragment="regional-kingdoms" (click)="closeMenu()">{{ locale.navigation.kingdoms }}</a>
-      <a [routerLink]="['/']" fragment="personalities" (click)="closeMenu()">{{ locale.navigation.personalities }}</a>
-      <a [routerLink]="['/']" fragment="world-history" (click)="closeMenu()">{{ locale.navigation.worldHistory }}</a>
-      <a routerLink="/blogs" routerLinkActive="active" (click)="closeMenu()">{{ locale.navigation.blogs }}</a>
+      @if (showTimeline()) { <a [routerLink]="['/']" fragment="timeline" (click)="closeMenu()">{{ locale.navigation.timeline }}</a> }
+      @if (showThemes()) { <a [routerLink]="['/']" fragment="themes" (click)="closeMenu()">{{ locale.navigation.themes }}</a> }
+      @if (showEmpires()) { <a [routerLink]="['/']" fragment="empires" (click)="closeMenu()">{{ locale.navigation.empires }}</a> }
+      @if (showKingdoms()) { <a [routerLink]="['/']" fragment="regional-kingdoms" (click)="closeMenu()">{{ locale.navigation.kingdoms }}</a> }
+      @if (showPersonalities()) { <a [routerLink]="['/']" fragment="personalities" (click)="closeMenu()">{{ locale.navigation.personalities }}</a> }
+      @if (showWorldHistory()) { <a [routerLink]="['/']" fragment="world-history" (click)="closeMenu()">{{ locale.navigation.worldHistory }}</a> }
+      @if (showBlogs()) { <a routerLink="/blogs" routerLinkActive="active" (click)="closeMenu()">{{ locale.navigation.blogs }}</a> }
       <a routerLink="/books" routerLinkActive="active" (click)="closeMenu()">{{ locale.navigation.books }}</a>
       <a routerLink="/search" routerLinkActive="active" class="search-text" (click)="closeMenu()">{{ locale.navigation.search }}</a>
     </nav>
     <label class="language-picker">
       <span>{{ locale.navigation.language }}</span>
-      <select [value]="locale.language" (change)="locale.changeLanguage($any($event.target).value)" [attr.aria-label]="locale.navigation.language">
+      <select [ngModel]="locale.language" (ngModelChange)="locale.changeLanguage($event)" [attr.aria-label]="locale.navigation.language">
         @for (language of locale.languages; track language.code) {
           <option [value]="language.code">{{ language.name }}</option>
         }

@@ -3,6 +3,7 @@ import { recommendedBooks } from '../../data/recommended-books';
 import { LazyImageDirective } from '../../directives/lazy-image.directive';
 import { filterBooks } from '../../utils/book-catalogue';
 import { LocaleService } from '../../i18n/locale.service';
+import { DevModeService } from '../../services/dev-mode.service';
 
 @Component({
   selector: 'app-must-read',
@@ -12,6 +13,7 @@ import { LocaleService } from '../../i18n/locale.service';
 })
 export class MustReadComponent implements AfterViewInit, OnDestroy {
   readonly locale = inject(LocaleService);
+  readonly devMode = inject(DevModeService);
   readonly presentation = input<'full' | 'bottom'>('full');
   readonly excludeIsbns = input<string[]>(recommendedBooks[0] ? [recommendedBooks[0].isbn10] : []);
   readonly books = recommendedBooks;
@@ -26,7 +28,7 @@ export class MustReadComponent implements AfterViewInit, OnDestroy {
   readonly pendingCount = computed(() => this.catalogueBooks().filter(book => !book.affiliateUrl).length);
   readonly categories = [...new Set(this.books.map(book => book.category).filter((category): category is string => !!category))].sort();
   readonly filteredBooks = computed(() => filterBooks(this.catalogueBooks(), {
-    query: this.query(), category: this.category(), linkStatus: this.linkFilter(),
+    query: this.query(), category: this.category(), linkStatus: this.devMode.isDevMode() ? this.linkFilter() : 'all',
   }));
   readonly visibleBooks = computed(() => this.filteredBooks().slice(0, this.visibleCount()));
   readonly hasMore = computed(() => this.visibleBooks().length < this.filteredBooks().length);

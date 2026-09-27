@@ -1,15 +1,20 @@
-import { Injector, runInInjectionContext } from '@angular/core';
+import { Injector, runInInjectionContext, signal } from '@angular/core';
 import { PeriodsService } from './periods.service';
 import { ArticleService } from './article.service';
 import { LocaleService } from '../i18n/locale.service';
+import { DevModeService } from './dev-mode.service';
 
 describe('PeriodsService', () => {
   let service: PeriodsService;
+  let isDevMode: ReturnType<typeof signal<boolean>>;
+  let articles: any[];
 
   beforeEach(() => {
+    isDevMode = signal(false);
+    articles = [];
     const mockArticlesService = {
       whenReady: async () => {},
-      allArticles: () => [],
+      allArticles: () => articles,
       search: () => [],
       getBySlug: () => undefined,
     };
@@ -24,6 +29,7 @@ describe('PeriodsService', () => {
       providers: [
         { provide: ArticleService, useValue: mockArticlesService },
         { provide: LocaleService, useValue: mockLocaleService },
+        { provide: DevModeService, useValue: { isDevMode } },
       ],
     });
 
@@ -70,8 +76,37 @@ describe('PeriodsService', () => {
   });
 
   it('should return unified search results across entities when searched', async () => {
+    isDevMode.set(true);
     const results = await service.searchAll('Maurya');
     expect(results.length).toBeGreaterThan(0);
     expect(results.some(r => r.title.toLowerCase().includes('maurya'))).toBeTruthy();
+  });
+
+  it('keeps empty history categories out of public search', async () => {
+    const regular = await service.searchAll('Maurya');
+    expect(regular.some(result => result.kind === 'period' || result.kind === 'polity')).toBeFalsy();
+    isDevMode.set(true);
+    const dev = await service.searchAll('Maurya');
+    expect(dev.some(result => result.kind === 'period' || result.kind === 'polity')).toBeTruthy();
+  });
+
+  it('hides empty categories, keeps ancestor periods, and reveals all in dev mode', () => {
+    articles = [{ period: 'lower-paleolithic', polity: undefined, themes: [], personalities: [], tags: [] }];
+    expect(service.isVisiblePeriod('lower-paleolithic')).toBeTruthy();
+    expect(service.isVisiblePeriod('paleolithic')).toBeTruthy();
+    expect(service.isVisiblePeriod('prehistory')).toBeTruthy();
+    expect(service.isVisiblePeriod('medieval')).toBeFalsy();
+    expect(service.isVisibleTheme(service.getThemes()[0].slug)).toBeFalsy();
+    isDevMode.set(true);
+    expect(service.isVisiblePeriod('medieval')).toBeTruthy();
+    expect(service.isVisibleTheme(service.getThemes()[0].slug)).toBeTruthy();
+  });
+
+  it('does not show unrelated empires from a generic Empire tag', () => {
+    articles = [{ period: 'medieval', polity: 'mughal', themes: [], personalities: [], tags: ['Empire'] }];
+    expect(service.isVisiblePeriod('medieval')).toBeTruthy();
+    expect(service.isVisiblePeriod('early-historic')).toBeFalsy();
+    expect(service.isVisiblePolity('mughal')).toBeTruthy();
+    expect(service.isVisiblePolity('maurya')).toBeFalsy();
   });
 });

@@ -9,6 +9,7 @@ import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { getPageBookRecommendations } from '../../utils/book-recommendations';
 import { LocaleService } from '../../i18n/locale.service';
+import { DevModeService } from '../../services/dev-mode.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -22,6 +23,7 @@ export class ArticleDetailComponent implements OnInit {
   private readonly periodsService = inject(PeriodsService);
   private readonly sanitizer = inject(DomSanitizer);
   readonly locale = inject(LocaleService);
+  readonly devMode = inject(DevModeService);
   readonly article = signal<Article | null>(null);
   readonly html = signal<SafeHtml | null>(null);
   readonly relatedBooks = signal<RecommendedBook[]>([]);

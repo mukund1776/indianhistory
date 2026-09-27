@@ -1,4 +1,4 @@
-import { Injector, runInInjectionContext } from '@angular/core';
+import { Injector, runInInjectionContext, signal } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HomeComponent } from './home.component';
@@ -6,14 +6,18 @@ import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { LocaleService } from '../../i18n/locale.service';
 import { Article } from '../../models/article.model';
+import { DevModeService } from '../../services/dev-mode.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
+  let devMode: ReturnType<typeof signal<boolean>>;
 
   beforeEach(() => {
+    devMode = signal(false);
     const mockArticlesSvc = {
       whenReady: async () => {},
       allArticles: () => [],
+      hasWorldHistoryStories: () => false,
     };
     const mockPeriodsSvc = {
       getBySlug: () => null,
@@ -42,6 +46,7 @@ describe('HomeComponent', () => {
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: ViewportScroller, useValue: mockViewportScroller },
         { provide: LocaleService, useValue: mockLocale },
+        { provide: DevModeService, useValue: { isDevMode: devMode } },
       ],
     });
 
@@ -53,6 +58,16 @@ describe('HomeComponent', () => {
     expect(component.list().length).toBe(0);
     expect(component.timelinePeriods().length).toBe(0);
     expect(component.empires().length).toBe(0);
+  });
+
+  it('shows empty section cards only in dev mode', () => {
+    component.timelinePeriods.set([
+      { slug: 'prehistory', name: 'Prehistory', range: '', description: '', articleCount: 3 },
+      { slug: 'medieval', name: 'Medieval', range: '', description: '', articleCount: 0 },
+    ]);
+    expect(component.visibleTimelinePeriods().map(period => period.slug)).toEqual(['prehistory']);
+    devMode.set(true);
+    expect(component.visibleTimelinePeriods().map(period => period.slug)).toEqual(['prehistory', 'medieval']);
   });
 
   it('should extract image src and alt from article html in thumbnail method', () => {

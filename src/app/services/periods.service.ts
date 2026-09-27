@@ -3,6 +3,7 @@ import { Article, SearchResult, SearchResultKind } from '../models/article.model
 import { recommendedBooks } from '../data/recommended-books';
 import { ArticleService } from './article.service';
 import { LocaleService } from '../i18n/locale.service';
+import { DevModeService } from './dev-mode.service';
 import {
   Period,
   Personality,
@@ -22,6 +23,7 @@ import {
 export class PeriodsService {
   private readonly articlesService = inject(ArticleService);
   private readonly locale = inject(LocaleService);
+  private readonly devMode = inject(DevModeService);
   private readonly localizedPeriods = periods.map(period => this.localizePeriod(period));
   private readonly localizedPolities = polities.map(polity => ({
     ...polity,
@@ -90,6 +92,14 @@ export class PeriodsService {
    */
   async getArticlesForPeriod(slug: string): Promise<Article[]> {
     await this.articlesService.whenReady();
+    return this.articlesForPeriod(slug);
+  }
+
+  isVisiblePeriod(slug: string): boolean {
+    return this.devMode.isDevMode() || this.articlesForPeriod(slug).length > 0;
+  }
+
+  private articlesForPeriod(slug: string): Article[] {
     const all = this.articlesService.allArticles();
     const p = this.getBySlug(slug);
     if (!p) return [];
@@ -97,14 +107,11 @@ export class PeriodsService {
     const allowedSlugs = new Set(getSubtreeSlugs(p));
 
     return all.filter((a) => {
-      if (a.period && allowedSlugs.has(a.period)) {
-        return true;
-      }
-      // Fallback: very loose tag matching for the early articles (can be removed later)
+      if (a.period) return allowedSlugs.has(a.period);
+      // Older stories without period metadata can still be found by a specific tag.
       const lowerTags = a.tags.map((t) => t.toLowerCase());
-      if (slug === 'mauryan' || slug === 'early-historic') {
-        return lowerTags.includes('empire') || lowerTags.includes('mauryan');
-      }
+      if (slug === 'mauryan') return lowerTags.includes('mauryan');
+      if (slug === 'early-historic') return lowerTags.includes('early historic') || lowerTags.includes('mauryan');
       if (slug === 'indus-valley') {
         return lowerTags.includes('indus') || lowerTags.includes('harappan') || lowerTags.includes('sindhu') || lowerTags.includes('saraswati');
       }
@@ -163,20 +170,23 @@ export class PeriodsService {
    */
   async getArticlesForPolity(slug: string): Promise<Article[]> {
     await this.articlesService.whenReady();
+    return this.articlesForPolity(slug);
+  }
+
+  isVisiblePolity(slug: string): boolean {
+    return this.devMode.isDevMode() || this.articlesForPolity(slug).length > 0;
+  }
+
+  private articlesForPolity(slug: string): Article[] {
     const all = this.articlesService.allArticles();
     const polity = this.getPolityBySlug(slug);
     if (!polity) return [];
 
     return all.filter((a) => {
-      if (a.polity === slug) {
-        return true;
-      }
-      // Fallback using tags for older articles
+      if (a.polity) return a.polity === slug;
+      // Match only the named polity for older stories without polity metadata.
       const lowerTags = a.tags.map((t) => t.toLowerCase());
-      if (slug === 'maurya' || slug === 'mughal') {
-        return lowerTags.includes('empire') || lowerTags.includes(slug);
-      }
-      return false;
+      return lowerTags.includes(slug) || (slug === 'maurya' && lowerTags.includes('mauryan'));
     });
   }
 
@@ -191,6 +201,14 @@ export class PeriodsService {
    */
   async getArticlesForTheme(slug: string): Promise<Article[]> {
     await this.articlesService.whenReady();
+    return this.articlesForTheme(slug);
+  }
+
+  isVisibleTheme(slug: string): boolean {
+    return this.devMode.isDevMode() || this.articlesForTheme(slug).length > 0;
+  }
+
+  private articlesForTheme(slug: string): Article[] {
     const all = this.articlesService.allArticles();
     const theme = this.getThemeBySlug(slug);
     if (!theme) return [];
@@ -207,6 +225,14 @@ export class PeriodsService {
   /** Return articles whose `personalities` array contains this slug. */
   async getArticlesForPersonality(slug: string): Promise<Article[]> {
     await this.articlesService.whenReady();
+    return this.articlesForPersonality(slug);
+  }
+
+  isVisiblePersonality(slug: string): boolean {
+    return this.devMode.isDevMode() || this.articlesForPersonality(slug).length > 0;
+  }
+
+  private articlesForPersonality(slug: string): Article[] {
     const all = this.articlesService.allArticles();
     const personality = this.getPersonalityBySlug(slug);
     if (!personality) return [];
@@ -250,7 +276,7 @@ export class PeriodsService {
     }
 
     // All periods (flattened tree so sub-periods like 'mauryan' or 'mature-harappan' are findable)
-    const allPeriods = this.getAll();
+    const allPeriods = this.getAll().filter(period => this.isVisiblePeriod(period.slug));
     for (const p of allPeriods) {
       const haystack = `${p.name} ${p.shortDescription} ${p.description} ${p.range}`.toLowerCase();
       if (haystack.includes(q)) {
@@ -267,7 +293,7 @@ export class PeriodsService {
     }
 
     // All polities (empires and regional kingdoms)
-    const allPolities = this.getPolities();
+    const allPolities = this.getPolities().filter(polity => this.isVisiblePolity(polity.slug));
     for (const pol of allPolities) {
       const haystack = `${pol.name} ${pol.shortDescription} ${pol.description} ${pol.range}`.toLowerCase();
       if (haystack.includes(q)) {
@@ -285,7 +311,7 @@ export class PeriodsService {
     }
 
     // Cross-period themes
-    for (const theme of this.getThemes()) {
+    for (const theme of this.getThemes().filter(item => this.isVisibleTheme(item.slug))) {
       const haystack = `${theme.name} ${theme.shortDescription} ${theme.description} ${theme.range}`.toLowerCase();
       if (haystack.includes(q)) {
         results.push({
@@ -301,7 +327,7 @@ export class PeriodsService {
     }
 
     // Historical personalities
-    for (const personality of this.getPersonalities()) {
+    for (const personality of this.getPersonalities().filter(item => this.isVisiblePersonality(item.slug))) {
       const haystack = `${personality.name} ${personality.shortDescription} ${personality.description} ${personality.range}`.toLowerCase();
       if (haystack.includes(q)) {
         results.push({

@@ -4,7 +4,7 @@
 
 @if (loading()) {
   <p class="status">Loading period…</p>
-} @else if (notFound()) {
+} @else if (notFound() || !visible()) {
   <div class="card empty">
     <h1>Period not found</h1>
     <p>The period, polity, theme, or personality you’re looking for doesn’t exist (yet). Try the overview on the home page.</p>
@@ -22,16 +22,16 @@
     </p>
     <h1>{{ ent.name }}</h1>
     <p class="period-range">{{ ent.range }}</p>
-    <p class="period-count">{{ locale.format(!isPol && !isTh && !isPerson && children().length ? '{count} articles across this {kind} and its sub-periods' : '{count} articles across this {kind}', { count: articles().length, kind: kindLabel() }) }}</p>
+    <p class="period-count">{{ locale.format(!isPol && !isTh && !isPerson && visibleChildren().length ? '{count} articles across this {kind} and its sub-periods' : '{count} articles across this {kind}', { count: articles().length, kind: kindLabel() }) }}</p>
 
     <p class="period-lede">{{ ent.description }}</p>
   </header>
 
-  @if (!isPol && !isTh && !isPerson && children().length) {
+  @if (!isPol && !isTh && !isPerson && visibleChildren().length) {
     <section class="sub-periods">
       <h2>Explore sub-periods &amp; topics</h2>
       <div class="sub-grid">
-        @for (child of children(); track child.slug) {
+        @for (child of visibleChildren(); track child.slug) {
           <a class="card sub-card" [routerLink]="['/period', child.slug]">
             <div class="sub-head">
               <h3>{{ child.name }}</h3>

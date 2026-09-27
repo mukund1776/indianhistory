@@ -4,6 +4,7 @@ import { SearchComponent } from './search.component';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { LocaleService } from '../../i18n/locale.service';
+import { DevModeService } from '../../services/dev-mode.service';
 import { SearchResult } from '../../models/article.model';
 
 describe('SearchComponent', () => {
@@ -12,9 +13,16 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     const mockArticles = {
       whenReady: async () => {},
+      allArticles: () => [],
     };
     const mockPeriods = {
       searchAll: async () => [],
+      getAll: () => [],
+      getThemes: () => [],
+      getPersonalities: () => [],
+      getEmpires: () => [{ slug: 'maurya' }],
+      getRegionalKingdoms: () => [{ slug: 'kakatiya' }],
+      isVisiblePolity: () => true,
       getPolityBySlug: (slug: string) => {
         if (slug === 'maurya') return { kind: 'empire' };
         if (slug === 'kakatiya') return { kind: 'regional-kingdom' };
@@ -42,6 +50,7 @@ describe('SearchComponent', () => {
         { provide: ArticleService, useValue: mockArticles },
         { provide: PeriodsService, useValue: mockPeriods },
         { provide: LocaleService, useValue: mockLocale },
+        { provide: DevModeService, useValue: { isDevMode: () => false } },
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Router, useValue: mockRouter },
         { provide: DestroyRef, useValue: mockDestroyRef },
@@ -119,5 +128,15 @@ describe('SearchComponent', () => {
     expect((component as any).toFilter('invalid-filter')).toBe('all');
     expect((component as any).toFilter('empire')).toBe('empire');
     expect((component as any).toFilter('book')).toBe('book');
+  });
+
+  it('omits filter chips for history categories without stories', () => {
+    const values = component.filters().map(option => option.value);
+    expect(values).toContain('all');
+    expect(values).toContain('book');
+    expect(values).toContain('empire');
+    expect(values).not.toContain('period');
+    expect(values).not.toContain('theme');
+    expect(values).not.toContain('personality');
   });
 });

@@ -27,6 +27,7 @@ export class PeriodDetailComponent implements OnInit {
   readonly personality = signal<Personality | null>(null);
   readonly parent = signal<Period | null>(null);
   readonly children = signal<Period[]>([]);
+  readonly visibleChildren = computed(() => this.children().filter(child => this.periodsService.isVisiblePeriod(child.slug)));
   readonly articles = signal<Article[]>([]);
   readonly childCounts = signal<Record<string, number>>({});
   readonly loading = signal(true);
@@ -34,6 +35,16 @@ export class PeriodDetailComponent implements OnInit {
   readonly isPolity = signal(false);
   readonly isTheme = signal(false);
   readonly isPersonality = signal(false);
+  readonly visible = computed(() => {
+    const period = this.period();
+    if (period) return this.periodsService.isVisiblePeriod(period.slug);
+    const polity = this.polity();
+    if (polity) return this.periodsService.isVisiblePolity(polity.slug);
+    const theme = this.theme();
+    if (theme) return this.periodsService.isVisibleTheme(theme.slug);
+    const personality = this.personality();
+    return personality ? this.periodsService.isVisiblePersonality(personality.slug) : false;
+  });
 
   readonly backRoute = signal<any>(['/']);
   readonly backFragment = signal<string | undefined>(undefined);

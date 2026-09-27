@@ -1,5 +1,6 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, AfterViewInit, inject, signal } from '@angular/core';
+import { Component, AfterViewInit, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NavigationEnd, NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MustReadComponent } from './components/must-read/must-read.component';
 import { BookSidebarComponent } from './components/book-sidebar/book-sidebar.component';
@@ -9,10 +10,12 @@ import { getPageBookRecommendations } from './utils/book-recommendations';
 import { recommendedBooks } from './data/recommended-books';
 import { LocaleService } from './i18n/locale.service';
 import { DevModeService } from './services/dev-mode.service';
+import { PeriodsService } from './services/periods.service';
+import { BlogService } from './services/blog.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MustReadComponent, BookSidebarComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, MustReadComponent, BookSidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -21,7 +24,16 @@ export class AppComponent implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly articles = inject(ArticleService);
   private readonly devMode = inject(DevModeService);
+  private readonly periods = inject(PeriodsService);
+  private readonly blogs = inject(BlogService);
   readonly locale = inject(LocaleService);
+  readonly showTimeline = computed(() => this.periods.getTopLevel().some(period => this.periods.isVisiblePeriod(period.slug)));
+  readonly showThemes = computed(() => this.periods.getThemes().some(theme => this.periods.isVisibleTheme(theme.slug)));
+  readonly showEmpires = computed(() => this.periods.getEmpires().some(polity => this.periods.isVisiblePolity(polity.slug)));
+  readonly showKingdoms = computed(() => this.periods.getRegionalKingdoms().some(polity => this.periods.isVisiblePolity(polity.slug)));
+  readonly showPersonalities = computed(() => this.periods.getPersonalities().some(person => this.periods.isVisiblePersonality(person.slug)));
+  readonly showWorldHistory = computed(() => this.devMode.isDevMode() || this.articles.hasWorldHistoryStories());
+  readonly showBlogs = computed(() => this.devMode.isDevMode() || this.blogs.allPosts().length > 0);
   private readonly homeSections = new Set(['timeline', 'themes', 'empires', 'regional-kingdoms', 'personalities', 'world-history']);
   private lastPlacementUrl: string | null = null;
   private placementVersion = 0;

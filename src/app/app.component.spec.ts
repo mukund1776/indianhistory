@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { ArticleService } from './services/article.service';
 import { DevModeService } from './services/dev-mode.service';
 import { LocaleService } from './i18n/locale.service';
+import { PeriodsService } from './services/periods.service';
+import { BlogService } from './services/blog.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -23,6 +25,7 @@ describe('AppComponent', () => {
     const mockArticles = {
       whenReady: async () => {},
       getBySlug: () => null,
+      hasWorldHistoryStories: () => false,
     };
     const mockDevMode = {
       isDevMode: () => false,
@@ -40,6 +43,8 @@ describe('AppComponent', () => {
         { provide: ArticleService, useValue: mockArticles },
         { provide: DevModeService, useValue: mockDevMode },
         { provide: LocaleService, useValue: mockLocale },
+        { provide: PeriodsService, useValue: {} },
+        { provide: BlogService, useValue: { allPosts: () => [] } },
       ],
     });
 
