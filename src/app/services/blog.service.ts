@@ -2,10 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BlogPost } from '../models/blog.model';
+import { LocaleService } from '../i18n/locale.service';
 
 @Injectable({ providedIn: 'root' })
 export class BlogService {
   private readonly http = inject(HttpClient);
+  private readonly locale = inject(LocaleService);
   private readonly posts = signal<BlogPost[]>([]);
   private readonly ready = this.load();
 
@@ -20,6 +22,13 @@ export class BlogService {
   }
 
   private async load(): Promise<void> {
-    this.posts.set(await firstValueFrom(this.http.get<BlogPost[]>('/assets/generated/blogs.json')));
+    const base = this.locale.language === 'en' ? '/assets/generated' : `/assets/generated/${this.locale.language}`;
+    try {
+      this.posts.set(await firstValueFrom(this.http.get<BlogPost[]>(`${base}/blogs.json`)));
+    } catch (error) {
+      if (this.locale.language === 'en') throw error;
+      this.locale.translationAvailable.set(false);
+      this.posts.set(await firstValueFrom(this.http.get<BlogPost[]>('/assets/generated/blogs.json')));
+    }
   }
 }

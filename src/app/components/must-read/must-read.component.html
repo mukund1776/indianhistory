@@ -1,10 +1,10 @@
 <section [id]="presentation() === 'full' ? 'must-read' : 'all-books-catalogue'" class="must-read" [class.bottom-catalogue]="presentation() === 'bottom'" aria-labelledby="must-read-title">
   <div class="section-head">
-    <p class="eyebrow">{{ presentation() === 'full' ? 'Indian history library' : 'More to explore' }}</p>
-    <h2 id="must-read-title">{{ presentation() === 'full' ? 'Explore the book collection' : 'More history books' }}</h2>
+    <p class="eyebrow">{{ locale.translate(presentation() === 'full' ? 'Indian history library' : 'More to explore') }}</p>
+    <h2 id="must-read-title">{{ locale.translate(presentation() === 'full' ? 'Explore the book collection' : 'More history books') }}</h2>
   </div>
 
-  <p>{{ catalogueBooks().length }} books · {{ pendingCount() }} awaiting affiliate links. Red cards use regular Amazon.in links.</p>
+  <p>{{ locale.format('{count} books · {pending} awaiting affiliate links. Red cards use regular Amazon.in links.', { count: catalogueBooks().length, pending: pendingCount() }) }}</p>
   @if (presentation() === 'full') {
   <div class="book-controls">
     <label>Search books
@@ -13,7 +13,7 @@
     <label>Topic
       <select [value]="category()" (change)="updateFilter('category', $any($event.target).value)">
         <option value="all">All topics</option>
-        @for (topic of categories; track topic) { <option [value]="topic">{{ topic }}</option> }
+        @for (topic of categories; track topic) { <option [value]="topic">{{ locale.translate(topic) }}</option> }
       </select>
     </label>
     <label>Link status
@@ -27,26 +27,26 @@
   }
   @if (presentation() === 'full') {
   <div class="book-results-head">
-    <p id="book-results" tabindex="-1" role="status">Showing {{ visibleBooks().length }} of {{ filteredBooks().length }} books</p>
+    <p id="book-results" tabindex="-1" role="status">{{ locale.format('Showing {visible} of {total} books', { visible: visibleBooks().length, total: filteredBooks().length }) }}</p>
     <button type="button" class="book-control-button" (click)="resetFilters()">Reset filters</button>
   </div>
   } @else {
-    <p class="catalogue-count" role="status">Showing {{ visibleBooks().length }} of {{ filteredBooks().length }} books after the recommendations above</p>
+    <p class="catalogue-count" role="status">{{ locale.format('Showing {visible} of {total} books after the recommendations above', { visible: visibleBooks().length, total: filteredBooks().length }) }}</p>
   }
   <div class="book-list">
     @for (book of visibleBooks(); track book.isbn10) {
       <article class="book-card" [class.affiliate-pending]="!book.affiliateUrl">
         <a class="book-cover" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">
-          <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
+          <img [appLazyImage]="book.imageUrl" [alt]="locale.bookCoverAlt(book.title, book.imageAlt)" decoding="async" translate="no" />
         </a>
         <div class="book-copy">
           @if (!book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
-          <p class="book-meta">{{ book.category }} · {{ book.format }}@if (book.publicationDate) { · {{ book.publicationDate }} }</p>
-          <h3>
+          <p class="book-meta">{{ locale.translate(book.category) }} · {{ locale.translate(book.format) }}@if (book.publicationDate) { · {{ locale.formatBookDate(book.publicationDate) }} }</p>
+          <h3 translate="no" class="notranslate">
             <a [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">{{ book.title }}</a>
           </h3>
-          <p class="book-author">by {{ book.author }}</p>
-          <p class="book-desc">{{ book.description }}</p>
+          <p class="book-author"><span>by</span> <span translate="no" class="notranslate">{{ book.author }}</span></p>
+          <p class="book-desc notranslate" translate="no">{{ book.description }}</p>
           <dl class="book-details" aria-label="Book details">
             @if (book.publisher) { <div>
               <dt>Publisher</dt>
@@ -54,7 +54,7 @@
             </div> }
             @if (book.pages) { <div>
               <dt>Length</dt>
-              <dd>{{ book.pages }} pages</dd>
+              <dd>{{ book.pages }} {{ locale.translate('pages') }}</dd>
             </div> }
             <div>
               <dt>{{ book.isbn10.startsWith('B') ? 'ASIN' : 'ISBN-10' }}</dt>

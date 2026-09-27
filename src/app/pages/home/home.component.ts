@@ -6,6 +6,7 @@ import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, PolityKind, Theme } from '../../data/periods';
 import { WorldHistoryComponent } from '../../components/world-history/world-history.component';
+import { LocaleService } from '../../i18n/locale.service';
 
 interface TimelinePeriod {
   slug: string;
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit {
   private readonly periodsSvc = inject(PeriodsService);
   private readonly route = inject(ActivatedRoute);
   private readonly viewportScroller = inject(ViewportScroller);
+  readonly locale = inject(LocaleService);
 
   readonly list = signal<Article[]>([]);
   readonly loading = signal(true);

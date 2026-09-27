@@ -1,7 +1,9 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { LOCALE_ID } from '@angular/core';
+import { provideRouter, withInMemoryScrolling, withRouterConfig } from '@angular/router';
 import { routes } from './app.routes';
+import { LocaleService } from './i18n/locale.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -9,7 +11,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withInMemoryScrolling({
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'enabled'
-    })),
+    }), withRouterConfig({ defaultQueryParamsHandling: 'merge' })),
     provideHttpClient(),
+    provideAppInitializer(() => inject(LocaleService).load()),
+    { provide: LOCALE_ID, useFactory: () => inject(LocaleService).language },
   ],
 };

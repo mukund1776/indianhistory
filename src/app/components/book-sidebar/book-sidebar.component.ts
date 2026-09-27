@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { LazyImageDirective } from '../../directives/lazy-image.directive';
 import { RecommendedBook } from '../../models/book.model';
+import { LocaleService } from '../../i18n/locale.service';
 
 @Component({
   selector: 'app-book-sidebar',
@@ -9,5 +10,6 @@ import { RecommendedBook } from '../../models/book.model';
   styleUrl: './book-sidebar.component.css',
 })
 export class BookSidebarComponent {
+  readonly locale = inject(LocaleService);
   @Input() book: RecommendedBook | null = null;
 }

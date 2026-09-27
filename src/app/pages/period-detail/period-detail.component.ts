@@ -6,6 +6,7 @@ import { Article } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, Theme } from '../../data/periods';
+import { LocaleService } from '../../i18n/locale.service';
 
 @Component({
   selector: 'app-period-detail',
@@ -17,6 +18,7 @@ export class PeriodDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly periodsService = inject(PeriodsService);
   private readonly articlesService = inject(ArticleService);
+  readonly locale = inject(LocaleService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly period = signal<Period | null>(null);
@@ -35,7 +37,15 @@ export class PeriodDetailComponent implements OnInit {
 
   readonly backRoute = signal<any>(['/']);
   readonly backFragment = signal<string | undefined>(undefined);
-  readonly backText = signal<string>('← Back to home');
+  readonly backText = signal<string>(this.locale.translate('← Back to home'));
+
+  kindLabel(): string {
+    const source = this.isPolity()
+      ? (this.polity()?.kind === 'empire' ? 'Empire' : 'Regional Kingdom')
+      : this.isTheme() ? 'Theme' : this.isPersonality() ? 'Personality' : 'Period';
+    const label = this.locale.translate(source);
+    return this.locale.language === 'en' ? label.toLowerCase() : label;
+  }
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -82,11 +92,11 @@ export class PeriodDetailComponent implements OnInit {
       if (parentPeriod) {
         this.backRoute.set(['/period', parentPeriod.slug]);
         this.backFragment.set(undefined);
-        this.backText.set(`← Back to ${parentPeriod.name}`);
+        this.backText.set(`${this.locale.translate('← Back to')} ${parentPeriod.name}`);
       } else {
         this.backRoute.set(['/']);
         this.backFragment.set(undefined);
-        this.backText.set('← Back to home');
+        this.backText.set(this.locale.translate('← Back to home'));
       }
     } else {
       // Try as specific polity / empire / kingdom
@@ -106,11 +116,11 @@ export class PeriodDetailComponent implements OnInit {
         if (pol.kind === 'empire') {
           this.backRoute.set(['/']);
           this.backFragment.set('empires');
-          this.backText.set('← Back to Empires');
+          this.backText.set(this.locale.translate('← Back to Empires'));
         } else {
           this.backRoute.set(['/']);
           this.backFragment.set('regional-kingdoms');
-          this.backText.set('← Back to Regional Kingdoms');
+          this.backText.set(this.locale.translate('← Back to Regional Kingdoms'));
         }
       } else {
         // Try as a cross-period theme
@@ -126,7 +136,7 @@ export class PeriodDetailComponent implements OnInit {
 
           this.backRoute.set(['/']);
           this.backFragment.set('themes');
-          this.backText.set('← Back to Themes');
+          this.backText.set(this.locale.translate('← Back to Themes'));
         } else {
           // Try as a historical personality
           const personality = this.periodsService.getPersonalityBySlug(slug);
@@ -141,7 +151,7 @@ export class PeriodDetailComponent implements OnInit {
 
             this.backRoute.set(['/']);
             this.backFragment.set('personalities');
-            this.backText.set('← Back to Personalities');
+            this.backText.set(this.locale.translate('← Back to Personalities'));
           } else {
             this.notFound.set(true);
           }
@@ -153,7 +163,7 @@ export class PeriodDetailComponent implements OnInit {
     if (fromSearch) {
       this.backRoute.set(['/search']);
       this.backFragment.set(undefined);
-      this.backText.set('← Back to search');
+      this.backText.set(this.locale.translate('← Back to search'));
     }
 
     this.loading.set(false);

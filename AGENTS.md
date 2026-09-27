@@ -1,0 +1,9 @@
+# Translation requirement
+
+The site supports English (`en`) and these translation languages: `hi`, `bn`, `ta`, `te`, `mr`, `ur`, `gu`, `kn`, `ml`, `pa`, `es`, `fr`, `ar`, `zh`, `pt`.
+
+When adding or changing reader-facing content, translate the complete text into every supported language in the same change. This includes stories, blog posts, navigation, page labels, period and theme descriptions, alt text, and search copy. Leave book titles and book descriptions in their published language; translate the surrounding book interface. English is the source language. Keep slugs, dates, ISBNs, source links, HTML attributes, and factual qualifiers intact. Translate the language of the text, not the historical claim. Review important dates, names, uncertainty statements, and citations in each translation.
+
+For an article or blog post, add a Markdown file under `content/translations/<language>/articles/` or `content/translations/<language>/blogs/` with the same filename as the English source. Translate the `title`, `excerpt`, `tags`, body, and image alt text. Set `sourceHash` to the SHA-256 value of `JSON.stringify({title, excerpt, body: content.trim()})` from the English Markdown frontmatter and body. Keep the English source file's metadata identifiers and links. Put interface and history-data translations in `content/translations/<language>/site.json`, keyed by the exact English string. Run `npm run check-translations` and `npm run build`; inspect the generated localized article, blog, and search assets. A language remains incomplete until these checks pass; do not describe it as fully released while it still shows English fallback.
+
+Do not use a translation API or browser translation service for this project unless the user explicitly changes that preference. Codex should author and review the translations directly.

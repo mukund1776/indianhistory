@@ -72,13 +72,13 @@
 
 .timeline {
   position: relative;
-  padding-left: 2.25rem;
+  padding-inline-start: 2.25rem;
 }
 
 .timeline::before {
   content: '';
   position: absolute;
-  left: 0.85rem;
+  inset-inline-start: 0.85rem;
   top: 0.35rem;
   bottom: 0.55rem;
   width: 2px;
@@ -94,7 +94,7 @@
   text-decoration: none;
   color: inherit;
   border-radius: 0.4rem;
-  padding-right: 0.25rem;
+  padding-inline-end: 0.25rem;
 }
 
 .timeline-item:hover {
@@ -112,7 +112,7 @@
 
 .timeline-marker {
   position: absolute;
-  left: -1.8rem;
+  inset-inline-start: -1.8rem;
   top: 0.15rem;
   z-index: 2;
 }

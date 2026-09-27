@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { worldHistoryEvents } from '../../data/world-history';
+import { LocaleService } from '../../i18n/locale.service';
 
 @Component({
   selector: 'app-world-history',
@@ -7,5 +8,10 @@ import { worldHistoryEvents } from '../../data/world-history';
   styleUrl: './world-history.component.css',
 })
 export class WorldHistoryComponent {
-  readonly events = worldHistoryEvents;
+  private readonly locale = inject(LocaleService);
+  readonly events = worldHistoryEvents.map(event => ({
+    date: this.locale.translate(event.date),
+    title: this.locale.translate(event.title),
+    summary: this.locale.translate(event.summary),
+  }));
 }

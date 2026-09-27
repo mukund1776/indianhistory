@@ -1,0 +1,33 @@
+import { LanguageCode } from './languages';
+
+export interface NavigationLabels {
+  language: string;
+  timeline: string;
+  themes: string;
+  empires: string;
+  kingdoms: string;
+  personalities: string;
+  worldHistory: string;
+  blogs: string;
+  books: string;
+  search: string;
+}
+
+export const NAVIGATION: Record<LanguageCode, NavigationLabels> = {
+  en: { language: 'Language', timeline: 'Timeline', themes: 'Themes', empires: 'Empires', kingdoms: 'Kingdoms', personalities: 'Personalities', worldHistory: 'World History', blogs: 'Blogs', books: 'Books', search: 'Search' },
+  hi: { language: 'भाषा', timeline: 'कालक्रम', themes: 'विषय', empires: 'साम्राज्य', kingdoms: 'राज्य', personalities: 'व्यक्तित्व', worldHistory: 'विश्व इतिहास', blogs: 'ब्लॉग', books: 'पुस्तकें', search: 'खोजें' },
+  bn: { language: 'ভাষা', timeline: 'সময়রেখা', themes: 'বিষয়', empires: 'সাম্রাজ্য', kingdoms: 'রাজ্য', personalities: 'ব্যক্তিত্ব', worldHistory: 'বিশ্ব ইতিহাস', blogs: 'ব্লগ', books: 'বই', search: 'অনুসন্ধান' },
+  ta: { language: 'மொழி', timeline: 'காலவரிசை', themes: 'கருப்பொருள்கள்', empires: 'பேரரசுகள்', kingdoms: 'அரசுகள்', personalities: 'ஆளுமைகள்', worldHistory: 'உலக வரலாறு', blogs: 'வலைப்பதிவுகள்', books: 'நூல்கள்', search: 'தேடு' },
+  te: { language: 'భాష', timeline: 'కాలక్రమం', themes: 'అంశాలు', empires: 'సామ్రాజ్యాలు', kingdoms: 'రాజ్యాలు', personalities: 'వ్యక్తులు', worldHistory: 'ప్రపంచ చరిత్ర', blogs: 'బ్లాగులు', books: 'పుస్తకాలు', search: 'శోధన' },
+  mr: { language: 'भाषा', timeline: 'कालरेषा', themes: 'विषय', empires: 'साम्राज्ये', kingdoms: 'राज्ये', personalities: 'व्यक्तिमत्त्वे', worldHistory: 'जागतिक इतिहास', blogs: 'ब्लॉग', books: 'पुस्तके', search: 'शोधा' },
+  ur: { language: 'زبان', timeline: 'خط زمانی', themes: 'موضوعات', empires: 'سلطنتیں', kingdoms: 'ریاستیں', personalities: 'شخصیات', worldHistory: 'عالمی تاریخ', blogs: 'بلاگز', books: 'کتابیں', search: 'تلاش' },
+  gu: { language: 'ભાષા', timeline: 'સમયરેખા', themes: 'વિષયો', empires: 'સામ્રાજ્યો', kingdoms: 'રાજ્યો', personalities: 'વ્યક્તિત્વો', worldHistory: 'વિશ્વ ઇતિહાસ', blogs: 'બ્લૉગ', books: 'પુસ્તકો', search: 'શોધો' },
+  kn: { language: 'ಭಾಷೆ', timeline: 'ಕಾಲರೇಖೆ', themes: 'ವಿಷಯಗಳು', empires: 'ಸಾಮ್ರಾಜ್ಯಗಳು', kingdoms: 'ರಾಜ್ಯಗಳು', personalities: 'ವ್ಯಕ್ತಿಗಳು', worldHistory: 'ವಿಶ್ವ ಇತಿಹಾಸ', blogs: 'ಬ್ಲಾಗ್‌ಗಳು', books: 'ಪುಸ್ತಕಗಳು', search: 'ಹುಡುಕಿ' },
+  ml: { language: 'ഭാഷ', timeline: 'കാലരേഖ', themes: 'വിഷയങ്ങൾ', empires: 'സാമ്രാജ്യങ്ങൾ', kingdoms: 'രാജ്യങ്ങൾ', personalities: 'വ്യക്തികൾ', worldHistory: 'ലോകചരിത്രം', blogs: 'ബ്ലോഗുകൾ', books: 'പുസ്തകങ്ങൾ', search: 'തിരയുക' },
+  pa: { language: 'ਭਾਸ਼ਾ', timeline: 'ਸਮਾਂਰੇਖਾ', themes: 'ਵਿਸ਼ੇ', empires: 'ਸਾਮਰਾਜ', kingdoms: 'ਰਾਜ', personalities: 'ਸ਼ਖ਼ਸੀਅਤਾਂ', worldHistory: 'ਵਿਸ਼ਵ ਇਤਿਹਾਸ', blogs: 'ਬਲੌਗ', books: 'ਕਿਤਾਬਾਂ', search: 'ਖੋਜੋ' },
+  es: { language: 'Idioma', timeline: 'Cronología', themes: 'Temas', empires: 'Imperios', kingdoms: 'Reinos', personalities: 'Personajes', worldHistory: 'Historia mundial', blogs: 'Blogs', books: 'Libros', search: 'Buscar' },
+  fr: { language: 'Langue', timeline: 'Chronologie', themes: 'Thèmes', empires: 'Empires', kingdoms: 'Royaumes', personalities: 'Personnalités', worldHistory: 'Histoire mondiale', blogs: 'Blogues', books: 'Livres', search: 'Rechercher' },
+  ar: { language: 'اللغة', timeline: 'الخط الزمني', themes: 'الموضوعات', empires: 'الإمبراطوريات', kingdoms: 'الممالك', personalities: 'الشخصيات', worldHistory: 'تاريخ العالم', blogs: 'المدونات', books: 'الكتب', search: 'بحث' },
+  zh: { language: '语言', timeline: '时间线', themes: '主题', empires: '帝国', kingdoms: '王国', personalities: '历史人物', worldHistory: '世界历史', blogs: '博客', books: '书籍', search: '搜索' },
+  pt: { language: 'Idioma', timeline: 'Cronologia', themes: 'Temas', empires: 'Impérios', kingdoms: 'Reinos', personalities: 'Personalidades', worldHistory: 'História mundial', blogs: 'Blogs', books: 'Livros', search: 'Buscar' },
+};

@@ -7,6 +7,7 @@ import { ArticleService } from './services/article.service';
 import { RecommendedBook } from './models/book.model';
 import { getPageBookRecommendations } from './utils/book-recommendations';
 import { recommendedBooks } from './data/recommended-books';
+import { LocaleService } from './i18n/locale.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
   private readonly router = inject(Router);
   private readonly articles = inject(ArticleService);
+  readonly locale = inject(LocaleService);
   private readonly homeSections = new Set(['timeline', 'themes', 'empires', 'regional-kingdoms', 'personalities', 'world-history']);
   private lastPlacementUrl: string | null = null;
   private placementVersion = 0;
@@ -50,6 +52,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.locale.translateDocument();
     // Set exact pixel height of the sticky header so that fragment navigation
     // (Timeline / Empires / Kingdoms links) scrolls the target just below the header
     // instead of hiding the section title behind it.

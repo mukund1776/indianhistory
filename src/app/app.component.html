@@ -1,20 +1,28 @@
 <div class="site">
   <header class="site-header">
     <a routerLink="/" class="brand">
-      <span class="brand-mark">IH</span>
+      <span class="brand-mark notranslate" translate="no">IH</span>
       <span class="brand-text">India History</span>
     </a>
     <nav id="primary-navigation" class="site-nav" [class.open]="menuOpen()">
-      <a [routerLink]="['/']" fragment="timeline" (click)="closeMenu()">Timeline</a>
-      <a [routerLink]="['/']" fragment="themes" (click)="closeMenu()">Themes</a>
-      <a [routerLink]="['/']" fragment="empires" (click)="closeMenu()">Empires</a>
-      <a [routerLink]="['/']" fragment="regional-kingdoms" (click)="closeMenu()">Kingdoms</a>
-      <a [routerLink]="['/']" fragment="personalities" (click)="closeMenu()">Personalities</a>
-      <a [routerLink]="['/']" fragment="world-history" (click)="closeMenu()">World History</a>
-      <a routerLink="/blogs" routerLinkActive="active" (click)="closeMenu()">Blogs</a>
-      <a routerLink="/books" routerLinkActive="active" (click)="closeMenu()">Books</a>
-      <a routerLink="/search" routerLinkActive="active" class="search-text" (click)="closeMenu()">Search</a>
+      <a [routerLink]="['/']" fragment="timeline" (click)="closeMenu()">{{ locale.navigation.timeline }}</a>
+      <a [routerLink]="['/']" fragment="themes" (click)="closeMenu()">{{ locale.navigation.themes }}</a>
+      <a [routerLink]="['/']" fragment="empires" (click)="closeMenu()">{{ locale.navigation.empires }}</a>
+      <a [routerLink]="['/']" fragment="regional-kingdoms" (click)="closeMenu()">{{ locale.navigation.kingdoms }}</a>
+      <a [routerLink]="['/']" fragment="personalities" (click)="closeMenu()">{{ locale.navigation.personalities }}</a>
+      <a [routerLink]="['/']" fragment="world-history" (click)="closeMenu()">{{ locale.navigation.worldHistory }}</a>
+      <a routerLink="/blogs" routerLinkActive="active" (click)="closeMenu()">{{ locale.navigation.blogs }}</a>
+      <a routerLink="/books" routerLinkActive="active" (click)="closeMenu()">{{ locale.navigation.books }}</a>
+      <a routerLink="/search" routerLinkActive="active" class="search-text" (click)="closeMenu()">{{ locale.navigation.search }}</a>
     </nav>
+    <label class="language-picker">
+      <span>{{ locale.navigation.language }}</span>
+      <select [value]="locale.language" (change)="locale.changeLanguage($any($event.target).value)" [attr.aria-label]="locale.navigation.language">
+        @for (language of locale.languages; track language.code) {
+          <option [value]="language.code">{{ language.name }}</option>
+        }
+      </select>
+    </label>
     <div class="header-actions">
       <button
         type="button"
@@ -29,11 +37,15 @@
         <span></span>
         <span></span>
       </button>
-      <a routerLink="/search" routerLinkActive="active" class="search-button" aria-label="Search" (click)="closeMenu()">
+      <a routerLink="/search" routerLinkActive="active" class="search-button" [attr.aria-label]="locale.navigation.search" (click)="closeMenu()">
         <span aria-hidden="true"></span>
       </a>
     </div>
   </header>
+
+  @if (!locale.translationAvailable()) {
+    <p class="translation-notice" role="status">Some page text is still in English while translations are completed.</p>
+  }
 
   <main class="site-main">
     <div class="page-layout">

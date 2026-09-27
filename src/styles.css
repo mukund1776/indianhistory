@@ -327,3 +327,12 @@ code {
   font-weight: 700;
   margin: 0 0 0.6rem;
 }
+html[dir='rtl'] .notranslate {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+html[dir='rtl'] .period-name .drill {
+  display: inline-block;
+  transform: scaleX(-1);
+}

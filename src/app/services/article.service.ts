@@ -2,10 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Article, SearchEntry } from '../models/article.model';
+import { LocaleService } from '../i18n/locale.service';
 
 @Injectable({ providedIn: 'root' })
 export class ArticleService {
   private readonly http = inject(HttpClient);
+  private readonly locale = inject(LocaleService);
   private readonly articles = signal<Article[]>([]);
   private readonly searchIndex = signal<SearchEntry[]>([]);
   private ready: Promise<void>;
@@ -36,12 +38,22 @@ export class ArticleService {
   }
 
   private async load(): Promise<void> {
-    const [articles, index] = await Promise.all([
-      firstValueFrom(this.http.get<Article[]>('/assets/generated/articles.json')),
-      firstValueFrom(
-        this.http.get<SearchEntry[]>('/assets/generated/search-index.json')
-      ),
-    ]);
+    const base = this.locale.language === 'en' ? '/assets/generated' : `/assets/generated/${this.locale.language}`;
+    let articles: Article[];
+    let index: SearchEntry[];
+    try {
+      [articles, index] = await Promise.all([
+        firstValueFrom(this.http.get<Article[]>(`${base}/articles.json`)),
+        firstValueFrom(this.http.get<SearchEntry[]>(`${base}/search-index.json`)),
+      ]);
+    } catch (error) {
+      if (this.locale.language === 'en') throw error;
+      this.locale.translationAvailable.set(false);
+      [articles, index] = await Promise.all([
+        firstValueFrom(this.http.get<Article[]>('/assets/generated/articles.json')),
+        firstValueFrom(this.http.get<SearchEntry[]>('/assets/generated/search-index.json')),
+      ]);
+    }
     this.articles.set(articles);
     this.searchIndex.set(index);
   }

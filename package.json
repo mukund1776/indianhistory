@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "build-content": "node scripts/build-content.js",
+    "check-translations": "node scripts/check-translations.js",
     "prestart": "npm run build-content",
     "start": "ng serve",
     "build": "npm run build-content && ng build",

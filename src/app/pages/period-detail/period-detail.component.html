@@ -18,15 +18,11 @@
 
   <header class="period-header card">
     <p class="eyebrow">
-      {{ isPol ? (polity()!.kind === 'empire' ? 'Empire' : 'Regional Kingdom') : isTh ? 'Theme' : isPerson ? 'Personality' : 'Historical Period' }}
+      {{ locale.translate(isPol ? (polity()!.kind === 'empire' ? 'Empire' : 'Regional Kingdom') : isTh ? 'Theme' : isPerson ? 'Personality' : 'Period') }}
     </p>
     <h1>{{ ent.name }}</h1>
     <p class="period-range">{{ ent.range }}</p>
-    <p class="period-count">
-      {{ articles().length }} article{{ articles().length === 1 ? '' : 's' }} across this
-      {{ isPol ? (polity()!.kind === 'empire' ? 'empire' : 'regional kingdom') : isTh ? 'theme' : isPerson ? 'personality' : 'period' }}
-      {{ !isPol && !isTh && !isPerson && children().length ? ' and its sub-periods' : '' }}
-    </p>
+    <p class="period-count">{{ locale.format(!isPol && !isTh && !isPerson && children().length ? '{count} articles across this {kind} and its sub-periods' : '{count} articles across this {kind}', { count: articles().length, kind: kindLabel() }) }}</p>
 
     <p class="period-lede">{{ ent.description }}</p>
   </header>
@@ -43,7 +39,7 @@
             </div>
             <p class="sub-desc">{{ child.shortDescription }}</p>
             <div class="sub-footer">
-              <span class="sub-count">{{ (childCounts()[child.slug] || 0) }} article{{ (childCounts()[child.slug] || 0) === 1 ? '' : 's' }}</span>
+              <span class="sub-count">{{ locale.format('{count} articles', { count: childCounts()[child.slug] || 0 }) }}</span>
               <span class="drill">Explore →</span>
             </div>
           </a>
@@ -59,7 +55,7 @@
 
     @if (articles().length === 0) {
       <div class="card empty">
-        <p>No articles yet for this {{ isPol ? (polity()!.kind === 'empire' ? 'empire' : 'regional kingdom') : isTh ? 'theme' : isPerson ? 'personality' : 'period' }}. More stories are being added.</p>
+        <p>{{ locale.format('No articles yet for this {kind}. More stories are being added.', { kind: kindLabel() }) }}</p>
         <a routerLink="/search" class="btn btn-secondary">Search all stories</a>
       </div>
     } @else {

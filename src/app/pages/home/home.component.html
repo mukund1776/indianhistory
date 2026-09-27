@@ -49,7 +49,7 @@
         <div class="timeline-content">
           <div class="period-head">
             <span class="period-range">{{ p.range }}</span>
-            <span class="article-badge">{{ p.articleCount }} stor{{ p.articleCount === 1 ? 'y' : 'ies' }}</span>
+            <span class="article-badge">{{ locale.format('{count} stories', { count: p.articleCount }) }}</span>
           </div>
           <h3 class="period-name">{{ p.name }} <span class="drill">→</span></h3>
           <p class="period-desc">{{ p.description }}</p>
@@ -77,7 +77,7 @@
         </div>
         <p class="polity-desc">{{ theme.shortDescription }}</p>
         <div class="polity-footer">
-          <span class="article-badge">{{ theme.articleCount }} stor{{ theme.articleCount === 1 ? 'y' : 'ies' }}</span>
+          <span class="article-badge">{{ locale.format('{count} stories', { count: theme.articleCount }) }}</span>
           <span class="drill">Explore →</span>
         </div>
       </a>
@@ -100,7 +100,7 @@
         </div>
         <p class="polity-desc">{{ polity.description }}</p>
         <div class="polity-footer">
-          <span class="article-badge">{{ polity.articleCount }} stor{{ polity.articleCount === 1 ? 'y' : 'ies' }}</span>
+          <span class="article-badge">{{ locale.format('{count} stories', { count: polity.articleCount }) }}</span>
           <span class="drill">Explore →</span>
         </div>
       </a>
@@ -123,7 +123,7 @@
         </div>
         <p class="polity-desc">{{ polity.description }}</p>
         <div class="polity-footer">
-          <span class="article-badge">{{ polity.articleCount }} stor{{ polity.articleCount === 1 ? 'y' : 'ies' }}</span>
+          <span class="article-badge">{{ locale.format('{count} stories', { count: polity.articleCount }) }}</span>
           <span class="drill">Explore →</span>
         </div>
       </a>
@@ -143,7 +143,7 @@
         <div class="personality-head">
           <h3>{{ personality.name }}</h3>
           <span class="personality-meta">{{ personality.range }}</span>
-          <span class="article-badge">{{ personality.articleCount }} stor{{ personality.articleCount === 1 ? 'y' : 'ies' }}</span>
+          <span class="article-badge">{{ locale.format('{count} stories', { count: personality.articleCount }) }}</span>
         </div>
         <p>{{ personality.shortDescription }}</p>
       </a>

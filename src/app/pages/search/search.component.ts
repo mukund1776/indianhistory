@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SearchResult } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
+import { LocaleService } from '../../i18n/locale.service';
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -37,13 +38,19 @@ const FILTER_OPTIONS: SearchFilterOption[] = [
 export class SearchComponent implements OnInit {
   private readonly articles = inject(ArticleService);
   private readonly periods = inject(PeriodsService);
+  readonly locale = inject(LocaleService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly searchInput$ = new Subject<string>();
 
   query = '';
-  readonly filters = FILTER_OPTIONS;
+  readonly filters = FILTER_OPTIONS.map(option => ({
+    ...option,
+    label: option.value === 'book' ? this.locale.navigation.books
+      : option.value === 'kingdom' ? this.locale.navigation.kingdoms
+      : this.locale.translate(option.label),
+  }));
   readonly activeFilter = signal<SearchFilter>('all');
   readonly results = signal<SearchResult[]>([]);
   readonly filteredResults = computed(() => this.results().filter((result) => this.matchesFilter(result)));
@@ -128,8 +135,8 @@ export class SearchComponent implements OnInit {
   private matchesFilter(result: SearchResult): boolean {
     const filter = this.activeFilter();
     if (filter === 'all') return true;
-    if (filter === 'empire') return result.kind === 'polity' && result.kindLabel === 'Empire';
-    if (filter === 'kingdom') return result.kind === 'polity' && result.kindLabel === 'Regional Kingdom';
+    if (filter === 'empire') return result.kind === 'polity' && this.periods.getPolityBySlug(result.slug)?.kind === 'empire';
+    if (filter === 'kingdom') return result.kind === 'polity' && this.periods.getPolityBySlug(result.slug)?.kind === 'regional-kingdom';
     return result.kind === filter;
   }
 }

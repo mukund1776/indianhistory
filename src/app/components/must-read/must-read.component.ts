@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, computed, input, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, computed, inject, input, signal } from '@angular/core';
 import { recommendedBooks } from '../../data/recommended-books';
 import { LazyImageDirective } from '../../directives/lazy-image.directive';
 import { filterBooks } from '../../utils/book-catalogue';
+import { LocaleService } from '../../i18n/locale.service';
 
 @Component({
   selector: 'app-must-read',
@@ -10,6 +11,7 @@ import { filterBooks } from '../../utils/book-catalogue';
   styleUrl: './must-read.component.css',
 })
 export class MustReadComponent implements AfterViewInit, OnDestroy {
+  readonly locale = inject(LocaleService);
   readonly presentation = input<'full' | 'bottom'>('full');
   readonly excludeIsbns = input<string[]>(recommendedBooks[0] ? [recommendedBooks[0].isbn10] : []);
   readonly books = recommendedBooks;

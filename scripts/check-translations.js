@@ -1,0 +1,139 @@
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const matter = require('gray-matter');
+const { marked } = require('marked');
+const compiler = require('@angular/compiler');
+const ts = require('typescript');
+
+const ROOT = path.join(__dirname, '..');
+const LANGUAGES = ['hi', 'bn', 'ta', 'te', 'mr', 'ur', 'gu', 'kn', 'ml', 'pa', 'es', 'fr', 'ar', 'zh', 'pt'];
+const SOURCE_FILES = ['src/app/data/periods.ts', 'src/app/data/world-history.ts'];
+const VISIBLE_FIELDS = new Set(['name', 'range', 'shortDescription', 'description', 'date', 'title', 'summary']);
+const DYNAMIC_COPY = [
+  'All', 'Stories', 'Periods', 'Story', 'Period', 'Empire', 'Regional Kingdom', 'Theme', 'Personality', 'Book',
+  '← Back to', '← Back to home', '← Back to Empires', '← Back to Regional Kingdoms', '← Back to Themes',
+  '← Back to Personalities', '← Back to search', 'Book by', 'by', 'pages', 'article', 'articles', 'story', 'stories',
+  'books', 'result(s)', 'Ancient & medieval', 'Biographies', 'Colonial & freedom struggle', 'Economic history',
+  'General history', 'Hardback', 'Hardcover', 'Kindle', 'Mass Market Paperback', 'Military history',
+  'Modern India', 'Paperback', 'Prehistory & environment', 'Print edition', 'Regional history',
+  'Society & culture', 'World history',
+  'Indian history library', 'More to explore', 'Explore the book collection', 'More history books',
+  'Published', 'Updated', '{count} stories', '{count} articles', '{count} results',
+  'Showing {visible} of {total} books',
+  'Showing {visible} of {total} books after the recommendations above',
+  '{count} books · {pending} awaiting affiliate links. Red cards use regular Amazon.in links.',
+  '{count} articles across this {kind}',
+  '{count} articles across this {kind} and its sub-periods',
+  'No articles yet for this {kind}. More stories are being added.',
+  'No results for “{query}”.',
+];
+const STRINGS = new Set();
+
+function collectTemplate(node) {
+  if (node.constructor.name === 'Text' && node.value.trim()) STRINGS.add(node.value.trim());
+  for (const attr of node.attributes || []) {
+    if (['alt', 'placeholder', 'aria-label', 'title'].includes(attr.name) && attr.value.trim()) STRINGS.add(attr.value.trim());
+  }
+  for (const child of node.children || []) collectTemplate(child);
+  for (const branch of node.branches || []) {
+    for (const child of branch.children || []) collectTemplate(child);
+  }
+}
+
+function collectSiteStrings() {
+  const app = path.join(ROOT, 'src/app');
+  function walk(directory) {
+    for (const item of fs.readdirSync(directory, { withFileTypes: true })) {
+      const file = path.join(directory, item.name);
+      if (item.isDirectory()) walk(file);
+      else if (item.name.endsWith('.component.html')) {
+        const parsed = compiler.parseTemplate(fs.readFileSync(file, 'utf8'), file);
+        if (parsed.errors?.length) throw new Error(`Could not parse ${file}`);
+        for (const node of parsed.nodes) collectTemplate(node);
+      }
+    }
+  }
+  walk(app);
+  for (const name of SOURCE_FILES) {
+    const file = path.join(ROOT, name);
+    const source = ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);
+    function visit(node) {
+      if (ts.isPropertyAssignment(node) && VISIBLE_FIELDS.has(node.name.getText(source)) &&
+          (ts.isStringLiteral(node.initializer) || ts.isNoSubstitutionTemplateLiteral(node.initializer))) {
+        STRINGS.add(node.initializer.text);
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(source);
+  }
+  for (const value of DYNAMIC_COPY) STRINGS.add(value);
+  return [...STRINGS].filter(value => /\p{L}/u.test(value));
+}
+
+function hash(data, content) {
+  return crypto.createHash('sha256').update(JSON.stringify({
+    title: data.title,
+    excerpt: data.excerpt,
+    body: content.trim(),
+  })).digest('hex');
+}
+
+function urls(html) {
+  return [...html.matchAll(/\b(?:src|href)="([^"]+)"/g)].map(match => match[1]).sort();
+}
+
+function sourceFiles(kind) {
+  const directory = path.join(ROOT, 'content', kind);
+  return fs.readdirSync(directory).filter(name => name.endsWith('.md'));
+}
+
+function placeholders(value) {
+  return [...String(value).matchAll(/\{([a-z]+)\}/g)].map(match => match[1]).sort().join(',');
+}
+
+function checkContent(kind, language) {
+  const problems = [];
+  for (const name of sourceFiles(kind)) {
+    const source = matter(fs.readFileSync(path.join(ROOT, 'content', kind, name), 'utf8'));
+    const translatedFile = path.join(ROOT, 'content', 'translations', language, kind, name);
+    if (!fs.existsSync(translatedFile)) {
+      problems.push(`${kind}/${name}: missing`);
+      continue;
+    }
+    const translation = matter(fs.readFileSync(translatedFile, 'utf8'));
+    if (!translation.data.title || !translation.data.excerpt || !translation.content.trim()) {
+      problems.push(`${kind}/${name}: incomplete`);
+    } else if (source.data.tags?.length && (!Array.isArray(translation.data.tags) || translation.data.tags.length !== source.data.tags.length || translation.data.tags.some(tag => !tag))) {
+      problems.push(`${kind}/${name}: tags missing`);
+    } else if (translation.data.sourceHash !== hash(source.data, source.content)) {
+      problems.push(`${kind}/${name}: stale`);
+    } else if (JSON.stringify(urls(marked.parse(source.content.trim()))) !== JSON.stringify(urls(marked.parse(translation.content.trim())))) {
+      problems.push(`${kind}/${name}: links or images changed`);
+    }
+  }
+  return problems;
+}
+
+module.exports = { collectSiteStrings };
+
+if (require.main === module) {
+  const siteStrings = collectSiteStrings();
+  let failed = false;
+  for (const language of LANGUAGES) {
+    const problems = [...checkContent('articles', language), ...checkContent('blogs', language)];
+    const siteFile = path.join(ROOT, 'content', 'translations', language, 'site.json');
+    if (!fs.existsSync(siteFile)) {
+      problems.push(`site.json: missing ${siteStrings.length} interface and history strings`);
+    } else {
+      const copy = JSON.parse(fs.readFileSync(siteFile, 'utf8'));
+      const missing = siteStrings.filter(value => typeof copy[value] !== 'string' || !copy[value]);
+      if (missing.length) problems.push(`site.json: missing ${missing.length} of ${siteStrings.length} strings`);
+      const mismatched = siteStrings.filter(value => copy[value] && placeholders(value) !== placeholders(copy[value]));
+      if (mismatched.length) problems.push(`site.json: ${mismatched.length} placeholder mismatch(es)`);
+    }
+    console.log(`${language}: ${problems.length ? problems.join('; ') : 'complete'}`);
+    if (problems.length) failed = true;
+  }
+  if (failed) process.exitCode = 1;
+}

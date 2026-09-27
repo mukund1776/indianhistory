@@ -8,6 +8,7 @@ import { RecommendedBook } from '../../models/book.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { getPageBookRecommendations } from '../../utils/book-recommendations';
+import { LocaleService } from '../../i18n/locale.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -20,6 +21,7 @@ export class ArticleDetailComponent implements OnInit {
   private readonly articles = inject(ArticleService);
   private readonly periodsService = inject(PeriodsService);
   private readonly sanitizer = inject(DomSanitizer);
+  readonly locale = inject(LocaleService);
   readonly article = signal<Article | null>(null);
   readonly html = signal<SafeHtml | null>(null);
   readonly relatedBooks = signal<RecommendedBook[]>([]);
@@ -27,7 +29,7 @@ export class ArticleDetailComponent implements OnInit {
   readonly bottomBooks = signal<RecommendedBook[]>([]);
   readonly loading = signal(true);
   readonly backLink = signal<string>('/');
-  readonly backText = signal<string>('← Back to home');
+  readonly backText = signal<string>(this.locale.translate('← Back to home'));
 
   async ngOnInit(): Promise<void> {
     await this.articles.whenReady();
@@ -52,44 +54,44 @@ export class ArticleDetailComponent implements OnInit {
       const pol = this.periodsService.getPolityBySlug(fromPolitySlug);
       if (pol) {
         this.backLink.set(`/polity/${fromPolitySlug}`);
-        this.backText.set(`← Back to ${pol.name}`);
+        this.backText.set(`${this.locale.translate('← Back to')} ${pol.name}`);
       } else {
         this.backLink.set('/');
-        this.backText.set('← Back to home');
+        this.backText.set(this.locale.translate('← Back to home'));
       }
     } else if (fromThemeSlug) {
       const theme = this.periodsService.getThemeBySlug(fromThemeSlug);
       if (theme) {
         this.backLink.set(`/theme/${fromThemeSlug}`);
-        this.backText.set(`← Back to ${theme.name}`);
+        this.backText.set(`${this.locale.translate('← Back to')} ${theme.name}`);
       } else {
         this.backLink.set('/');
-        this.backText.set('← Back to home');
+        this.backText.set(this.locale.translate('← Back to home'));
       }
     } else if (fromPersonalitySlug) {
       const personality = this.periodsService.getPersonalityBySlug(fromPersonalitySlug);
       if (personality) {
         this.backLink.set(`/personality/${fromPersonalitySlug}`);
-        this.backText.set(`← Back to ${personality.name}`);
+        this.backText.set(`${this.locale.translate('← Back to')} ${personality.name}`);
       } else {
         this.backLink.set('/');
-        this.backText.set('← Back to home');
+        this.backText.set(this.locale.translate('← Back to home'));
       }
     } else if (fromPeriodSlug) {
       const parentPeriod = this.periodsService.getBySlug(fromPeriodSlug);
       if (parentPeriod) {
         this.backLink.set(`/period/${fromPeriodSlug}`);
-        this.backText.set(`← Back to ${parentPeriod.name}`);
+        this.backText.set(`${this.locale.translate('← Back to')} ${parentPeriod.name}`);
       } else {
         this.backLink.set('/');
-        this.backText.set('← Back to home');
+        this.backText.set(this.locale.translate('← Back to home'));
       }
     } else if (fromSearch) {
       this.backLink.set('/search');
-      this.backText.set('← Back to search');
+      this.backText.set(this.locale.translate('← Back to search'));
     } else {
       this.backLink.set('/');
-      this.backText.set('← Back to home');
+      this.backText.set(this.locale.translate('← Back to home'));
     }
 
     this.loading.set(false);

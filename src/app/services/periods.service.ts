@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Article, SearchResult, SearchResultKind } from '../models/article.model';
 import { recommendedBooks } from '../data/recommended-books';
 import { ArticleService } from './article.service';
+import { LocaleService } from '../i18n/locale.service';
 import {
   Period,
   Personality,
@@ -11,7 +12,6 @@ import {
   findParent,
   findPeriod,
   getSubtreeSlugs,
-  getTopLevelPeriods,
   personalities,
   periods,
   polities,
@@ -21,20 +21,54 @@ import {
 @Injectable({ providedIn: 'root' })
 export class PeriodsService {
   private readonly articlesService = inject(ArticleService);
+  private readonly locale = inject(LocaleService);
+  private readonly localizedPeriods = periods.map(period => this.localizePeriod(period));
+  private readonly localizedPolities = polities.map(polity => ({
+    ...polity,
+    name: this.locale.translate(polity.name),
+    range: this.locale.translate(polity.range),
+    shortDescription: this.locale.translate(polity.shortDescription),
+    description: this.locale.translate(polity.description),
+  }));
+  private readonly localizedThemes = themes.map(theme => ({
+    ...theme,
+    name: this.locale.translate(theme.name),
+    range: this.locale.translate(theme.range),
+    shortDescription: this.locale.translate(theme.shortDescription),
+    description: this.locale.translate(theme.description),
+  }));
+  private readonly localizedPersonalities = personalities.map(person => ({
+    ...person,
+    name: this.locale.translate(person.name),
+    range: this.locale.translate(person.range),
+    shortDescription: this.locale.translate(person.shortDescription),
+    description: this.locale.translate(person.description),
+  }));
+
+  private localizePeriod(period: Period): Period {
+    return {
+      ...period,
+      name: this.locale.translate(period.name),
+      range: this.locale.translate(period.range),
+      shortDescription: this.locale.translate(period.shortDescription),
+      description: this.locale.translate(period.description),
+      children: period.children?.map(child => this.localizePeriod(child)),
+    };
+  }
 
   /** All root periods (for home overview etc.) */
   getTopLevel(): Period[] {
-    return getTopLevelPeriods();
+    return this.localizedPeriods;
   }
 
   /** Find any period (including nested) by slug */
   getBySlug(slug: string): Period | undefined {
-    return findPeriod(slug);
+    return findPeriod(slug, this.localizedPeriods);
   }
 
   /** Find the direct parent period (if any) */
   getParent(slug: string): Period | undefined {
-    return findParent(slug);
+    return findParent(slug, this.localizedPeriods);
   }
 
   /** Get all periods flattened (useful for counts etc.) */
@@ -46,7 +80,7 @@ export class PeriodsService {
         if (p.children) walk(p.children);
       }
     };
-    walk(periods);
+    walk(this.localizedPeriods);
     return all;
   }
 
@@ -86,42 +120,42 @@ export class PeriodsService {
 
   /** All polities / empires / kingdoms */
   getPolities(): Polity[] {
-    return polities;
+    return this.localizedPolities;
   }
 
   /** Major empires (pan-subcontinental or imperial scale) */
   getEmpires(): Polity[] {
-    return polities.filter((p) => p.kind === 'empire');
+    return this.localizedPolities.filter((p) => p.kind === 'empire');
   }
 
   /** Regional kingdoms, sultanates, and successor states */
   getRegionalKingdoms(): Polity[] {
-    return polities.filter((p) => p.kind === 'regional-kingdom');
+    return this.localizedPolities.filter((p) => p.kind === 'regional-kingdom');
   }
 
   /** Find a polity by slug */
   getPolityBySlug(slug: string): Polity | undefined {
-    return polities.find((p) => p.slug === slug);
+    return this.localizedPolities.find((p) => p.slug === slug);
   }
 
   /** Cross-period themes such as Vedas, Buddhism/Jainism, and colonization */
   getThemes(): Theme[] {
-    return themes;
+    return this.localizedThemes;
   }
 
   /** Find a theme by slug */
   getThemeBySlug(slug: string): Theme | undefined {
-    return themes.find((t) => t.slug === slug);
+    return this.localizedThemes.find((t) => t.slug === slug);
   }
 
   /** Historical personalities available for deep dives */
   getPersonalities(): Personality[] {
-    return personalities;
+    return this.localizedPersonalities;
   }
 
   /** Find a personality by slug */
   getPersonalityBySlug(slug: string): Personality | undefined {
-    return personalities.find((p) => p.slug === slug);
+    return this.localizedPersonalities.find((p) => p.slug === slug);
   }
 
   /**
@@ -211,7 +245,7 @@ export class PeriodsService {
         excerpt: a.excerpt,
         routerLink: ['/article', a.slug],
         queryParams: { fromSearch: true },
-        kindLabel: 'Story',
+        kindLabel: this.locale.translate('Story'),
       });
     }
 
@@ -227,7 +261,7 @@ export class PeriodsService {
           excerpt: p.shortDescription || (p.description ? p.description.slice(0, 160) : ''),
           routerLink: ['/period', p.slug],
           queryParams: { fromSearch: true },
-          kindLabel: 'Period',
+          kindLabel: this.locale.translate('Period'),
         });
       }
     }
@@ -245,7 +279,7 @@ export class PeriodsService {
           excerpt: pol.shortDescription || (pol.description ? pol.description.slice(0, 160) : ''),
           routerLink: ['/polity', pol.slug],
           queryParams: { fromSearch: true },
-          kindLabel: isEmpire ? 'Empire' : 'Regional Kingdom',
+          kindLabel: this.locale.translate(isEmpire ? 'Empire' : 'Regional Kingdom'),
         });
       }
     }
@@ -261,7 +295,7 @@ export class PeriodsService {
           excerpt: theme.shortDescription || (theme.description ? theme.description.slice(0, 160) : ''),
           routerLink: ['/theme', theme.slug],
           queryParams: { fromSearch: true },
-          kindLabel: 'Theme',
+          kindLabel: this.locale.translate('Theme'),
         });
       }
     }
@@ -277,7 +311,7 @@ export class PeriodsService {
           excerpt: personality.shortDescription || (personality.description ? personality.description.slice(0, 160) : ''),
           routerLink: ['/personality', personality.slug],
           queryParams: { fromSearch: true },
-          kindLabel: 'Personality',
+          kindLabel: this.locale.translate('Personality'),
         });
       }
     }
@@ -290,10 +324,12 @@ export class PeriodsService {
           kind: 'book',
           slug: book.isbn10,
           title: book.title,
-          excerpt: `Book by ${book.author}. ${book.description}`,
+          excerpt: `${this.locale.translate('Book by')} ${book.author}. ${book.description}`,
+          bookAuthor: book.author,
+          bookDescription: book.description,
           externalUrl: book.affiliateUrl || book.amazonUrl,
           affiliatePending: !book.affiliateUrl,
-          kindLabel: 'Book',
+          kindLabel: this.locale.translate('Book'),
         });
       }
     }

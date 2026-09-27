@@ -14,9 +14,9 @@
   <div class="article-layout">
     <article class="card article">
       <p class="meta">
-        Published {{ article()!.publishedAt | date: 'longDate' }}
+        {{ locale.translate('Published') }} {{ article()!.publishedAt | date: 'longDate' }}
         @if (article()!.updatedAt !== article()!.publishedAt) {
-          · Updated {{ article()!.updatedAt | date: 'longDate' }}
+          · {{ locale.translate('Updated') }} {{ article()!.updatedAt | date: 'longDate' }}
         }
       </p>
       <h1>{{ article()!.title }}</h1>
@@ -37,15 +37,15 @@
             @for (book of bottomBooks(); track book.isbn10) {
               <article class="article-book-card" [class.affiliate-pending]="!book.affiliateUrl">
                 <a class="article-book-cover" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'" aria-hidden="true" tabindex="-1">
-                  <img [appLazyImage]="book.imageUrl" [alt]="book.imageAlt" decoding="async" />
+                  <img [appLazyImage]="book.imageUrl" [alt]="locale.bookCoverAlt(book.title, book.imageAlt)" decoding="async" translate="no" />
                 </a>
                 <div class="article-book-copy">
           @if (!book.affiliateUrl) { <p class="affiliate-status">Affiliate link pending · Regular Amazon.in link</p> }
-                  <p class="book-meta">{{ book.format }}@if (book.publicationDate) { · {{ book.publicationDate }} }</p>
-                  <h3>
+                  <p class="book-meta">{{ locale.translate(book.format) }}@if (book.publicationDate) { · {{ locale.formatBookDate(book.publicationDate) }} }</p>
+                  <h3 translate="no" class="notranslate">
                     <a [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">{{ book.title }}</a>
                   </h3>
-                  <p class="book-author">by {{ book.author }}</p>
+                  <p class="book-author"><span>by</span> <span translate="no" class="notranslate">{{ book.author }}</span></p>
                   <a class="read-more" [href]="book.affiliateUrl || book.amazonUrl" target="_blank" [attr.rel]="book.affiliateUrl ? 'sponsored noopener' : 'noopener'">View book →</a>
                 </div>
               </article>
