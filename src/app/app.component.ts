@@ -8,6 +8,7 @@ import { RecommendedBook } from './models/book.model';
 import { getPageBookRecommendations } from './utils/book-recommendations';
 import { recommendedBooks } from './data/recommended-books';
 import { LocaleService } from './i18n/locale.service';
+import { DevModeService } from './services/dev-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ export class AppComponent implements AfterViewInit {
   private readonly viewportScroller = inject(ViewportScroller);
   private readonly router = inject(Router);
   private readonly articles = inject(ArticleService);
+  private readonly devMode = inject(DevModeService);
   readonly locale = inject(LocaleService);
   private readonly homeSections = new Set(['timeline', 'themes', 'empires', 'regional-kingdoms', 'personalities', 'world-history']);
   private lastPlacementUrl: string | null = null;

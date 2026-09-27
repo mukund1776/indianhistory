@@ -6,6 +6,23 @@ import { AVAILABLE_LANGUAGES } from './app/i18n/available-languages.generated';
 
 const initialUrl = new URL(window.location.href);
 
+const rawDev = initialUrl.searchParams.get('dev');
+try {
+  if (rawDev !== null) {
+    if (rawDev === 'false' || rawDev === '0') {
+      sessionStorage.removeItem('ih_dev_mode');
+      initialUrl.searchParams.delete('dev');
+    } else {
+      sessionStorage.setItem('ih_dev_mode', 'true');
+      initialUrl.searchParams.set('dev', 'true');
+    }
+  } else if (sessionStorage.getItem('ih_dev_mode') === 'true') {
+    initialUrl.searchParams.set('dev', 'true');
+  }
+} catch {
+  // Ignore sessionStorage errors
+}
+
 const requestedLanguage = initialUrl.searchParams.get('lang');
 const requested = languageFromUrl(requestedLanguage);
 const language = AVAILABLE_LANGUAGES.includes(requested) ? requested : 'en';
