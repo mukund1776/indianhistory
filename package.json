@@ -8,7 +8,8 @@
     "prestart": "npm run build-content",
     "start": "ng serve",
     "build": "npm run build-content && ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "test": "node scripts/run-tests.js"
   },
   "private": true,
   "dependencies": {

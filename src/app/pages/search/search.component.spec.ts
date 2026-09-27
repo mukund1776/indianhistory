@@ -1,0 +1,123 @@
+import { DestroyRef, Injector, runInInjectionContext } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SearchComponent } from './search.component';
+import { ArticleService } from '../../services/article.service';
+import { PeriodsService } from '../../services/periods.service';
+import { LocaleService } from '../../i18n/locale.service';
+import { SearchResult } from '../../models/article.model';
+
+describe('SearchComponent', () => {
+  let component: SearchComponent;
+
+  beforeEach(() => {
+    const mockArticles = {
+      whenReady: async () => {},
+    };
+    const mockPeriods = {
+      searchAll: async () => [],
+      getPolityBySlug: (slug: string) => {
+        if (slug === 'maurya') return { kind: 'empire' };
+        if (slug === 'kakatiya') return { kind: 'regional-kingdom' };
+        return null;
+      },
+    };
+    const mockLocale = {
+      language: 'en',
+      translate: (s: string) => s,
+      navigation: { books: 'Books', kingdoms: 'Kingdoms' },
+    };
+    const mockRoute = {
+      snapshot: { queryParamMap: { get: () => null } },
+      queryParamMap: { pipe: () => ({ subscribe: () => {} }) },
+    };
+    const mockRouter = {
+      navigate: async () => true,
+    };
+    const mockDestroyRef = {
+      onDestroy: () => () => {},
+    };
+
+    const injector = Injector.create({
+      providers: [
+        { provide: ArticleService, useValue: mockArticles },
+        { provide: PeriodsService, useValue: mockPeriods },
+        { provide: LocaleService, useValue: mockLocale },
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: Router, useValue: mockRouter },
+        { provide: DestroyRef, useValue: mockDestroyRef },
+      ],
+    });
+
+    component = runInInjectionContext(injector, () => new SearchComponent());
+  });
+
+  it('should initialize with default filter "all" and empty query', () => {
+    expect(component.query).toBe('');
+    expect(component.activeFilter()).toBe('all');
+    expect(component.loading()).toBeTruthy();
+  });
+
+  it('should match results correctly with active filters', () => {
+    const articleResult: SearchResult = {
+      slug: 'stone-tools',
+      title: 'Stone Tools',
+      excerpt: '',
+      kind: 'article',
+      routerLink: ['/article', 'stone-tools'],
+      kindLabel: 'Story',
+    };
+
+    const bookResult: SearchResult = {
+      slug: '0140138358',
+      title: 'A History of India',
+      excerpt: '',
+      kind: 'book',
+      externalUrl: 'https://amazon.in',
+      kindLabel: 'Book',
+    };
+
+    const empireResult: SearchResult = {
+      slug: 'maurya',
+      title: 'Mauryan Empire',
+      excerpt: '',
+      kind: 'polity',
+      routerLink: ['/polity', 'maurya'],
+      kindLabel: 'Empire',
+    };
+
+    const kingdomResult: SearchResult = {
+      slug: 'kakatiya',
+      title: 'Kakatiya Kingdom',
+      excerpt: '',
+      kind: 'polity',
+      routerLink: ['/polity', 'kakatiya'],
+      kindLabel: 'Regional Kingdom',
+    };
+
+    component.activeFilter.set('all');
+    expect((component as any).matchesFilter(articleResult)).toBeTruthy();
+    expect((component as any).matchesFilter(bookResult)).toBeTruthy();
+
+    component.activeFilter.set('article');
+    expect((component as any).matchesFilter(articleResult)).toBeTruthy();
+    expect((component as any).matchesFilter(bookResult)).toBeFalsy();
+
+    component.activeFilter.set('book');
+    expect((component as any).matchesFilter(bookResult)).toBeTruthy();
+    expect((component as any).matchesFilter(articleResult)).toBeFalsy();
+
+    component.activeFilter.set('empire');
+    expect((component as any).matchesFilter(empireResult)).toBeTruthy();
+    expect((component as any).matchesFilter(kingdomResult)).toBeFalsy();
+
+    component.activeFilter.set('kingdom');
+    expect((component as any).matchesFilter(kingdomResult)).toBeTruthy();
+    expect((component as any).matchesFilter(empireResult)).toBeFalsy();
+  });
+
+  it('should normalize invalid filter values to "all"', () => {
+    expect((component as any).toFilter('invalid-filter')).toBe('all');
+    expect((component as any).toFilter('empire')).toBe('empire');
+    expect((component as any).toFilter('book')).toBe('book');
+  });
+});
