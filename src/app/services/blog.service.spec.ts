@@ -7,6 +7,7 @@ import { BlogPost } from '../models/blog.model';
 
 describe('BlogService', () => {
   let service: BlogService;
+  let requestedUrls: string[];
   const samplePosts: BlogPost[] = [
     {
       slug: 'welcome-to-indian-history',
@@ -27,12 +28,14 @@ describe('BlogService', () => {
   ];
 
   beforeEach(() => {
+    requestedUrls = [];
     const mockHttp = {
-      get: () => of(samplePosts),
+      get: (url: string) => { requestedUrls.push(url); return of(samplePosts); },
     };
 
     const mockLocale = {
       language: 'en',
+      generatedAssetsBase: '/indianhistory/assets/generated/',
       translationAvailable: { set: () => {} },
     };
 
@@ -60,5 +63,10 @@ describe('BlogService', () => {
     const posts = service.allPosts();
     expect(posts.length).toBe(2);
     expect(posts[1].slug).toBe('archaeological-methods');
+  });
+
+  it('loads blog data under the deployment base URL', async () => {
+    await service.whenReady();
+    expect(requestedUrls).toEqual(['/indianhistory/assets/generated/blogs.json']);
   });
 });

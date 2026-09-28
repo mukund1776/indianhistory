@@ -11,7 +11,7 @@ export class ArticleService {
   private readonly articles = signal<ArticleSummary[]>([]);
   private searchIndex: Promise<SearchEntry[]> | null = null;
   private readonly storyRequests = new Map<string, Promise<Article>>();
-  private contentBase = '/assets/generated';
+  private contentBase = this.locale.generatedAssetsBase;
   private ready: Promise<void>;
 
   readonly allArticles = this.articles.asReadonly();
@@ -34,11 +34,11 @@ export class ArticleService {
     const pending = this.storyRequests.get(slug);
     if (pending) return pending;
 
-    const request = firstValueFrom(this.http.get<Article>(`${this.contentBase}/stories/${encodeURIComponent(slug)}.json`))
+    const request = firstValueFrom(this.http.get<Article>(`${this.contentBase}stories/${encodeURIComponent(slug)}.json`))
       .catch(async error => {
-        if (this.contentBase === '/assets/generated') throw error;
+        if (this.contentBase === this.locale.generatedAssetsBase) throw error;
         this.locale.translationAvailable.set(false);
-        return firstValueFrom(this.http.get<Article>(`/assets/generated/stories/${encodeURIComponent(slug)}.json`));
+        return firstValueFrom(this.http.get<Article>(`${this.locale.generatedAssetsBase}stories/${encodeURIComponent(slug)}.json`));
       });
     this.storyRequests.set(slug, request);
     try {
@@ -72,16 +72,16 @@ export class ArticleService {
   }
 
   private basePath(): string {
-    return this.locale.language === 'en' ? '/assets/generated' : `/assets/generated/${this.locale.language}`;
+    return this.locale.language === 'en' ? this.locale.generatedAssetsBase : `${this.locale.generatedAssetsBase}${this.locale.language}/`;
   }
 
   private loadSearchIndex(): Promise<SearchEntry[]> {
     if (this.searchIndex) return this.searchIndex;
-    const request = firstValueFrom(this.http.get<SearchEntry[]>(`${this.contentBase}/search-index.json`))
+    const request = firstValueFrom(this.http.get<SearchEntry[]>(`${this.contentBase}search-index.json`))
       .catch(async error => {
-        if (this.contentBase === '/assets/generated') throw error;
+        if (this.contentBase === this.locale.generatedAssetsBase) throw error;
         this.locale.translationAvailable.set(false);
-        return firstValueFrom(this.http.get<SearchEntry[]>('/assets/generated/search-index.json'));
+        return firstValueFrom(this.http.get<SearchEntry[]>(`${this.locale.generatedAssetsBase}search-index.json`));
       });
     this.searchIndex = request;
     void request.catch(() => { this.searchIndex = null; });
@@ -92,13 +92,13 @@ export class ArticleService {
     const base = this.basePath();
     let articles: ArticleSummary[];
     try {
-      articles = await firstValueFrom(this.http.get<ArticleSummary[]>(`${base}/articles.json`));
+      articles = await firstValueFrom(this.http.get<ArticleSummary[]>(`${base}articles.json`));
       this.contentBase = base;
     } catch (error) {
       if (this.locale.language === 'en') throw error;
       this.locale.translationAvailable.set(false);
-      articles = await firstValueFrom(this.http.get<ArticleSummary[]>('/assets/generated/articles.json'));
-      this.contentBase = '/assets/generated';
+      articles = await firstValueFrom(this.http.get<ArticleSummary[]>(`${this.locale.generatedAssetsBase}articles.json`));
+      this.contentBase = this.locale.generatedAssetsBase;
     }
     this.articles.set(articles);
   }

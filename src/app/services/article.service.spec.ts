@@ -58,6 +58,7 @@ describe('ArticleService', () => {
 
     const mockLocale = {
       language: 'en',
+      generatedAssetsBase: '/indianhistory/assets/generated/',
       navigation: { worldHistory: 'World History' },
       translationAvailable: { set: () => {} },
     };
@@ -74,12 +75,12 @@ describe('ArticleService', () => {
 
   it('loads summaries at startup and fetches a story only when opened', async () => {
     await service.whenReady();
-    expect(requestedUrls).toEqual(['/assets/generated/articles.json']);
+    expect(requestedUrls).toEqual(['/indianhistory/assets/generated/articles.json']);
     expect('html' in service.allArticles()[0]).toBeFalsy();
 
     const full = await service.getArticle('attirampakkam-acheulean-stone-tools');
     expect(full?.html).toContain('Excavations');
-    expect(requestedUrls).toContain('/assets/generated/stories/attirampakkam-acheulean-stone-tools.json');
+    expect(requestedUrls).toContain('/indianhistory/assets/generated/stories/attirampakkam-acheulean-stone-tools.json');
     await service.getArticle('attirampakkam-acheulean-stone-tools');
     expect(requestedUrls.filter(url => url.includes('/stories/')).length).toBe(1);
     expect(await service.getArticle('unknown-slug')).toBeUndefined();
@@ -104,7 +105,7 @@ describe('ArticleService', () => {
 
   it('loads the full-text index only when searching', async () => {
     await service.whenReady();
-    expect(requestedUrls).not.toContain('/assets/generated/search-index.json');
+    expect(requestedUrls).not.toContain('/indianhistory/assets/generated/search-index.json');
     const results = await service.search('Paleolithic');
     expect(results.length).toBe(1);
     expect(results[0].slug).toBe('attirampakkam-acheulean-stone-tools');
@@ -118,7 +119,45 @@ describe('ArticleService', () => {
   it('should return empty array for empty search queries', async () => {
     expect((await service.search('')).length).toBe(0);
     expect((await service.search('   ')).length).toBe(0);
-    expect(requestedUrls).not.toContain('/assets/generated/search-index.json');
+    expect(requestedUrls).not.toContain('/indianhistory/assets/generated/search-index.json');
+  });
+
+  it('keeps translated asset fallbacks under the deployment base URL', async () => {
+    const urls: string[] = [];
+    let translationMissing = false;
+    const http = {
+      get: (url: string) => {
+        urls.push(url);
+        if (url.includes('/hi/')) throw new Error('missing translation');
+        if (url.includes('/stories/')) return of(mockArticles[0]);
+        if (url.endsWith('articles.json')) return of(mockArticles.map(({ html, ...summary }) => summary));
+        return of(mockIndex);
+      },
+    };
+    const locale = {
+      language: 'hi',
+      generatedAssetsBase: '/indianhistory/assets/generated/',
+      navigation: { worldHistory: 'World History' },
+      translationAvailable: { set: (value: boolean) => { translationMissing = !value; } },
+    };
+    const injector = Injector.create({
+      providers: [
+        { provide: HttpClient, useValue: http },
+        { provide: LocaleService, useValue: locale },
+      ],
+    });
+    const localizedService = runInInjectionContext(injector, () => new ArticleService());
+    await localizedService.whenReady();
+    await localizedService.getArticle(mockArticles[0].slug);
+    await localizedService.search('Paleolithic');
+
+    expect(translationMissing).toBeTruthy();
+    expect(urls).toEqual([
+      '/indianhistory/assets/generated/hi/articles.json',
+      '/indianhistory/assets/generated/articles.json',
+      '/indianhistory/assets/generated/stories/attirampakkam-acheulean-stone-tools.json',
+      '/indianhistory/assets/generated/search-index.json',
+    ]);
   });
 
   it('reveals world history when a story is assigned to it', async () => {

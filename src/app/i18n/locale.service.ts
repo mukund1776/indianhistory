@@ -11,6 +11,7 @@ export class LocaleService {
   private readonly document = inject(DOCUMENT);
   private readonly http = inject(HttpClient);
   private copy: Record<string, string> = {};
+  readonly generatedAssetsBase = new URL('assets/generated/', this.document.baseURI).pathname;
   readonly languages = LANGUAGES.filter(entry => AVAILABLE_LANGUAGES.includes(entry.code));
   readonly language: LanguageCode = languageFromUrl(
     new URL(this.document.location.href).searchParams.get('lang')
@@ -39,7 +40,7 @@ export class LocaleService {
     };
     registerLocaleData((await localeData[this.language]()).default);
     try {
-      this.copy = await firstValueFrom(this.http.get<Record<string, string>>(`/assets/generated/${this.language}/site.json`));
+      this.copy = await firstValueFrom(this.http.get<Record<string, string>>(`${this.generatedAssetsBase}${this.language}/site.json`));
       this.document.title = this.translate('India History');
     } catch {
       this.translationAvailable.set(false);

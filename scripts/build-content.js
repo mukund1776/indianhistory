@@ -23,6 +23,10 @@ function stripHtml(html) {
     .trim();
 }
 
+function relativeMediaUrls(html) {
+  return html.replace(/\b(src|href)="\/assets\/media\//g, '$1="assets/media/');
+}
+
 function storySummary(article) {
   const { html, ...summary } = article;
   const image = html.match(/<img\b[^>]*>/i)?.[0];
@@ -35,13 +39,21 @@ function writeStories(directory, articles) {
   const storiesDirectory = path.join(directory, 'stories');
   fs.rmSync(storiesDirectory, { recursive: true, force: true });
   fs.mkdirSync(storiesDirectory, { recursive: true });
-  for (const article of articles) {
+  const generatedArticles = articles.map(article => ({ ...article, html: relativeMediaUrls(article.html) }));
+  for (const article of generatedArticles) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug)) {
       throw new Error(`Invalid story slug: ${article.slug}`);
     }
     fs.writeFileSync(path.join(storiesDirectory, `${article.slug}.json`), JSON.stringify(article));
   }
-  fs.writeFileSync(path.join(directory, 'articles.json'), JSON.stringify(articles.map(storySummary)));
+  fs.writeFileSync(path.join(directory, 'articles.json'), JSON.stringify(generatedArticles.map(storySummary)));
+}
+
+function writeBlogs(directory, blogs) {
+  fs.writeFileSync(path.join(directory, 'blogs.json'), JSON.stringify(blogs.map(blog => ({
+    ...blog,
+    html: relativeMediaUrls(blog.html),
+  })), null, 2));
 }
 
 function sourceFile(kind, slug) {
@@ -119,7 +131,7 @@ function writeLocalizedContent(articles, blogs) {
     }
     fs.copyFileSync(siteFile, path.join(directory, 'site.json'));
     writeStories(directory, localizedArticles);
-    fs.writeFileSync(path.join(directory, 'blogs.json'), JSON.stringify(localizedBlogs, null, 2));
+    writeBlogs(directory, localizedBlogs);
     fs.writeFileSync(path.join(directory, 'search-index.json'), JSON.stringify(localizedArticles.map(article => ({
       title: article.title,
       slug: article.slug,
@@ -189,10 +201,7 @@ function build() {
   );
 
   const blogs = buildBlogs();
-  fs.writeFileSync(
-    path.join(OUT_DIR, 'blogs.json'),
-    JSON.stringify(blogs, null, 2)
-  );
+  writeBlogs(OUT_DIR, blogs);
 
   writeLocalizedContent(articles, blogs);
 

@@ -22,13 +22,13 @@ export class BlogService {
   }
 
   private async load(): Promise<void> {
-    const base = this.locale.language === 'en' ? '/assets/generated' : `/assets/generated/${this.locale.language}`;
+    const base = this.locale.language === 'en' ? this.locale.generatedAssetsBase : `${this.locale.generatedAssetsBase}${this.locale.language}/`;
     try {
-      this.posts.set(await firstValueFrom(this.http.get<BlogPost[]>(`${base}/blogs.json`)));
+      this.posts.set(await firstValueFrom(this.http.get<BlogPost[]>(`${base}blogs.json`)));
     } catch (error) {
       if (this.locale.language === 'en') throw error;
       this.locale.translationAvailable.set(false);
-      this.posts.set(await firstValueFrom(this.http.get<BlogPost[]>('/assets/generated/blogs.json')));
+      this.posts.set(await firstValueFrom(this.http.get<BlogPost[]>(`${this.locale.generatedAssetsBase}blogs.json`)));
     }
   }
 }

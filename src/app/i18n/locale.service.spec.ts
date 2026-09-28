@@ -10,6 +10,7 @@ describe('LocaleService', () => {
 
   beforeEach(() => {
     mockDoc = {
+      baseURI: 'http://localhost:4201/',
       location: {
         href: 'http://localhost:4201/?lang=en',
         assign: (url: string) => { mockDoc.location.href = url; },
@@ -60,5 +61,22 @@ describe('LocaleService', () => {
   it('should update document location when changing language', () => {
     service.changeLanguage('hi');
     expect(mockDoc.location.href).toContain('lang=hi');
+  });
+
+  it('loads translated site copy under the document base URL', async () => {
+    expect(service.generatedAssetsBase).toBe('/assets/generated/');
+    mockDoc.baseURI = 'https://example.com/indianhistory/';
+    mockDoc.location.href = 'https://example.com/indianhistory/?lang=hi';
+    const requestedUrls: string[] = [];
+    const injector = Injector.create({
+      providers: [
+        { provide: DOCUMENT, useValue: mockDoc },
+        { provide: HttpClient, useValue: { get: (url: string) => { requestedUrls.push(url); return of({}); } } },
+      ],
+    });
+    const nested = runInInjectionContext(injector, () => new LocaleService());
+    await nested.load();
+    expect(nested.generatedAssetsBase).toBe('/indianhistory/assets/generated/');
+    expect(requestedUrls).toEqual(['/indianhistory/assets/generated/hi/site.json']);
   });
 });
