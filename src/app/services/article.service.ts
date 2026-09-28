@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Article, SearchEntry } from '../models/article.model';
+import { Article, ArticleSummary, SearchEntry } from '../models/article.model';
 import { LocaleService } from '../i18n/locale.service';
 
 @Injectable({ providedIn: 'root' })
 export class ArticleService {
   private readonly http = inject(HttpClient);
   private readonly locale = inject(LocaleService);
-  private readonly articles = signal<Article[]>([]);
-  private readonly searchIndex = signal<SearchEntry[]>([]);
+  private readonly articles = signal<ArticleSummary[]>([]);
+  private searchIndex: Promise<SearchEntry[]> | null = null;
+  private readonly storyRequests = new Map<string, Promise<Article>>();
+  private contentBase = '/assets/generated';
   private ready: Promise<void>;
 
   readonly allArticles = this.articles.asReadonly();
@@ -22,8 +24,29 @@ export class ArticleService {
     await this.ready;
   }
 
-  getBySlug(slug: string): Article | undefined {
+  getBySlug(slug: string): ArticleSummary | undefined {
     return this.articles().find((a) => a.slug === slug);
+  }
+
+  async getArticle(slug: string): Promise<Article | undefined> {
+    await this.whenReady();
+    if (!this.getBySlug(slug)) return undefined;
+    const pending = this.storyRequests.get(slug);
+    if (pending) return pending;
+
+    const request = firstValueFrom(this.http.get<Article>(`${this.contentBase}/stories/${encodeURIComponent(slug)}.json`))
+      .catch(async error => {
+        if (this.contentBase === '/assets/generated') throw error;
+        this.locale.translationAvailable.set(false);
+        return firstValueFrom(this.http.get<Article>(`/assets/generated/stories/${encodeURIComponent(slug)}.json`));
+      });
+    this.storyRequests.set(slug, request);
+    try {
+      return await request;
+    } catch (error) {
+      this.storyRequests.delete(slug);
+      throw error;
+    }
   }
 
   hasWorldHistoryStories(): boolean {
@@ -35,35 +58,48 @@ export class ArticleService {
     );
   }
 
-  search(query: string): SearchEntry[] {
+  async search(query: string): Promise<SearchEntry[]> {
     const q = query.trim().toLowerCase();
     if (!q) {
       return [];
     }
-    return this.searchIndex().filter((entry) => {
+    await this.whenReady();
+    const index = await this.loadSearchIndex();
+    return index.filter((entry) => {
       const haystack = `${entry.title} ${entry.excerpt} ${entry.text}`.toLowerCase();
       return haystack.includes(q);
     });
   }
 
+  private basePath(): string {
+    return this.locale.language === 'en' ? '/assets/generated' : `/assets/generated/${this.locale.language}`;
+  }
+
+  private loadSearchIndex(): Promise<SearchEntry[]> {
+    if (this.searchIndex) return this.searchIndex;
+    const request = firstValueFrom(this.http.get<SearchEntry[]>(`${this.contentBase}/search-index.json`))
+      .catch(async error => {
+        if (this.contentBase === '/assets/generated') throw error;
+        this.locale.translationAvailable.set(false);
+        return firstValueFrom(this.http.get<SearchEntry[]>('/assets/generated/search-index.json'));
+      });
+    this.searchIndex = request;
+    void request.catch(() => { this.searchIndex = null; });
+    return request;
+  }
+
   private async load(): Promise<void> {
-    const base = this.locale.language === 'en' ? '/assets/generated' : `/assets/generated/${this.locale.language}`;
-    let articles: Article[];
-    let index: SearchEntry[];
+    const base = this.basePath();
+    let articles: ArticleSummary[];
     try {
-      [articles, index] = await Promise.all([
-        firstValueFrom(this.http.get<Article[]>(`${base}/articles.json`)),
-        firstValueFrom(this.http.get<SearchEntry[]>(`${base}/search-index.json`)),
-      ]);
+      articles = await firstValueFrom(this.http.get<ArticleSummary[]>(`${base}/articles.json`));
+      this.contentBase = base;
     } catch (error) {
       if (this.locale.language === 'en') throw error;
       this.locale.translationAvailable.set(false);
-      [articles, index] = await Promise.all([
-        firstValueFrom(this.http.get<Article[]>('/assets/generated/articles.json')),
-        firstValueFrom(this.http.get<SearchEntry[]>('/assets/generated/search-index.json')),
-      ]);
+      articles = await firstValueFrom(this.http.get<ArticleSummary[]>('/assets/generated/articles.json'));
+      this.contentBase = '/assets/generated';
     }
     this.articles.set(articles);
-    this.searchIndex.set(index);
   }
 }

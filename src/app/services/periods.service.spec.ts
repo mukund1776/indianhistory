@@ -15,7 +15,7 @@ describe('PeriodsService', () => {
     const mockArticlesService = {
       whenReady: async () => {},
       allArticles: () => articles,
-      search: () => [],
+      search: async () => [],
       getBySlug: () => undefined,
     };
 

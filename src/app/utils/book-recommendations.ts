@@ -1,4 +1,4 @@
-import { Article } from '../models/article.model';
+import { ArticleSummary } from '../models/article.model';
 import { RecommendedBook } from '../models/book.model';
 import { recommendedBooks } from '../data/recommended-books';
 
@@ -8,7 +8,7 @@ export interface PageBookRecommendations {
   below: RecommendedBook[];
 }
 
-export function getPageBookRecommendations(article: Article | null): PageBookRecommendations {
+export function getPageBookRecommendations(article: ArticleSummary | null): PageBookRecommendations {
   const related = article
     ? recommendedBooks.filter(book => new Set(article.books).has(book.isbn10))
     : [];

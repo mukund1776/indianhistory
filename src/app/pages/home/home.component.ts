@@ -1,7 +1,7 @@
 import { DatePipe, ViewportScroller } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Article } from '../../models/article.model';
+import { ArticleSummary } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, PolityKind, Theme } from '../../data/periods';
@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
   readonly devMode = inject(DevModeService);
   readonly showWorldHistory = computed(() => this.devMode.isDevMode() || this.articlesSvc.hasWorldHistoryStories());
 
-  readonly list = signal<Article[]>([]);
+  readonly list = signal<ArticleSummary[]>([]);
   readonly loading = signal(true);
   readonly timelinePeriods = signal<TimelinePeriod[]>([]);
   readonly themes = signal<ThemeDisplay[]>([]);
@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private pickFeaturedArticle(articles: Article[]): Article[] {
+  private pickFeaturedArticle(articles: ArticleSummary[]): ArticleSummary[] {
     if (articles.length === 0) {
       return [];
     }
@@ -179,24 +179,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  thumbnail(article: Article): StoryThumbnail | null {
-    const img = article.html.match(/<img\b[^>]*>/i)?.[0];
-    if (!img) {
-      return null;
-    }
-
-    const src = this.getAttribute(img, 'src');
-    if (!src) {
-      return null;
-    }
-
-    return {
-      src,
-      alt: this.getAttribute(img, 'alt') ?? '',
-    };
-  }
-
-  private getAttribute(tag: string, name: string): string | null {
-    return tag.match(new RegExp(`${name}="([^"]*)"`, 'i'))?.[1] ?? null;
+  thumbnail(article: ArticleSummary): StoryThumbnail | null {
+    return article.thumbnail ?? null;
   }
 }

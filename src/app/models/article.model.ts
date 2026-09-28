@@ -1,8 +1,8 @@
-export interface Article {
+export interface ArticleSummary {
   slug: string;
   title: string;
   excerpt: string;
-  html: string;
+  thumbnail?: { src: string; alt: string } | null;
   publishedAt: string;
   updatedAt: string;
   tags: string[];
@@ -11,6 +11,10 @@ export interface Article {
   themes: string[]; // slugs of cross-period themes (e.g. 'rise-of-buddhism-jainism')
   personalities: string[]; // slugs of historical people (e.g. 'ashoka')
   books: string[]; // ISBN-10 values for related recommended books
+}
+
+export interface Article extends ArticleSummary {
+  html: string;
 }
 
 export interface SearchEntry {

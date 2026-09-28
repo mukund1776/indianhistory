@@ -36,7 +36,7 @@ export class ArticleDetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.articles.whenReady();
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
-    const found = this.articles.getBySlug(slug) ?? null;
+    const found = await this.articles.getArticle(slug).catch(() => null) ?? null;
     const picks = getPageBookRecommendations(found);
     this.article.set(found);
     this.relatedBooks.set(picks.related);

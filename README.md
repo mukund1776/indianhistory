@@ -101,6 +101,11 @@ included in story counts or the story search index. See
 `content/blogs/README.txt` for the Markdown frontmatter format. Run
 `npm run build` after adding a post to regenerate the JSON and deployable `dist/`.
 
+The build writes story summaries to `assets/generated/articles.json` and full
+stories to `assets/generated/stories/<slug>.json`, with matching files for each
+available language. The app fetches summaries at startup, a full story when it
+is opened, and the full-text search index when a search is submitted.
+
 Readers see only periods, sub-periods, polities, themes, and personalities that
 have at least one linked story. Parent periods stay visible when a descendant
 has a story. Empty homepage sections, search categories, and the Blogs header

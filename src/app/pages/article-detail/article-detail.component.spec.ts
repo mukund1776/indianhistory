@@ -21,7 +21,7 @@ describe('ArticleDetailComponent', () => {
     };
     const mockArticles = {
       whenReady: async () => {},
-      getBySlug: () => null,
+      getArticle: async () => null,
     };
     mockPeriodsService = {
       getPolityBySlug: () => null,

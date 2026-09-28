@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, computed, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Article } from '../../models/article.model';
+import { ArticleSummary } from '../../models/article.model';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { Period, Personality, Polity, Theme } from '../../data/periods';
@@ -28,7 +28,7 @@ export class PeriodDetailComponent implements OnInit {
   readonly parent = signal<Period | null>(null);
   readonly children = signal<Period[]>([]);
   readonly visibleChildren = computed(() => this.children().filter(child => this.periodsService.isVisiblePeriod(child.slug)));
-  readonly articles = signal<Article[]>([]);
+  readonly articles = signal<ArticleSummary[]>([]);
   readonly childCounts = signal<Record<string, number>>({});
   readonly loading = signal(true);
   readonly notFound = signal(false);

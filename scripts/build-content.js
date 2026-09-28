@@ -23,6 +23,27 @@ function stripHtml(html) {
     .trim();
 }
 
+function storySummary(article) {
+  const { html, ...summary } = article;
+  const image = html.match(/<img\b[^>]*>/i)?.[0];
+  const src = image?.match(/\bsrc="([^"]*)"/i)?.[1];
+  const alt = image?.match(/\balt="([^"]*)"/i)?.[1] || '';
+  return src ? { ...summary, thumbnail: { src, alt } } : summary;
+}
+
+function writeStories(directory, articles) {
+  const storiesDirectory = path.join(directory, 'stories');
+  fs.rmSync(storiesDirectory, { recursive: true, force: true });
+  fs.mkdirSync(storiesDirectory, { recursive: true });
+  for (const article of articles) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug)) {
+      throw new Error(`Invalid story slug: ${article.slug}`);
+    }
+    fs.writeFileSync(path.join(storiesDirectory, `${article.slug}.json`), JSON.stringify(article));
+  }
+  fs.writeFileSync(path.join(directory, 'articles.json'), JSON.stringify(articles.map(storySummary)));
+}
+
 function sourceFile(kind, slug) {
   const directory = path.join(ROOT, 'content', kind);
   return fs.readdirSync(directory).find(name => {
@@ -73,6 +94,7 @@ function writeLocalizedContent(articles, blogs) {
   for (const language of LANGUAGES) {
     const directory = path.join(OUT_DIR, language);
     fs.mkdirSync(directory, { recursive: true });
+    fs.rmSync(path.join(directory, 'stories'), { recursive: true, force: true });
     for (const file of ['articles.json', 'blogs.json', 'search-index.json', 'site.json']) {
       const generated = path.join(directory, file);
       if (fs.existsSync(generated)) fs.unlinkSync(generated);
@@ -96,7 +118,7 @@ function writeLocalizedContent(articles, blogs) {
       continue;
     }
     fs.copyFileSync(siteFile, path.join(directory, 'site.json'));
-    fs.writeFileSync(path.join(directory, 'articles.json'), JSON.stringify(localizedArticles, null, 2));
+    writeStories(directory, localizedArticles);
     fs.writeFileSync(path.join(directory, 'blogs.json'), JSON.stringify(localizedBlogs, null, 2));
     fs.writeFileSync(path.join(directory, 'search-index.json'), JSON.stringify(localizedArticles.map(article => ({
       title: article.title,
@@ -160,10 +182,7 @@ function build() {
     text: [article.title, article.excerpt, stripHtml(article.html)].join(' '),
   }));
 
-  fs.writeFileSync(
-    path.join(OUT_DIR, 'articles.json'),
-    JSON.stringify(articles, null, 2)
-  );
+  writeStories(OUT_DIR, articles);
   fs.writeFileSync(
     path.join(OUT_DIR, 'search-index.json'),
     JSON.stringify(searchIndex, null, 2)

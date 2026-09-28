@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Article, SearchResult, SearchResultKind } from '../models/article.model';
+import { ArticleSummary, SearchResult, SearchResultKind } from '../models/article.model';
 import { recommendedBooks } from '../data/recommended-books';
 import { ArticleService } from './article.service';
 import { LocaleService } from '../i18n/locale.service';
@@ -90,7 +90,7 @@ export class PeriodsService {
    * Return articles whose `period` field matches this node or any descendant.
    * Falls back to tag-based matching for older articles if needed.
    */
-  async getArticlesForPeriod(slug: string): Promise<Article[]> {
+  async getArticlesForPeriod(slug: string): Promise<ArticleSummary[]> {
     await this.articlesService.whenReady();
     return this.articlesForPeriod(slug);
   }
@@ -99,7 +99,7 @@ export class PeriodsService {
     return this.devMode.isDevMode() || this.articlesForPeriod(slug).length > 0;
   }
 
-  private articlesForPeriod(slug: string): Article[] {
+  private articlesForPeriod(slug: string): ArticleSummary[] {
     const all = this.articlesService.allArticles();
     const p = this.getBySlug(slug);
     if (!p) return [];
@@ -168,7 +168,7 @@ export class PeriodsService {
   /**
    * Return articles whose `polity` field matches this slug.
    */
-  async getArticlesForPolity(slug: string): Promise<Article[]> {
+  async getArticlesForPolity(slug: string): Promise<ArticleSummary[]> {
     await this.articlesService.whenReady();
     return this.articlesForPolity(slug);
   }
@@ -177,7 +177,7 @@ export class PeriodsService {
     return this.devMode.isDevMode() || this.articlesForPolity(slug).length > 0;
   }
 
-  private articlesForPolity(slug: string): Article[] {
+  private articlesForPolity(slug: string): ArticleSummary[] {
     const all = this.articlesService.allArticles();
     const polity = this.getPolityBySlug(slug);
     if (!polity) return [];
@@ -199,7 +199,7 @@ export class PeriodsService {
   /**
    * Return articles whose `themes` array contains this slug.
    */
-  async getArticlesForTheme(slug: string): Promise<Article[]> {
+  async getArticlesForTheme(slug: string): Promise<ArticleSummary[]> {
     await this.articlesService.whenReady();
     return this.articlesForTheme(slug);
   }
@@ -208,7 +208,7 @@ export class PeriodsService {
     return this.devMode.isDevMode() || this.articlesForTheme(slug).length > 0;
   }
 
-  private articlesForTheme(slug: string): Article[] {
+  private articlesForTheme(slug: string): ArticleSummary[] {
     const all = this.articlesService.allArticles();
     const theme = this.getThemeBySlug(slug);
     if (!theme) return [];
@@ -223,7 +223,7 @@ export class PeriodsService {
   }
 
   /** Return articles whose `personalities` array contains this slug. */
-  async getArticlesForPersonality(slug: string): Promise<Article[]> {
+  async getArticlesForPersonality(slug: string): Promise<ArticleSummary[]> {
     await this.articlesService.whenReady();
     return this.articlesForPersonality(slug);
   }
@@ -232,7 +232,7 @@ export class PeriodsService {
     return this.devMode.isDevMode() || this.articlesForPersonality(slug).length > 0;
   }
 
-  private articlesForPersonality(slug: string): Article[] {
+  private articlesForPersonality(slug: string): ArticleSummary[] {
     const all = this.articlesService.allArticles();
     const personality = this.getPersonalityBySlug(slug);
     if (!personality) return [];
@@ -262,7 +262,7 @@ export class PeriodsService {
     const results: SearchResult[] = [];
 
     // Articles via the existing pre-built index (includes full body text)
-    const articleHits = this.articlesService.search(query);
+    const articleHits = await this.articlesService.search(query);
     for (const a of articleHits) {
       results.push({
         kind: 'article',

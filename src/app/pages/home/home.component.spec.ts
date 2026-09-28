@@ -5,7 +5,7 @@ import { HomeComponent } from './home.component';
 import { ArticleService } from '../../services/article.service';
 import { PeriodsService } from '../../services/periods.service';
 import { LocaleService } from '../../i18n/locale.service';
-import { Article } from '../../models/article.model';
+import { ArticleSummary } from '../../models/article.model';
 import { DevModeService } from '../../services/dev-mode.service';
 
 describe('HomeComponent', () => {
@@ -70,12 +70,12 @@ describe('HomeComponent', () => {
     expect(component.visibleTimelinePeriods().map(period => period.slug)).toEqual(['prehistory', 'medieval']);
   });
 
-  it('should extract image src and alt from article html in thumbnail method', () => {
-    const articleWithImage: Article = {
+  it('should use the generated thumbnail metadata', () => {
+    const articleWithImage: ArticleSummary = {
       slug: 'stone-tools',
       title: 'Stone Tools',
       excerpt: 'Old tools',
-      html: '<p>Some text</p><img src="/assets/media/tools.jpg" alt="Acheulean tools" /><p>More text</p>',
+      thumbnail: { src: '/assets/media/tools.jpg', alt: 'Acheulean tools' },
       publishedAt: '2026-01-01',
       tags: [],
       books: [],
@@ -88,11 +88,10 @@ describe('HomeComponent', () => {
   });
 
   it('should return null when article has no images', () => {
-    const articleWithoutImage: Article = {
+    const articleWithoutImage: ArticleSummary = {
       slug: 'no-image',
       title: 'No Image',
       excerpt: 'Text only',
-      html: '<p>Only text here.</p>',
       publishedAt: '2026-01-01',
       tags: [],
       books: [],
